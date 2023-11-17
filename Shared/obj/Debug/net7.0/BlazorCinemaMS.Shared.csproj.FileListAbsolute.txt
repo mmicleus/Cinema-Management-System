@@ -1,0 +1,12 @@
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\bin\Debug\net7.0\BlazorCinemaMS.Shared.deps.json
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\bin\Debug\net7.0\BlazorCinemaMS.Shared.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\bin\Debug\net7.0\BlazorCinemaMS.Shared.pdb
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\BlazorCinemaMS.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\BlazorCinemaMS.Shared.AssemblyInfoInputs.cache
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\BlazorCinemaMS.Shared.AssemblyInfo.cs
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\BlazorCinemaMS.Shared.csproj.CoreCompileInputs.cache
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\BlazorCinemaMS.Shared.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\refint\BlazorCinemaMS.Shared.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\BlazorCinemaMS.Shared.pdb
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\ref\BlazorCinemaMS.Shared.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Shared\obj\Debug\net7.0\BlazorCinemaMS.Shared.csproj.AssemblyReference.cache

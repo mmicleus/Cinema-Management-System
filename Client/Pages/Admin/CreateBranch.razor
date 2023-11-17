@@ -1,0 +1,373 @@
+﻿@* @page "/Admin/CreateBranch" *@
+@page "/Admin/Branch/{Id}"
+@page "/Admin/Branch"
+@using Mapster;
+@inject IBranchesService branchesService;
+@inject NavigationManager navManager;
+
+
+@if(Message.Text != string.Empty)
+{
+	if(Message.Category == MessageCategory.Error)
+	{
+		<div class="alert alert-danger" role="alert">
+			@Message.Text
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Warning)
+	{
+		<div class="alert alert-warning" role="alert">
+			@Message.Text
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Success)
+	{
+		<div class="alert alert-success" role="alert">
+			@Message.Text
+		</div>
+	}
+}
+
+<div class="container">
+	<div class="row">
+		<div class="col-6">
+			<h3>Create Branch</h3>
+			<EditForm Model="Branch" OnValidSubmit="AddBranch">
+				<DataAnnotationsValidator />
+
+			
+
+
+
+				<div>
+					<label for="name">Name:</label>
+					<InputText id="name" @bind-Value="Branch.Name" class="form-control" />
+					<ValidationMessage For="@(()=>Branch.Name)"></ValidationMessage>
+				</div>
+				<div>
+					<label for="address">Address</label>
+					<InputText id="address" @bind-Value="Branch.Address" class="form-control" />
+					<ValidationMessage For="@(()=>Branch.Address)"></ValidationMessage>
+				</div>
+				<div>
+					<label for="lat">Latitude</label>
+					<InputNumber id="lat" @bind-Value="Branch.Coords.Lat" class="form-control" />
+					<ValidationMessage For="@(()=>Branch.Coords.Lat)"></ValidationMessage>
+				</div>
+				<div>
+					<label for="lng">Longitude</label>
+					<InputNumber id="lng" @bind-Value="Branch.Coords.Lng" class="form-control" />
+					<ValidationMessage For="@(()=>Branch.Coords.Lng)"></ValidationMessage>
+				</div>
+				<div>
+					<label for="image">Image</label>
+					<InputFile id="image" OnChange="OnFileChange" class="form-control" />
+				</div>
+				<br/>
+				<img src="@Branch.Image"/>
+				<br/>
+
+				<button type="submit" class="btn btn-primary mt-5">@(EditMode ? "Update Branch" : "Add Branch")</button>
+
+
+				<ValidationSummary />
+			</EditForm>
+
+
+	
+
+
+			<div class="container mt-3">
+				<h3>Venues</h3>
+
+				@if(Venues == null || Venues.Count() == 0)
+				{
+					<p>No Venues Added</p>
+				}
+
+				<div class="row">
+
+
+
+					@foreach(var venue in Venues)
+					{
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title">@venue.Name</h5>
+									<h6 class="card-subtitle mb-2 text-muted">@venue.Capacity Seats</h6>
+
+									<a class="btn btn-danger" @onclick="(() => DeleteVenue(venue))">Delete</a>
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="col-6">
+			<h3>Create Venue</h3>
+			<EditForm Model="Venue" OnValidSubmit="AddVenue">
+				<DataAnnotationsValidator />
+				<div>
+					<label for="name">Name:</label>
+					<InputText id="name" @bind-Value="Venue.Name" class="form-control" />
+					<ValidationMessage For="@(()=>Venue.Name)"></ValidationMessage>
+				</div>
+				<div>
+					<label>Capacity:</label><span>@Venue.Capacity Seats</span>
+					
+				</div>
+				
+
+				<button type="submit" class="btn btn-primary mt-3">Add Venue</button>
+
+
+				<ValidationSummary />
+			</EditForm>
+			<br/>
+			
+			<EditForm Model="VenueLayout" OnValidSubmit="AddSeats">
+				<DataAnnotationsValidator />
+				<div>
+					<label for="rows">Nr of Rows:</label>
+					<InputNumber id="rows" @bind-Value="VenueLayout.Rows" class="form-control" />
+					<ValidationMessage For="@(()=>VenueLayout.Rows)"></ValidationMessage>
+				</div>
+				<div>
+					<label for="columns">Nr of Columns:</label>
+					<InputNumber id="columns" @bind-Value="VenueLayout.Columns" class="form-control" />
+					<ValidationMessage For="@(()=>VenueLayout.Columns)"></ValidationMessage>
+				</div>
+				
+
+				<button type="submit" class="btn btn-primary mt-3">Add Seats</button>
+				
+			</EditForm>
+
+		</div>
+	</div>
+	
+
+
+</div>
+
+@code {
+	[Parameter]
+	public string Id { get; set; }
+
+	public bool EditMode { get; set; } = false;
+
+	public BranchVM Branch { get; set; } = new BranchVM()
+		{
+			Coords = new CoordsVM()
+		};
+
+	public VenueVM Venue { get; set; } = new VenueVM()
+		{
+			Seats = new List<SeatVM>()
+		};
+
+	public SeatVM Seat { get; set; } = new SeatVM();
+
+	public List<SeatVM> Seats = new List<SeatVM>();
+
+	public List<VenueVM> Venues = new List<VenueVM>();
+
+	public Message Message { get; set; } = new Message();
+
+	public VenueLayout VenueLayout = new VenueLayout();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (Id != null){
+			EditMode = true;
+
+
+			BranchDTO branchDTO = branchesService.GetBranchById(int.Parse(Id));
+
+			PopulateForm(branchDTO);
+		}
+	}
+
+
+	public void PopulateForm(BranchDTO branchDTO)
+	{
+		//Branch = branchDTO.Adapt<Branch>();
+		branchDTO.Adapt(Branch);
+		Venues = Branch.Venues.ToList();
+	}
+
+
+
+
+	public void DeleteSeat(SeatVM seat)
+	{
+		Seats.Remove(seat);
+	}
+
+	public void DeleteVenue(VenueVM venue)
+	{
+		Venues.Remove(venue);
+	}
+
+	private async Task OnFileChange(InputFileChangeEventArgs e)
+	{
+		var format = "image/jpg";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 400, 400);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		Branch.Image = imageData;
+	}
+
+
+
+	public async Task ShowMessage(MessageCategory category,string message,int minutes)
+	{
+		Message.Category = category;
+		Message.Text = message;
+		StateHasChanged();
+
+		await Task.Delay(minutes * 1000);
+
+		Message.Text = string.Empty;
+		StateHasChanged();
+	}
+
+
+	public async Task AddBranch()
+	{
+		bool success;
+		if(Venues == null || Venues.Count() == 0)
+		{
+			ShowMessage(MessageCategory.Error,"No Venues Added To Branch",4);
+			return;
+		}
+
+
+		Branch.Venues = new List<VenueVM>(Venues);
+
+
+		if (!EditMode)
+		{
+			success = await branchesService.AddBranch(Branch);
+		}
+		else
+		{
+			success = await branchesService.UpdateBranch(Branch);
+		}
+
+
+		if (success && !EditMode)
+		{
+			ShowMessage(MessageCategory.Success, "Branch Added Successfully", 4);
+			ResetVenue();
+			ResetBranch();
+			ResetSeats();
+		}
+		else if(success && EditMode)
+		{
+			ShowMessage(MessageCategory.Success, "Branch Updated Successfully", 4);
+			// ResetVenue();
+			// ResetBranch();
+			// ResetSeats();
+			navManager.NavigateTo("/Admin/Branches");
+
+		}
+		else
+		{
+			ShowMessage(MessageCategory.Error, "Something went wrong", 4);
+		}
+
+		Console.WriteLine(Branch.Address);
+		Console.WriteLine(Branch.Name);
+		Console.WriteLine(Branch.Coords.Lat);
+		Console.WriteLine(Branch.Coords.Lng);
+	}
+
+
+	public void ResetSeats()
+	{
+		VenueLayout = new VenueLayout();
+	}
+
+
+	public void ResetVenue()
+	{
+
+		Venue = new VenueVM();
+
+		Seats = new List<SeatVM>();
+	}
+
+	public void ResetBranch()
+	{
+		Branch = new BranchVM();
+		Venues = new List<VenueVM>();
+	}
+
+	public VenueVM GetVenueClone(VenueVM venue)
+	{
+		VenueVM venueClone = new VenueVM()
+			{
+				Name = venue.Name,
+				Capacity = venue.Capacity,
+				Seats = new List<SeatVM>(venue.Seats)
+			};
+
+		return venueClone;
+	}
+
+	public void AddVenue()
+	{
+		if(Seats.Count() > 0 && Venue.Capacity > 0)
+		{
+
+			Venue.Seats = new List<SeatVM>(Seats);
+			Venues.Add(GetVenueClone(Venue)) ;
+
+			ResetVenue();
+
+			return;
+		}
+
+		ShowMessage(MessageCategory.Error,"No Seats Added to the Venue!",4);
+	}
+
+
+	public void AddSeats()
+	{
+		Seats = new List<SeatVM>();
+
+		for(int i = 0;i < VenueLayout.Rows; i++)
+		{
+			for(int i2 = 0;i2 < VenueLayout.Columns; i2++)
+			{
+				char col = (char)(i2 + 65);
+				int row = i + 1;
+				string label = col.ToString() + row;
+				SeatVM seat = new SeatVM()
+					{
+						Label = label
+					};
+
+				Seats.Add(seat);
+			}
+		}
+
+		Venue.Capacity = Seats.Count();
+
+		ResetSeats();
+
+		ShowMessage(MessageCategory.Success, $"Number of seats updated to {Venue.Capacity}", 4);
+	}
+
+
+
+	public void AddInvalidBranch()
+	{
+		Console.WriteLine("Branch not valid");
+	}
+}

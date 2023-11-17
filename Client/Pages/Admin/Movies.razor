@@ -1,0 +1,118 @@
+﻿@page "/Admin/Movies"
+@inject IMoviesService moviesService;
+
+@if (Message.Text != string.Empty)
+{
+	if (Message.Category == MessageCategory.Error)
+	{
+		<div class="alert alert-danger" role="alert">
+			@Message.Text
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Warning)
+	{
+		<div class="alert alert-warning" role="alert">
+			@Message.Text
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Success)
+	{
+		<div class="alert alert-success" role="alert">
+			@Message.Text
+		</div>
+	}
+}
+
+<h3>Movies</h3>
+
+
+<div class="container">
+	<div class="row gx-5" style="display:flex;flex-wrap:wrap;">
+
+		@if (moviesService.Movies != null &&
+				moviesService.Movies.Count() > 0)
+		{
+			@foreach (var movie in moviesService.Movies)
+			{
+				<div class="col-xl-3 col-md-6 col-12 ps-3 pe-3 pt-3 pb-3" style="display:flex;flex-direction:column;">
+					<div class="card w-100 h-100" style="cursor:pointer" @onclick="(() => {})">
+						<img src=@movie.BackdropPath class="card-img-top" alt="...">
+						<div class="card-body d-flex flex-column justify-content-between">
+
+							<div>
+								<h4 class="card-title fw-bold">@movie.Title</h4>
+								<p><span><b>Release Date:</b> </span><span>@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("dd/MM/yyyy") : "---")</span></p>
+								<p><span><b>Duration:</b> </span><span>@movie.Duration mins</span></p>
+								<p><span><b>Genres:</b></span><span>@GetGenresAsString(movie.Genres)</span></p>
+							</div>
+							<div>
+								<button class="btn btn-danger" @onclick="(() => {DeleteMovie(movie);})">Delete</button>
+							</div>
+							
+
+							
+						</div>
+					</div>
+				</div>
+
+			}
+		}
+		else
+		{
+			<h6>No movies to display</h6>
+		}
+	</div>
+</div>
+
+@code {
+
+	public Message Message { get; set; } = new Message();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await moviesService.GetAllMovies();
+	}
+
+	public async Task ShowMessage(MessageCategory category, string message, int minutes)
+	{
+		Message.Category = category;
+		Message.Text = message;
+		StateHasChanged();
+
+		await Task.Delay(minutes * 1000);
+
+		Message.Text = string.Empty;
+		StateHasChanged();
+
+	}
+
+
+
+	public string GetGenresAsString(IEnumerable<GenreDTO> genres)
+	{
+		var genres2 = genres.Select(genre => genre.Name);
+
+
+		return String.Join(" , ", genres.Select(g => g.Name));
+	}
+
+	public async void DeleteMovie(MovieDTO movie)
+	{
+		bool success;
+
+		success = await moviesService.DeleteMovie(movie.Id);
+
+
+		if (success)
+		{
+
+			await ShowMessage(MessageCategory.Success,$"{movie.Title} deleted successfully",4);
+		}
+		else
+		{
+			await ShowMessage(MessageCategory.Error, $"{movie.Title} deletion failed!", 4);
+		}
+
+	}
+
+}

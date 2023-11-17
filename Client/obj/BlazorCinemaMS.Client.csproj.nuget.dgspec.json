@@ -1,0 +1,160 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\BlazorCinemaMS.Client.csproj": {}
+  },
+  "projects": {
+    "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\BlazorCinemaMS.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\BlazorCinemaMS.Client.csproj",
+        "projectName": "BlazorCinemaMS.Client",
+        "projectPath": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\BlazorCinemaMS.Client.csproj",
+        "packagesPath": "C:\\Users\\micle\\.nuget\\packages\\",
+        "outputPath": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\micle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://www.nuget.org/api/v2/": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\BlazorCinemaMS.Shared.csproj": {
+                "projectPath": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\BlazorCinemaMS.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.4.0, )"
+            },
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.13, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
+              "version": "[7.0.14, 7.0.14]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "browser-wasm": {
+          "#import": []
+        }
+      }
+    },
+    "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\BlazorCinemaMS.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\BlazorCinemaMS.Shared.csproj",
+        "projectName": "BlazorCinemaMS.Shared",
+        "projectPath": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\BlazorCinemaMS.Shared.csproj",
+        "packagesPath": "C:\\Users\\micle\\.nuget\\packages\\",
+        "outputPath": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\micle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://www.nuget.org/api/v2/": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.4.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

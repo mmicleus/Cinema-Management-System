@@ -1,0 +1,165 @@
+﻿@page "/Admin/Movies/Create"
+@inject IMoviesService moviesService;
+
+
+
+
+@if (Message != String.Empty)
+{
+	@if (Message == "Movie Added To Database Successfully")
+	{
+		<div class="alert alert-success" role="alert">
+			@Message
+		</div>
+	}
+	else
+	{
+		<div class="alert alert-danger" role="alert">
+			@Message
+		</div>
+	}
+	
+}
+
+
+
+<h3>CreateMovie</h3>
+
+
+
+
+
+
+<div id="createMovie">
+
+	<div class="container">
+		<div class="row">
+			<!-- outer container col 1 -->
+			<div class="col-6 pe-5">
+
+				<!-- inner container -->
+				<div class="container">
+					<div class="row">
+						<h1>Trending this week</h1>
+
+						@foreach (var movie in moviesService.TrendingMovies.results)
+						{
+							<div class="col-6">
+								<div class="card" style="cursor:pointer" @onclick="(() => {AddMovie(movie);})">
+									<img src=@movie.backdrop_path class="card-img-top" alt="...">
+									<div class="card-body">
+										<h4 class="card-title fw-bold">@movie.title</h4>
+									</div>
+								</div>
+							</div>
+
+						}
+
+					</div>
+				</div>
+
+
+			</div>
+
+			<!-- outer container col 2 -->
+			<div class="col-6 ps-5">
+				<h1>Search for movies</h1>
+				@* <input @bind="SearchText" @bind:after="PerformSearch" /> *@
+				<input type="text" value="@SearchText" @oninput="@PerformSearch" />
+
+
+
+				<br />
+				<!-- inner container -->
+				<div class="container">
+					<div class="row">
+
+						@if (moviesService.MovieSuggestions != null &&
+								moviesService.MovieSuggestions.results != null &&
+								moviesService.MovieSuggestions.results.Count() > 0)
+						{
+							@foreach (var movie in moviesService.MovieSuggestions.results)
+							{
+								<div class="col-6">
+									<div class="card" style="cursor:pointer" @onclick="(() => {AddMovie(movie);})">
+										<img src=@movie.backdrop_path class="card-img-top" alt="...">
+										<div class="card-body">
+											<h4 class="card-title fw-bold">@movie.title</h4>
+										</div>
+									</div>
+								</div>
+
+							}
+						}
+						else
+						{
+							<h6>No movies to display</h6>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+@code {
+	public string SearchText { get; set; } = String.Empty;
+
+	public string Message { get; set; } = String.Empty;
+
+	public async void AddMovie(ApiMovieDTO movie)
+	{
+		bool success = await moviesService.AddMovie(movie.id);
+
+		if (!success)
+		{
+			Message = "Failed to add movie to database";
+			StateHasChanged();
+			await Task.Delay(20000);
+			Message = String.Empty;
+			StateHasChanged();
+		}
+		else
+		{
+			Message = "Movie Added To Database Successfully";
+			StateHasChanged();
+			await Task.Delay(4000);
+			Message = String.Empty;
+			StateHasChanged();
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await moviesService.GetTrendingMovies();
+
+		//	await moviesService.GetMovieSuggestionsByName("home alone");
+
+		await moviesService.GetMovieById(654974);
+
+		Console.Write(moviesService.MovieSuggestions);
+	}
+
+	public async Task PerformSearch(ChangeEventArgs args)
+	{
+		SearchText = args.Value.ToString();
+		await moviesService.GetMovieSuggestionsByName(SearchText);
+	}
+
+	
+
+
+}

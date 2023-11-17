@@ -1,0 +1,437 @@
+﻿@page "/Admin/CreateSession"
+
+@inject IBranchesService branchesService
+@inject IMoviesService moviesService
+@inject ISessionsService sessionsService
+
+
+
+@if (Message.Text != string.Empty)
+{
+	if (Message.Category == MessageCategory.Error)
+	{
+		<div class="alert alert-danger" role="alert">
+			@Message.Text
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Warning)
+	{
+		<div class="alert alert-warning" role="alert">
+			@Message.Text
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Success)
+	{
+		<div class="alert alert-success" role="alert">
+			@Message.Text
+		</div>
+	}
+}
+
+
+<div class="container">
+	<div class="row">
+
+		<div class="col-6">
+
+
+			<EditForm Model="PartialSession" OnValidSubmit="AddSession">
+				<DataAnnotationsValidator />
+
+				<div>
+					<label for="branchId">Select branch:</label>
+					@if (branchesService.Branches == null || branchesService.Branches.Count() == 0)
+					{
+						<p>No branches to display</p>
+					}
+					else
+					{
+						<InputSelect id="branchId" ValueExpression="@(()=>PartialSession.BranchId)" Value="@PartialSession.BranchId" ValueChanged="@((int branchId) => UpdateBranch(branchId))" class="form-control">
+
+							<!--<option selected>----- SELECT BRANCH -----</option>-->
+							@foreach (var branch in branchesService.Branches)
+							{
+								<option value="@branch.Id">@branch.Name</option>
+							}
+						</InputSelect>
+					}
+
+					<ValidationMessage For="@(()=>PartialSession.BranchId)" />
+
+				</div>
+
+
+				<div>
+					<label for="venueId">Select Venue:</label>
+					@if (Branch == null)
+					{
+						<p>No venues to display</p>
+					}
+					else
+					{
+						//<InputSelect id="venueId" @bind-Value="PartialSession.VenueId" class="form-control">
+						<InputSelect id="venueId" ValueExpression="@(()=>PartialSession.VenueId)" Value="@PartialSession.VenueId" ValueChanged="@((int venueId) => UpdateVenue(venueId))" class="form-control">
+
+							<!--<option selected>----- SELECT BRANCH -----</option>-->
+							@foreach (var venue in Branch.Venues)
+							{
+								<option value="@venue.Id">@venue.Name</option>
+							}
+						</InputSelect>
+					}
+
+					<ValidationMessage For="@(()=>PartialSession.VenueId)" />
+
+				</div>
+
+				
+
+				
+
+
+
+				<div>
+					<label for="startDate">Start Date</label>
+					<InputDate id="startDate" @bind-Value="PartialSession.StartDate" />
+					<ValidationMessage For="@(()=>PartialSession.StartDate)" />
+				</div>
+				<div>
+					<label for="startTime">Start Time</label>
+					<InputText type="time" id="startTime" @bind-Value="PartialSession.StartTime" />
+					<ValidationMessage For="@(()=>PartialSession.StartTime)" />
+				</div>
+
+			
+
+			
+
+				<div>
+					<label for="economy">Economy Price</label>
+					<InputNumber id="economy" @bind-Value="PartialSession.Pricing.Economy" />
+					<ValidationMessage For="@(()=>PartialSession.Pricing.Economy)" />
+				</div>
+
+				<div>
+					<label for="standard">Standard Price</label>
+					<InputNumber id="standard" @bind-Value="PartialSession.Pricing.Standard" />
+					<ValidationMessage For="@(()=>PartialSession.Pricing.Standard)" />
+				</div>
+
+				<div>
+					<label for="premium">Premium Price</label>
+					<InputNumber id="premium" @bind-Value="PartialSession.Pricing.Premium" />
+					<ValidationMessage For="@(()=>PartialSession.Pricing.Premium)" />
+				</div>
+
+
+				<button type="submit" class="btn btn-primary">Add Session</button>
+
+			</EditForm>
+
+			@if (Branch != null && Venue != null)
+			{
+				<h3 class="mt-5 mb-4">@Branch.Name @Venue.Name Sessions</h3>
+
+				@if (Venue.Sessions != null && Venue.Sessions.Count() > 0)
+				{
+					<div class="container">
+						<div class="row">
+							@foreach (var session in Venue.Sessions)
+							{
+								<div class="col-6">
+									<div class="card">
+										<img class="card-img-top" src="@session.Movie.BackdropPath" alt="Card image cap">
+										<div class="card-body">
+											<h5 class="card-title">@session.Movie.Title</h5>
+											<p class="card-text">@session.StartTime.ToString("MMMM dd")</p>
+											<span class="card-text">@session.StartTime.ToString("hh:mm tt")</span> -
+											<span class="card-text">@session.EndTime.ToString("hh:mm tt")</span>
+										</div>
+									</div>
+
+								</div>
+							}
+
+						</div>
+					</div>
+				}
+				else
+				{
+					<p>No Sessions To Display</p>
+				}
+			}
+
+		</div>
+		<div class="col-6">
+			<div class="container">
+				<div class="row">
+					<h1>Select a Movie</h1>
+
+
+
+					@if (moviesService.Movies == null || moviesService.Movies.Count() == 0)
+					{
+						<p>No movies loaded yet</p>
+					}
+					else
+					{
+						@foreach (var movie in moviesService.Movies)
+						{
+							<div class="col-6">
+								@if(movie.Id != MovieId)
+								{
+									<div class="card" style="cursor:pointer" @onclick="(() => {SelectMovie(movie.Id);})">
+										<img src=@movie.BackdropPath class="card-img-top" alt="...">
+										<div class="card-body">
+											<h4 class="card-title fw-bold">@movie.Title</h4>
+										</div>
+									</div>
+								}
+								else
+								{
+									<div class="card" style="cursor:pointer;background-color:green" @onclick="(() => {SelectMovie(movie.Id);})">
+										<img src=@movie.BackdropPath class="card-img-top" alt="...">
+										<div class="card-body">
+											<h4 class="card-title fw-bold">@movie.Title</h4>
+										</div>
+									</div>
+								}
+
+								
+							</div>
+
+						}
+					}
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	</div>
+
+
+
+
+
+@code {
+	//VenueLayout VenueLayout = new VenueLayout();
+	SessionVM SessionVM { get; set; } = new SessionVM();
+
+	PartialSessionVM PartialSession { get; set; } = new PartialSessionVM();
+
+	int MovieId { get; set; } = 0;
+
+	public BranchDTO? Branch { get; set; }
+
+	public VenueDTO? Venue { get; set; }
+
+	public Message Message { get; set; } = new Message();
+
+	//public IEnumerable<SessionDTO> Sessions = new List<SessionDTO>();
+
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		await branchesService.GetAllBranches();
+
+		await moviesService.GetAllMovies();
+	}
+
+
+
+
+	public DateTime MergeDateAndTime(DateTime date,string time)
+	{
+		TimeOnly timeOnly = TimeOnly.Parse(time);
+
+		return new DateTime(date.Year, date.Month, date.Day, timeOnly.Hour, timeOnly.Minute,timeOnly.Second);
+	}
+
+
+	//called when a branch is selected
+	public async Task UpdateBranch(int branchId)
+	{
+		PartialSession.BranchId = branchId;
+		Branch = branchesService.GetBranchById(branchId);
+
+		//reseting Venue
+		PartialSession.VenueId = 0;
+		Venue = null;
+	}
+
+	//called when a venue is selected
+	public void UpdateVenue(int venueId)
+	{
+		PartialSession.VenueId = venueId;
+		Venue = Branch!.Venues.FirstOrDefault(v => v.Id == venueId);
+
+		//Sessions = Venue.Sessions;
+	}
+
+
+	public DateTime ComputeMovieEndTime(DateTime startDate)
+	{
+		MovieDTO? movie = moviesService.Movies.FirstOrDefault(m => m.Id == MovieId);
+
+		int movieDuration = movie.Duration;
+
+		return startDate.AddMinutes(movieDuration);
+	}
+
+
+
+
+
+	public SessionVM CreateSessionVM(DateTime startDate)
+	{
+		return new SessionVM()
+			{
+				StartTime = startDate,
+				EndTime = ComputeMovieEndTime(startDate),
+				Pricing = PartialSession.Pricing,
+				VenueId = PartialSession.VenueId,
+				MovieId = MovieId,
+			};
+	}
+
+
+
+
+	public async Task ShowMessage(MessageCategory category, string message, int minutes)
+	{
+		Message.Category = category;
+		Message.Text = message;
+		StateHasChanged();
+
+		await Task.Delay(minutes * 1000);
+
+		Message.Text = string.Empty;
+		StateHasChanged();
+
+	}
+
+	public bool IsOverlap(DateTime startDateS1,DateTime endDateS1,DateTime startDateS2,DateTime endDateS2)
+	{
+		if (startDateS1 < startDateS2 && startDateS2 < endDateS1) return true;
+
+		if (startDateS1 < endDateS2 && endDateS2 <= endDateS1) return true;
+
+		if (startDateS2 < startDateS1 && endDateS2 > endDateS1) return true;
+
+		return false;
+	}
+
+	public bool OverlapsWithOtherSessions(DateTime startDate,DateTime endDate)
+	{
+		foreach(var session in Venue.Sessions)
+		{
+			if (IsOverlap(startDate, endDate, session.StartTime, session.EndTime)) return true;
+		}
+
+		return false;
+
+	}
+
+
+	public bool ValidTimeInterval()
+	{
+
+		DateTime startDate = MergeDateAndTime(PartialSession.StartDate, PartialSession.StartTime);
+		DateTime endDate = ComputeMovieEndTime(startDate);
+
+		if (OverlapsWithOtherSessions(startDate, endDate))
+		{
+			return false;
+		}
+		else if(startDate >= endDate)
+		{
+			return false;
+		}
+
+		return true;
+
+	}
+
+	public bool ValidateSession()
+	{
+		bool isValid = true;
+
+		if(PartialSession.BranchId == 0 || Branch == null)
+		{
+			ShowMessage(MessageCategory.Error,"Branch not selected",4);
+
+			return false;
+		}
+		else if (PartialSession.VenueId == 0 || Venue == null)
+		{
+			ShowMessage(MessageCategory.Error, "Venue not selected", 4);
+
+			return false;
+		}
+		else if (MovieId == 0)
+		{
+			ShowMessage(MessageCategory.Error, "Movie not selected", 4);
+
+			return false;
+		}
+		else if(!ValidTimeInterval())
+		{
+			ShowMessage(MessageCategory.Error, "Selected Time Overlaps with another session", 4);
+			return false;
+
+		}
+
+
+		return true;
+	}
+
+	public async Task ResetEverything()
+	{
+		SessionVM = new SessionVM();
+		PartialSession = new PartialSessionVM();
+		MovieId = 0;
+		Branch = null;
+		Venue = null;
+
+		await branchesService.GetAllBranches();
+
+	}
+
+	public async Task AddSession()
+	{
+
+
+		if (!ValidateSession()) return;
+
+
+		DateTime startDate = MergeDateAndTime(PartialSession.StartDate, PartialSession.StartTime);
+
+		//DateTime endDate = MergeDateAndTime(PartialSession.EndDate, PartialSession.EndTime);
+
+		SessionVM = CreateSessionVM(startDate);
+
+
+		bool result = await sessionsService.AddSession(SessionVM);
+
+		if (result)
+		{
+			ShowMessage(MessageCategory.Success, "Session Added Successfully",4);
+			ResetEverything();
+		}
+		else
+		{
+			ShowMessage(MessageCategory.Error, "Something went wrong", 4);
+		}
+	}
+
+
+
+	public void SelectMovie(int movieId)
+	{
+		MovieId = movieId;
+	}
+}

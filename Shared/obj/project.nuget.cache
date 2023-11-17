@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "4RKLPPwviP7yNMCgkA7VMjOCbcGxfa2NXp/hq7J0J1/X1YSZxSkkqqdVQ4EOlCKrhLYB/W7zBmSWjMjJKQqeEQ==",
+  "success": true,
+  "projectFilePath": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\BlazorCinemaMS.Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\micle\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\micle\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
+    "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "C:\\Users\\micle\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\micle\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
