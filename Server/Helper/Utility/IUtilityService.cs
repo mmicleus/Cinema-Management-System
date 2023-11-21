@@ -33,5 +33,7 @@ namespace BlazorCinemaMS.Server.Helper.Utility
 		List<Venue> GetNewVenues(List<Venue> venues);
 
 		Branch GetBranchFromBranchVMWithId(BranchVM branchVM);
-	}
+
+
+    }
 }

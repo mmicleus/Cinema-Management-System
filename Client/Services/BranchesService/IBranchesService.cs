@@ -17,5 +17,7 @@ namespace BlazorCinemaMS.Client.Services.BranchesService
 		BranchDTO? GetBranchById(int branchId);
 
 		Task<bool> UpdateBranch(BranchVM branch);
+
+		//Task<bool> DeleteSession(int sessionId);
 	}
 }

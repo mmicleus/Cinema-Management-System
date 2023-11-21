@@ -34,5 +34,16 @@ namespace CinemaMS.Interfaces
 
         Task<IEnumerable<Session>> GetSessionsByBranchIdAsync(int branchId);
 
+        Task<bool> DeleteSessionByIdAsync(int sessionId);
+
+
+
+
+		Venue? GetVenueById(int venueId);
+
+        Branch? GetBranchById(int branchId);
+
+
+
     }
 }

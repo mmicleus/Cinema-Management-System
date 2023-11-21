@@ -114,9 +114,10 @@ namespace CinemaMS.Repositories
 
 			try
 			{
-				result = _context.Branches.Include(b => b.Coords)
-				   .Include(b => b.Venues).ThenInclude(v => v.Seats)
-                   .Include(b => b.Venues).ThenInclude(v => v.Sessions).ThenInclude(s => s.Movie).ToList();
+                result = _context.Branches.Include(b => b.Coords)
+                   .Include(b => b.Venues).ThenInclude(v => v.Seats).ToList();
+                   
+                   //.Include(b => b.Venues).ThenInclude(v => v.Sessions).ThenInclude(s => s.Movie).ToList();
 			}
 			catch (Exception ex)
 			{
@@ -167,8 +168,15 @@ namespace CinemaMS.Repositories
         }
 
 
+        public Venue? GetVenueById(int venueId)
+        {
+            return _context.Venues.FirstOrDefault(v => v.Id == venueId);
+        }
 
-        
+
+
+
+
         public async Task<bool> SaveAsync()
         {
             var saved = await _context.SaveChangesAsync();

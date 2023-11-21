@@ -23,8 +23,8 @@ namespace CinemaMS.Models
 
         public IEnumerable<Seat> Seats { get; set; }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
+        //[JsonIgnore]
+        //[IgnoreDataMember]
         public IEnumerable<Session> Sessions { get; set; }
 
 

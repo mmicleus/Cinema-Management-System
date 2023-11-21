@@ -1,4 +1,5 @@
-﻿using CinemaMS.Data;
+﻿using BlazorCinemaMS.Server.Helper.Utility;
+using CinemaMS.Data;
 using CinemaMS.Interfaces;
 using CinemaMS.Models;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,14 @@ namespace CinemaMS.Repositories
             return Save();
         }
 
-        public bool Update(Session session)
+		public async Task<bool> DeleteAsync(Session session)
+		{
+			_context.Sessions.Remove(session);
+
+			return await SaveAsync();
+		}
+
+		public bool Update(Session session)
         {
             _context.Sessions.Update(session);
 
@@ -64,13 +72,22 @@ namespace CinemaMS.Repositories
 
 		public async Task<List<Session>> GetAllSessionsCompleteAsync()
         {
-            return await _context.Sessions
+            List<Session> sessions = await _context.Sessions
                 .Include(s => s.Pricing)
                 .Include(s => s.Movie)
                 .Include(s => s.Bookings).ThenInclude(b => b.User)
                 .Include(s => s.Bookings).ThenInclude(b => b.Customer)
-                .Include(s => s.Venue).ThenInclude(v => v.Branch)
-                .ToListAsync();
+				.Include(s => s.Bookings).ThenInclude(b => b.Seats)
+				// .Include(s => s.Venue).ThenInclude(v => v.Branch)
+				.ToListAsync();
+
+            //foreach(Session session in sessions)
+            //{
+            //    session.Venue = GetVenueById(session.VenueId);
+            //    session.Venue.Branch = GetBranchById(session.Venue.BranchId);
+            //}
+
+            return sessions;
         }
 
 		
@@ -84,10 +101,36 @@ namespace CinemaMS.Repositories
             return await _context.Sessions.Include(s => s.Pricing).Include(s => s.Movie).FirstOrDefaultAsync(s => s.Id == id);
         }
 
+
+		
+
+		public async Task<bool> DeleteSessionByIdAsync(int sessionId)
+		{
+			Session session = await GetSessionByIdAsync(sessionId);
+
+
+			return await DeleteAsync(session);
+		}
+
+
+
+		public Venue? GetVenueById(int venueId)
+        {
+            return _context.Venues.FirstOrDefault(v => v.Id == venueId);
+        }
+
+        public Branch? GetBranchById(int branchId)
+        {
+            return _context.Branches.FirstOrDefault(branch => branch.Id == branchId);   
+        }
+
+
         public async Task<IEnumerable<Session>> GetSessionsByBranchAsync(int branchId)
         {
-            return await _context.Sessions.Include(s => s.Pricing)
+            return await _context.Sessions
+                .Include(s => s.Pricing)
                 .Include(s => s.Movie)
+                //.Where(s => GetVenueById(s.VenueId).BranchId == branchId).ToListAsync();
                 .Where(s => s.Venue.BranchId == branchId).ToListAsync();
         }
 
@@ -126,13 +169,10 @@ namespace CinemaMS.Repositories
 
         public async Task<IEnumerable<Session>> GetSessionsByBranchIdAsync(int branchId)
         {
-            return await _context.Sessions.Where(s => s.Venue.BranchId == branchId).ToListAsync();
+            return await _context.Sessions
+                //.Where(s => GetVenueById(s.VenueId).BranchId == branchId).ToListAsync();
+                .Where(s => s.Venue.BranchId == branchId).ToListAsync();
         }
 
-
-
-        
-
-        
     }
 }

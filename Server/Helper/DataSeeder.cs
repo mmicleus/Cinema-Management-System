@@ -562,6 +562,9 @@ namespace CinemaMS.Helper
                 _context.SaveChanges();
             }
 
+
+
+
             if (!_context.Sessions.Any())
             {
                 var sessions = Sessions;
@@ -571,7 +574,7 @@ namespace CinemaMS.Helper
         }
 
 
-        public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
+		public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {

@@ -25,7 +25,7 @@ namespace CinemaMS.Models
         public Session Session { get; set; }  
         
 
-       // public IEnumerable<Seat> Seats { get; set; }
+       public IEnumerable<Seat> Seats { get; set; }
 
 
         public override string ToString()

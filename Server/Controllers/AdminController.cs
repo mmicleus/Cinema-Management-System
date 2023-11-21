@@ -1,4 +1,5 @@
 ﻿using BlazorCinemaMS.Server.Helper.Utility;
+using BlazorCinemaMS.Server.Repositories.SharedRepository;
 using BlazorCinemaMS.Server.Services.NetworkService;
 using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.ViewModels;
@@ -22,17 +23,21 @@ namespace BlazorCinemaMS.Server.Controllers
 		private readonly IUtilityService _utility;
         private readonly IBranchRepository _branchRepo;
         private readonly ISessionRepository _sessionRepo;
-		public AdminController(IMoviesService moviesService,
+        private readonly ISharedRepository _sharedRepo;
+		public AdminController(
+            IMoviesService moviesService,
             IUtilityService utilityService,
             IMovieRepository movieRepository,
             IBranchRepository branchRepository,
-            ISessionRepository sessionRepository) {
+            ISessionRepository sessionRepository,
+			ISharedRepository sharedRepo) {
             
            _moviesService = moviesService;
             _utility = utilityService; 
             _movieRepo = movieRepository;
             _branchRepo = branchRepository;
             _sessionRepo = sessionRepository;
+            _sharedRepo = sharedRepo;
         }
 
         [HttpGet]
@@ -170,17 +175,27 @@ namespace BlazorCinemaMS.Server.Controllers
 		[HttpGet("branchesWithSessions")]
 		public async Task<IEnumerable<BranchDTO>> GetBranchesWithSession()
 		{
-
-			IEnumerable<Branch> branches = await _branchRepo.GetAllBranchesWithSessionsAsync();
-
-
+			IEnumerable<Branch> branches = await _sharedRepo.GetAllCompleteBranches();
 			IEnumerable<BranchDTO> branchDTOs = branches.Adapt<IEnumerable<BranchDTO>>();
 
 			return branchDTOs;
 		}
 
+        [HttpGet("venues/{id}")]
+        public VenueDTO GetVenueById(int id)
+        {
+            return _sessionRepo.GetVenueById(id).Adapt<VenueDTO>();
+        }
 
-		[HttpPost("sessions")]
+
+        [HttpGet("branches/{id}")]
+        public BranchDTO GetBranchById(int id)
+        {
+            return _sessionRepo.GetBranchById(id).Adapt<BranchDTO>();
+        }
+
+
+        [HttpPost("sessions")]
 		public async Task<bool> AddSession([FromBody] SessionVM sessionVM)
 		{
 			//BranchVM branchVM = JsonSerializer.Deserialize<BranchVM>(branchAsString);
@@ -188,7 +203,6 @@ namespace BlazorCinemaMS.Server.Controllers
 			Session session = _utility.GetSessionFromSessionVM(sessionVM);
 
 			bool result = await _sessionRepo.Add(session);
-
 
 			return result;
 		}
@@ -202,11 +216,21 @@ namespace BlazorCinemaMS.Server.Controllers
 		}
 
 
+        [HttpDelete("sessions/{id}")]
+        public async Task<bool> DeleteSession(int id)
+        {
+			return await _sessionRepo.DeleteSessionByIdAsync(id);
+		}
+
+
+
 		[HttpGet("completeSessions")]
 		public async Task<List<SessionDTO>> GetAllSessionsComplete()
 		{
             var result = await _sessionRepo.GetAllSessionsCompleteAsync();
-            return result.Adapt<List<SessionDTO>>();
+            var finalResult = result.Adapt<List<SessionDTO>>();
+
+            return finalResult;
 		}
 
 

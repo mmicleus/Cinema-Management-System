@@ -1,5 +1,6 @@
 ﻿using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.ViewModels;
+using CinemaMS.Data;
 using CinemaMS.Interfaces;
 using CinemaMS.Models;
 using Mapster;
@@ -12,6 +13,7 @@ namespace BlazorCinemaMS.Server.Helper.Utility
         private readonly IMovieRepository _movieRepo;
         private readonly ISessionRepository _sessionRepo;
         private readonly IConfiguration _config;
+        private readonly AppDbContext _context;
         public UtilityService(IMovieRepository movieRepository,
             ISessionRepository sessionRepository,
             IConfiguration config)
@@ -242,6 +244,10 @@ namespace BlazorCinemaMS.Server.Helper.Utility
         {
             return venues.Where(v => v.Id == 0).ToList();
         }
+
+
+       
+        
 
     
     

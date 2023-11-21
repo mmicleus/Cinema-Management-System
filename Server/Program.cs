@@ -1,4 +1,5 @@
 using BlazorCinemaMS.Server.Helper.Utility;
+using BlazorCinemaMS.Server.Repositories.SharedRepository;
 using BlazorCinemaMS.Server.Services.NetworkService;
 using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.ViewModels;
@@ -40,6 +41,8 @@ builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IMoviesService,MoviesService>();
 builder.Services.AddScoped<IUtilityService, UtilityService>();
+
+builder.Services.AddScoped<ISharedRepository, SharedRepository>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>

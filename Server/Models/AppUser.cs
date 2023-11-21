@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace CinemaMS.Models
 {
@@ -11,6 +12,7 @@ namespace CinemaMS.Models
         public int Id { get; set; }
         */
 
+       // [JsonIgnore]
         public IEnumerable<Booking> Bookings { get; set; }
 
 

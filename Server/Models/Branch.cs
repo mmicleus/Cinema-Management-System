@@ -21,8 +21,8 @@ namespace CinemaMS.Models
         public string? ImageUrl { get; set; }
 
 
-        [JsonIgnore]
-		[IgnoreDataMember]
+  //      [JsonIgnore]
+		//[IgnoreDataMember]
 		
         public IEnumerable<Venue> Venues { get; set; }
 

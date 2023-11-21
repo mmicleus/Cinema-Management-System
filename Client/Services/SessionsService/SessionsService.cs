@@ -38,29 +38,77 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 		}
 
 
-		public async Task GetSessions()
-		{
-			string url = "api/Admin/completeSessions";
-			List<SessionDTO> result;
+        //public async Task GetSessions()
+        //{
+        //    string url = "api/Admin/completeSessions";
+        //    List<Session> result;
+
+        //    //string branchAsString = JsonSerializer.Serialize(branch);
+
+        //    try
+        //    {
+        //        result = await _httpClient.GetFromJsonAsync<List<Session>>(url);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result = new List<Session>();
+        //    }
+
+        //    Sessions = result;
+        //}
+
+
+        public async Task GetSessions()
+        {
+            string url = "api/Admin/completeSessions";
+            string venueUrl = "api/Admin/venues/";
+            string branchUrl = "api/Admin/branches/";
+            List<SessionDTO> result;
+
+            //string branchAsString = JsonSerializer.Serialize(branch);
+
+            try
+            {
+                result = await _httpClient.GetFromJsonAsync<List<SessionDTO>>(url);
+            }
+            catch (Exception ex)
+            {
+                result = new List<SessionDTO>();
+            }
+
+
+            
+            foreach(SessionDTO session in result)
+            {
+                session.Venue = await _httpClient.GetFromJsonAsync<VenueDTO>(venueUrl + session.VenueId);
+                session.Venue.Branch = await _httpClient.GetFromJsonAsync<BranchDTO>(branchUrl + session.Venue.BranchId);
+            }
+            
+
+            Sessions = result;
+        }
+
+
+
+		public async Task<bool> DeleteSession(int sessionId)
+        {
+			string url = $"api/Admin/sessions/{sessionId}";
+			bool result;
 
 			//string branchAsString = JsonSerializer.Serialize(branch);
 
 			try
 			{
-				result = await _httpClient.GetFromJsonAsync<List<SessionDTO>>(url);
+				result = await _httpClient.DeleteFromJsonAsync<bool>(url);
 			}
 			catch (Exception ex)
 			{
-				result = new List<SessionDTO>();
+				return false;
 			}
-
-			Sessions = result;
+			return result;
 		}
 
 
-
-
-
-	}
+    }
 }
 

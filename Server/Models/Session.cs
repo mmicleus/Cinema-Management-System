@@ -17,11 +17,11 @@ namespace CinemaMS.Models
         public Pricing Pricing { get; set; }
 
 
-        [ForeignKey("Venue")]
+       [ForeignKey("Venue")]
         public int VenueId { get; set; }
 
 
-        public Venue Venue { get; set;}
+      public Venue Venue { get; set;}
 
 
         [ForeignKey("Movie")]

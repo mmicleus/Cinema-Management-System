@@ -327,6 +327,8 @@
 
 	public bool OverlapsWithOtherSessions(DateTime startDate,DateTime endDate)
 	{
+		if (Venue.Sessions == null) return false;
+
 		foreach(var session in Venue.Sessions)
 		{
 			if (IsOverlap(startDate, endDate, session.StartTime, session.EndTime)) return true;

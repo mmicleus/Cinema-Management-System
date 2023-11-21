@@ -34,3 +34,4 @@ void ConfigureMapster()
 		.NewConfig()
 		.Map(dest => dest.Image, src => src.ImageUrl);
 }
+

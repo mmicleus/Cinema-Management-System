@@ -92,6 +92,7 @@ namespace BlazorCinemaMS.Client.Services.BranchesService
 			try
 			{
 				result = await _httpClient.GetFromJsonAsync<IEnumerable<BranchDTO>>(url);
+			
 			}
 			catch (Exception ex)
 			{

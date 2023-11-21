@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BlazorCinemaMS.Shared.DTOs
@@ -23,10 +24,11 @@ namespace BlazorCinemaMS.Shared.DTOs
 
 		public int SessionId { get; set; }
 
+		[JsonIgnore]
 		public SessionDTO Session { get; set; }
 
 
-		//public IEnumerable<Seat> Seats { get; set; }
+		public IEnumerable<SeatDTO> Seats { get; set; }
 
 
 		//public override string ToString()
