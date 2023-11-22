@@ -1,6 +1,9 @@
 ﻿
 @page "/Admin/Sessions"
-@inject ISessionsService SessionsService
+@using BlazorCinemaMS.Shared.Others;
+@inject ISessionsService SessionsService;
+@inject IBranchesService BranchesService;
+@inject IMoviesService MoviesService;
 
 
 
@@ -27,6 +30,125 @@
 }
 
 
+<EditForm Model="Filters" OnValidSubmit="SearchSessions">
+				 <DataAnnotationsValidator /> 
+
+				<div>
+					<label for="BranchId">Select branch:</label>
+
+		
+
+				<InputSelect id="BranchId" ValueExpression="@(()=>Filters.BranchId)" Value="@Filters.BranchId" ValueChanged="@((int branchId) => OnBranchSelected(branchId))"  class="form-control">
+
+							<option value=0 selected>----- SELECT BRANCH -----</option>
+							@foreach (var branch in BranchesService.Branches)
+							{
+								<option value="@branch.Id">@branch.Name</option>
+							}
+				</InputSelect>
+
+					
+					<ValidationMessage For="@(()=>Filters.BranchId)" />
+
+				</div>
+
+				<div>
+					<label for="VenueId">Select venue:</label>
+
+					<InputSelect id="VenueId" @bind-Value="Filters.VenueId" class="form-control">
+
+						<!--<option selected>----- SELECT BRANCH -----</option>-->
+
+						<option value=0 selected>----- SELECT VENUE -----</option>
+			
+						@if(SelectedBranch != null)
+						{
+							@foreach (var venue in SelectedBranch.Venues)
+							{
+
+								<option value="@venue.Id">@venue.Name</option>
+							}
+						}
+			
+					</InputSelect>
+
+
+					<ValidationMessage For="@(()=>Filters.VenueId)" /> 
+
+				</div>
+
+
+				<div class="time-selection mb-4">
+
+
+					<h5 class="mb-1 mt-3"><b>Select Time Interval:</b></h5>
+					@* <div class="d-flex"> *@
+
+					<br />
+					<label class="mb-2"><b>Start Date and Time</b></label>
+
+					<div class="mb-1 d-flex">
+						<div class="me-3">
+
+							<InputDate id="startDate" @bind-Value="Filters.FromDate" />
+							<ValidationMessage For="@(()=>Filters.FromDate)" />
+						</div>
+						<div>
+							@* 	<label for="startTime">Start Time</label> *@
+							<InputText type="time" id="startTime" @bind-Value="Filters.FromTime" />
+							<ValidationMessage For="@(()=>Filters.FromTime)" />
+						</div>
+					</div>
+
+					<br />
+					<label class="mb-2"><b>End Date and Time</b></label>
+
+					<div class=" d-flex">
+						<div class="me-3">
+							<InputDate id="EndDate" @bind-Value="Filters.ToDate" />
+							<ValidationMessage For="@(()=>Filters.ToDate)" />
+						</div>
+						<div>
+							<InputText type="time" id="EndTime" @bind-Value="Filters.ToTime" />
+							<ValidationMessage For="@(()=>Filters.ToTime)" />
+						</div>
+					</div>
+
+
+				</div>
+
+				
+
+
+					
+
+				@* </div> *@
+
+	<div>
+		<label for="movieId">Select movie:</label>
+
+		<InputSelect id="movieId" @bind-Value="Filters.MovieId" class="form-control">
+
+			<option value=0 selected>----- SELECT MOVIE -----</option>
+			
+				@foreach (var movie in MoviesService.Movies)
+				{
+					<option value="@movie.Id">@movie.Title</option>
+				}
+			
+
+		</InputSelect>
+
+
+		<ValidationMessage For="@(()=>Filters.MovieId)" />
+
+	</div>
+
+	<button class="btn btn-primary mt-3 mb-5" type="submit">Apply Filters</button>
+
+</EditForm>
+
+
 <h3>Sessions</h3>
 
 @if(SessionsService.Sessions == null || SessionsService.Sessions.Count() == 0)
@@ -37,7 +159,7 @@ else
 {
 	<div class="container">
 		<div class="row">
-			@foreach (SessionDTO session in SessionsService.Sessions)
+			@foreach (SessionDTO session in SessionsOnDisplay)
 			{
 				<div class="col-12 mb-5">
 					<div class="card pt-3 pb-3">
@@ -127,7 +249,6 @@ else
 																				@seat.Label
 																			</span>
 																		}
-
 																	</div>
 																}
 
@@ -179,12 +300,129 @@ else
 @code {
 
 	public Message Message { get; set; } = new Message();
+	public SearchFilters Filters {get;set;} = new SearchFilters();
+	public BranchDTO SelectedBranch = null;
+
+	public List<SessionDTO> SessionsOnDisplay = new List<SessionDTO>();
 
 
 	protected override async Task OnInitializedAsync()
 	{
 		await SessionsService.GetSessions();
+
+		SessionsOnDisplay = SessionsService.Sessions;
+		SessionsOnDisplay = SessionsOnDisplay.OrderBy(s => s.StartTime).ToList();
+
+		await BranchesService.GetAllBranches();
+
+		// if(BranchesService.Branches != null && BranchesService.Branches.Count() > 0)
+		// {
+		// 	SelectedBranch = BranchesService.Branches.ToList()[0];
+		// 	Filters.BranchId = SelectedBranch.Id;
+		// }
+
+		await MoviesService.GetAllMovies();
 	}
+
+
+	public async Task SearchSessions()
+	{
+		SessionsOnDisplay = SessionsService.Sessions;
+
+		if (Filters.MovieId == 0 && Filters.BranchId == 0 && Filters.VenueId == 0 && Filters.FromDate == null && Filters.ToDate == null){ 
+			return;
+		}
+
+		if(Filters.MovieId != 0)
+		{
+			SessionsOnDisplay = SessionsOnDisplay.Where(s => s.MovieId == Filters.MovieId).ToList();
+		}
+
+		if (Filters.BranchId != 0)
+		{
+			SessionsOnDisplay = SessionsOnDisplay.Where(s => s.Venue.Branch.Id == Filters.BranchId).ToList();
+		}
+
+		if (Filters.VenueId != 0)
+		{
+			SessionsOnDisplay = SessionsOnDisplay.Where(s => s.VenueId == Filters.VenueId).ToList();
+		}
+
+
+
+
+		if(Filters.FromDate != null)
+		{
+			DateTime from;
+			if(Filters.FromTime != String.Empty)
+			{
+				TimeOnly timeOnly = TimeOnly.Parse(Filters.FromTime);
+				from = new DateTime(Filters.FromDate.Value.Year, Filters.FromDate.Value.Month, Filters.FromDate.Value.Day, timeOnly.Hour, timeOnly.Minute, timeOnly.Second);
+
+			}
+			else
+			{
+				from = new DateTime(Filters.FromDate.Value.Year, Filters.FromDate.Value.Month, Filters.FromDate.Value.Day);
+			}
+
+			SessionsOnDisplay = SessionsOnDisplay.Where(s => s.StartTime >= from).ToList();
+		}
+
+
+		if(Filters.ToDate != null)
+		{
+			DateTime to;
+			if (Filters.ToTime != String.Empty)
+			{
+				TimeOnly timeOnly = TimeOnly.Parse(Filters.ToTime);
+				to = new DateTime(Filters.ToDate.Value.Year, Filters.ToDate.Value.Month, Filters.ToDate.Value.Day, timeOnly.Hour, timeOnly.Minute, timeOnly.Second);
+
+			}
+			else
+			{
+				to = new DateTime(Filters.ToDate.Value.Year, Filters.ToDate.Value.Month, Filters.ToDate.Value.Day);
+			}
+
+			SessionsOnDisplay = SessionsOnDisplay.Where(s => s.StartTime <= to).ToList();
+		}
+
+
+
+
+		SessionsOnDisplay = SessionsOnDisplay.OrderBy(s => s.StartTime).ToList();
+
+	
+
+
+		Console.WriteLine(Filters.MovieId);
+		Console.WriteLine(Filters.BranchId);
+		Console.WriteLine(Filters.VenueId);
+	}
+
+
+	public async Task OnBranchSelected(int branchId)
+	{
+		Filters.BranchId = branchId;
+		SelectedBranch = BranchesService.GetBranchById(branchId);
+
+		Filters.VenueId = 0;
+	}
+
+
+
+
+	public async Task OnVenueSelected(int venueId)
+	{
+		Filters.VenueId = venueId;
+		//SelectedBranch = BranchesService.GetVenueById(branchId);
+	}
+
+	public async Task OnMovieSelected(int movieId)
+	{
+		Filters.MovieId = movieId;
+	}
+
+
 
 	// public async Task EditSession(int sessionId)
 	// {
@@ -209,7 +447,11 @@ else
 		if (success)
 		{
 			ShowMessage(MessageCategory.Success, "Session Deleted Successfully", 4);
-			await SessionsService.GetSessions();
+
+			SessionsService.DeleteLocalSession(sessionId);
+			SessionsOnDisplay.Remove(SessionsOnDisplay.FirstOrDefault(s => s.Id == sessionId));
+
+		//	await SessionsService.GetSessions();
 		}
 		else
 		{

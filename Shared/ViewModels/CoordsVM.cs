@@ -12,7 +12,7 @@ namespace BlazorCinemaMS.Shared.ViewModels
 		[Required(ErrorMessage = "Latitude Required"),Range(-90,90,ErrorMessage ="Latitudes range from -90 to 90")]
 		public double Lat { get; set; }
 
-		[Required(ErrorMessage = "Longitude Required"), Range(0, 360, ErrorMessage = "Longitudes range from 0 to 360")]
+		[Required(ErrorMessage = "Longitude Required"), Range(-180, 180, ErrorMessage = "Longitudes range from -180 to 180")]
 		public double Lng { get; set; }
 	}
 }

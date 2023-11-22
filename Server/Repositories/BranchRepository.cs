@@ -23,9 +23,10 @@ namespace CinemaMS.Repositories
 
         public async Task<bool> AddBranch(Branch branch)
         {
-            await _context.Branches.AddAsync(branch);
+			await _context.Branches.AddAsync(branch);
+			//_context.Branches.Add(branch);
 
-            return await SaveAsync();
+			return await SaveAsync();
         }
 
         public async Task<bool> DeleteBranch(Branch branch)

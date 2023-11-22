@@ -14,6 +14,8 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 
 		Task<bool> DeleteSession(int sessionId);
 
+		void DeleteLocalSession(int sessionId);
+
 
 	}
 }

@@ -62,7 +62,7 @@ namespace BlazorCinemaMS.Server.Repositories.SharedRepository
 
 			foreach(Branch b in branches)
 			{
-				GetCompleteBranch(b);	
+				await GetCompleteBranch(b);	
 			}
 
 			return branches;

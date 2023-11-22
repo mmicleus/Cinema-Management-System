@@ -108,6 +108,16 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 			return result;
 		}
 
+        public void DeleteLocalSession(int sessionId)
+        {
+            SessionDTO session = Sessions.FirstOrDefault(s => s.Id == sessionId);
+
+            Sessions.Remove(session);
+
+		}
+
+
+
 
     }
 }
