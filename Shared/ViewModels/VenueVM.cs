@@ -16,8 +16,13 @@ namespace BlazorCinemaMS.Shared.ViewModels
 		[Required(ErrorMessage = "Capacity Required")]
 		public int Capacity { get; set; }
 
+        public int NrOfRows { get; set; }
 
-		public IEnumerable<SeatVM> Seats { get; set; } = new List<SeatVM>();	
+        public int NrOfColumns { get; set; }
+
+
+
+        public IEnumerable<SeatVM> Seats { get; set; } = new List<SeatVM>();	
 
 	}
 }

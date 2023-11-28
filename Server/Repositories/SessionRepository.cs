@@ -92,10 +92,6 @@ namespace CinemaMS.Repositories
 
 		
 
-
-
-
-
 		public async Task<Session> GetSessionByIdAsync(int id)
         {
             return await _context.Sessions.Include(s => s.Pricing).Include(s => s.Movie).FirstOrDefaultAsync(s => s.Id == id);

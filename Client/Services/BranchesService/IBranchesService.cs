@@ -14,6 +14,12 @@ namespace BlazorCinemaMS.Client.Services.BranchesService
 
 		Task GetAllBranches();
 
+		Task<List<BranchDTO>> GetJustBranches();
+
+		//Task<BranchDTO> GetBranchByIdExplicitLoading(int branchId);
+
+		Task<BranchDTO> GetFullBranchById(int branchId);
+
 		BranchDTO? GetBranchById(int branchId);
 
 		Task<bool> UpdateBranch(BranchVM branch);

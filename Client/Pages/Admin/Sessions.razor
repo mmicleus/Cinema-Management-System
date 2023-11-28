@@ -4,6 +4,7 @@
 @inject ISessionsService SessionsService;
 @inject IBranchesService BranchesService;
 @inject IMoviesService MoviesService;
+@inject NavigationManager NavManager;
 
 
 
@@ -30,130 +31,166 @@
 }
 
 
-<EditForm Model="Filters" OnValidSubmit="SearchSessions">
-				 <DataAnnotationsValidator /> 
+<div class="FiltersContainer">
 
-				<div>
-					<label for="BranchId">Select branch:</label>
+	<button class="@((ShowFilters ? "btn btn-danger" : "btn btn-primary") + " mb-3")" type="button" @onclick="OnShowFiltersClicked">
+		@(ShowFilters ? "Hide Filters" : "Show Filters")
+	</button>
 
-		
+	<div style="@(ShowFilters ? "height:100%;overflow:hidden;" : "height:0;overflow:hidden;")">
 
-				<InputSelect id="BranchId" ValueExpression="@(()=>Filters.BranchId)" Value="@Filters.BranchId" ValueChanged="@((int branchId) => OnBranchSelected(branchId))"  class="form-control">
 
-							<option value=0 selected>----- SELECT BRANCH -----</option>
-							@foreach (var branch in BranchesService.Branches)
-							{
-								<option value="@branch.Id">@branch.Name</option>
-							}
+		<EditForm Model="Filters" OnValidSubmit="SearchSessions">
+			<DataAnnotationsValidator />
+
+			<div>
+				<label for="BranchId">Select branch:</label>
+
+
+
+				<InputSelect id="BranchId" ValueExpression="@(()=>Filters.BranchId)" Value="@Filters.BranchId" ValueChanged="@((int branchId) => OnBranchSelected(branchId))" class="form-control">
+
+					<option value=0 selected>----- SELECT BRANCH -----</option>
+					@foreach (var branch in BranchesService.Branches)
+					{
+						<option value="@branch.Id">@branch.Name</option>
+					}
 				</InputSelect>
 
-					
-					<ValidationMessage For="@(()=>Filters.BranchId)" />
 
-				</div>
+				<ValidationMessage For="@(()=>Filters.BranchId)" />
 
-				<div>
-					<label for="VenueId">Select venue:</label>
+			</div>
 
-					<InputSelect id="VenueId" @bind-Value="Filters.VenueId" class="form-control">
+			<div>
+				<label for="VenueId">Select venue:</label>
 
-						<!--<option selected>----- SELECT BRANCH -----</option>-->
+				<InputSelect id="VenueId" @bind-Value="Filters.VenueId" class="form-control">
 
-						<option value=0 selected>----- SELECT VENUE -----</option>
-			
-						@if(SelectedBranch != null)
+					<!--<option selected>----- SELECT BRANCH -----</option>-->
+
+					<option value=0 selected>----- SELECT VENUE -----</option>
+
+					@if (SelectedBranch != null)
+					{
+						@foreach (var venue in SelectedBranch.Venues)
 						{
-							@foreach (var venue in SelectedBranch.Venues)
-							{
 
-								<option value="@venue.Id">@venue.Name</option>
-							}
+							<option value="@venue.Id">@venue.Name</option>
 						}
-			
-					</InputSelect>
+					}
+
+				</InputSelect>
 
 
-					<ValidationMessage For="@(()=>Filters.VenueId)" /> 
+				<ValidationMessage For="@(()=>Filters.VenueId)" />
 
+			</div>
+
+
+			<div class="time-selection mb-4">
+
+
+				<h5 class="mb-1 mt-3"><b>Select Time Interval:</b></h5>
+				@* <div class="d-flex"> *@
+
+				<br />
+				<label class="mb-2"><b>Start Date and Time</b></label>
+
+				<div class="mb-1 d-flex">
+					<div class="me-3">
+
+						<InputDate id="startDate" @bind-Value="Filters.FromDate" />
+						<ValidationMessage For="@(()=>Filters.FromDate)" />
+					</div>
+					<div>
+						@* 	<label for="startTime">Start Time</label> *@
+						<InputText type="time" id="startTime" @bind-Value="Filters.FromTime" />
+						<ValidationMessage For="@(()=>Filters.FromTime)" />
+					</div>
+				</div>
+
+				<br />
+				<label class="mb-2"><b>End Date and Time</b></label>
+
+				<div class=" d-flex">
+					<div class="me-3">
+						<InputDate id="EndDate" @bind-Value="Filters.ToDate" />
+						<ValidationMessage For="@(()=>Filters.ToDate)" />
+					</div>
+					<div>
+						<InputText type="time" id="EndTime" @bind-Value="Filters.ToTime" />
+						<ValidationMessage For="@(()=>Filters.ToTime)" />
+					</div>
 				</div>
 
 
-				<div class="time-selection mb-4">
+			</div>
+
+			@* </div> *@
+
+			<div>
+				<label for="movieId">Select movie:</label>
+
+				<InputSelect id="movieId" @bind-Value="Filters.MovieId" class="form-control">
+
+					<option value=0 selected>----- SELECT MOVIE -----</option>
+
+					@foreach (var movie in MoviesService.Movies)
+					{
+						<option value="@movie.Id">@movie.Title</option>
+					}
 
 
-					<h5 class="mb-1 mt-3"><b>Select Time Interval:</b></h5>
-					@* <div class="d-flex"> *@
-
-					<br />
-					<label class="mb-2"><b>Start Date and Time</b></label>
-
-					<div class="mb-1 d-flex">
-						<div class="me-3">
-
-							<InputDate id="startDate" @bind-Value="Filters.FromDate" />
-							<ValidationMessage For="@(()=>Filters.FromDate)" />
-						</div>
-						<div>
-							@* 	<label for="startTime">Start Time</label> *@
-							<InputText type="time" id="startTime" @bind-Value="Filters.FromTime" />
-							<ValidationMessage For="@(()=>Filters.FromTime)" />
-						</div>
-					</div>
-
-					<br />
-					<label class="mb-2"><b>End Date and Time</b></label>
-
-					<div class=" d-flex">
-						<div class="me-3">
-							<InputDate id="EndDate" @bind-Value="Filters.ToDate" />
-							<ValidationMessage For="@(()=>Filters.ToDate)" />
-						</div>
-						<div>
-							<InputText type="time" id="EndTime" @bind-Value="Filters.ToTime" />
-							<ValidationMessage For="@(()=>Filters.ToTime)" />
-						</div>
-					</div>
+				</InputSelect>
 
 
-				</div>
+				<ValidationMessage For="@(()=>Filters.MovieId)" />
 
-				
+			</div>
 
+			<button class="btn btn-primary mt-3 mb-5" type="submit">Apply Filters</button>
 
-					
-
-				@* </div> *@
-
-	<div>
-		<label for="movieId">Select movie:</label>
-
-		<InputSelect id="movieId" @bind-Value="Filters.MovieId" class="form-control">
-
-			<option value=0 selected>----- SELECT MOVIE -----</option>
-			
-				@foreach (var movie in MoviesService.Movies)
-				{
-					<option value="@movie.Id">@movie.Title</option>
-				}
-			
-
-		</InputSelect>
-
-
-		<ValidationMessage For="@(()=>Filters.MovieId)" />
+		</EditForm>
 
 	</div>
 
-	<button class="btn btn-primary mt-3 mb-5" type="submit">Apply Filters</button>
+</div>
 
-</EditForm>
+
+
+
+
+
+
+	
+
+
 
 
 <h3>Sessions</h3>
 
-@if(SessionsService.Sessions == null || SessionsService.Sessions.Count() == 0)
+
+
+@* @if(SessionsService.Sessions == null || SessionsService.Sessions.Count() == 0) *@
+
+@if (ShowSpinner)
 {
-	<h5>No Sessions to display</h5>
+	<div class="d-flex justify-content-center">
+		<h5>Loading Sessions</h5>
+			@* <span class="sr-only">Loading...</span> *@
+	</div>
+	<div class="d-flex justify-content-center">
+		<div class="spinner-border" role="status">
+			@* <span class="sr-only">Loading...</span> *@
+		</div>
+	</div>
+}
+else if(SessionsService.Sessions == null || SessionsService.Sessions.Count() == 0){
+	<div class="d-flex justify-content-center">
+		<h5>No Sessions to display</h5>
+		
+	</div>
 }
 else
 {
@@ -162,10 +199,10 @@ else
 			@foreach (SessionDTO session in SessionsOnDisplay)
 			{
 				<div class="col-12 mb-5">
-					<div class="card pt-3 pb-3">
+					<div class="card pt-3 pb-3" style="background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 
 						<div class="d-flex justify-content-end">
-							<button @onclick="(()=>{})" class="me-1">
+							<button @onclick="(()=>{ShowSessionDetails(session.Id);})" class="me-1">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
 									<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
 								</svg>
@@ -212,7 +249,7 @@ else
 												@foreach (BookingDTO bk in session.Bookings)
 												{
 													<div class="col-12 mb-3">
-														<div class="card">
+														<div class="card" style="background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 															<div class="card-body">
 																@if (bk.User != null)
 																{
@@ -230,9 +267,6 @@ else
 
 																<h5 class="mb-4"><b>Amount Paid:</b> $@bk.TotalAmount</h5>
 
-																@* <h6 class="card-subtitle mb-2 text-muted mb-3">
-												<b>Amount Paid:</b> $@bk.TotalAmount
-												</h6> *@
 
 																<h4 class="mb-3"><b>Booked Seats</b></h4>
 
@@ -251,22 +285,6 @@ else
 																		}
 																	</div>
 																}
-
-
-
-
-																@* <div class="container">
-												<div class="row">
-												@foreach(SeatDTO seat in bk.Seats)
-												{
-												<div class="col-4">
-												@seat.Label
-												</div>
-												}
-
-												</div>
-
-												</div> *@
 
 
 															</div>
@@ -303,12 +321,17 @@ else
 	public SearchFilters Filters {get;set;} = new SearchFilters();
 	public BranchDTO SelectedBranch = null;
 
+	public bool ShowSpinner = false;
+	public bool ShowFilters = false;
+
 	public List<SessionDTO> SessionsOnDisplay = new List<SessionDTO>();
 
 
 	protected override async Task OnInitializedAsync()
 	{
+		ShowSpinner = true;
 		await SessionsService.GetSessions();
+		ShowSpinner = false;
 
 		SessionsOnDisplay = SessionsService.Sessions;
 		SessionsOnDisplay = SessionsOnDisplay.OrderBy(s => s.StartTime).ToList();
@@ -322,6 +345,16 @@ else
 		// }
 
 		await MoviesService.GetAllMovies();
+	}
+
+	public void OnShowFiltersClicked()
+	{
+		ShowFilters = !ShowFilters;
+	}
+
+	public async Task ShowSessionDetails(int sessionId)
+	{
+		NavManager.NavigateTo($"/Admin/Sessions/{sessionId}");
 	}
 
 

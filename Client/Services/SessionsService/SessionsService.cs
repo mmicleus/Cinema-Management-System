@@ -3,6 +3,7 @@ using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.ViewModels;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BlazorCinemaMS.Client.Services.SessionsService
 {
@@ -76,8 +77,6 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
                 result = new List<SessionDTO>();
             }
 
-
-            
             foreach(SessionDTO session in result)
             {
                 session.Venue = await _httpClient.GetFromJsonAsync<VenueDTO>(venueUrl + session.VenueId);
@@ -88,9 +87,30 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
             Sessions = result;
         }
 
+        public SessionDTO GetLocalSessionById(int sessionId)
+        {
+            return Sessions.FirstOrDefault(s => s.Id == sessionId);
+        }
+
+        public async Task<SessionDTO> GetSessionByIdWithSeats(int sessionId)
+        {
+            string url = "api/Admin/venueSeats/";
+
+            SessionDTO session = Sessions.FirstOrDefault(s => s.Id == sessionId);
+
+            session.Venue.Seats = await _httpClient.GetFromJsonAsync<IEnumerable<SeatDTO>>(url + session.VenueId);
+
+            //await _httpClient.GetFromJsonAsync<IEnumerable<SeatDTO>>(url);
+
+            return session;
+        }
 
 
-		public async Task<bool> DeleteSession(int sessionId)
+
+
+
+
+        public async Task<bool> DeleteSession(int sessionId)
         {
 			string url = $"api/Admin/sessions/{sessionId}";
 			bool result;

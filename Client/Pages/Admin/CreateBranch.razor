@@ -35,32 +35,28 @@
 			<EditForm Model="Branch" OnValidSubmit="AddBranch">
 				<DataAnnotationsValidator />
 
-			
-
-
-
-				<div>
-					<label for="name">Name:</label>
+				<div class="mb-3">
+					<label for="name"><b>Name</b></label>
 					<InputText id="name" @bind-Value="Branch.Name" class="form-control" />
 					<ValidationMessage For="@(()=>Branch.Name)"></ValidationMessage>
 				</div>
-				<div>
-					<label for="address">Address</label>
+				<div class="mb-3">
+					<label for="address"><b>Address</b></label>
 					<InputText id="address" @bind-Value="Branch.Address" class="form-control" />
 					<ValidationMessage For="@(()=>Branch.Address)"></ValidationMessage>
 				</div>
-				<div>
-					<label for="lat">Latitude</label>
+				<div class="mb-3">
+					<label for="lat"><b>Latitude</b></label>
 					<InputNumber id="lat" @bind-Value="Branch.Coords.Lat" class="form-control" />
 					<ValidationMessage For="@(()=>Branch.Coords.Lat)"></ValidationMessage>
 				</div>
-				<div>
-					<label for="lng">Longitude</label>
+				<div class="mb-3">
+					<label for="lng"><b>Longitude</b></label>
 					<InputNumber id="lng" @bind-Value="Branch.Coords.Lng" class="form-control" />
 					<ValidationMessage For="@(()=>Branch.Coords.Lng)"></ValidationMessage>
 				</div>
 				<div>
-					<label for="image">Image</label>
+					<label for="image"><b>Image</b></label>
 					<InputFile id="image" OnChange="OnFileChange" class="form-control" />
 				</div>
 				<br/>
@@ -91,8 +87,8 @@
 
 					@foreach(var venue in Venues)
 					{
-						<div class="col-12">
-							<div class="card">
+						<div class="col-12 mb-3">
+							<div class="card" style="background-color:lightgray;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 								<div class="card-body">
 									<h5 class="card-title">@venue.Name</h5>
 									<h6 class="card-subtitle mb-2 text-muted">@venue.Capacity Seats</h6>
@@ -110,12 +106,12 @@
 			<EditForm Model="Venue" OnValidSubmit="AddVenue">
 				<DataAnnotationsValidator />
 				<div>
-					<label for="name">Name:</label>
+					<label for="name"><b>Name:</b></label>
 					<InputText id="name" @bind-Value="Venue.Name" class="form-control" />
 					<ValidationMessage For="@(()=>Venue.Name)"></ValidationMessage>
 				</div>
 				<div>
-					<label>Capacity:</label><span>@Venue.Capacity Seats</span>
+					<label><b>Capacity: </b></label><span>@Venue.Capacity Seats</span>
 					
 				</div>
 				
@@ -129,13 +125,13 @@
 			
 			<EditForm Model="VenueLayout" OnValidSubmit="AddSeats">
 				<DataAnnotationsValidator />
-				<div>
-					<label for="rows">Nr of Rows:</label>
+				<div class="mb-3">
+					<label for="rows"><b>Nr Of Rows:</b></label>
 					<InputNumber id="rows" @bind-Value="VenueLayout.Rows" class="form-control" />
 					<ValidationMessage For="@(()=>VenueLayout.Rows)"></ValidationMessage>
 				</div>
 				<div>
-					<label for="columns">Nr of Columns:</label>
+					<label for="columns"><b>Nr of Columns:</b></label>
 					<InputNumber id="columns" @bind-Value="VenueLayout.Columns" class="form-control" />
 					<ValidationMessage For="@(()=>VenueLayout.Columns)"></ValidationMessage>
 				</div>
@@ -314,6 +310,8 @@
 			{
 				Name = venue.Name,
 				Capacity = venue.Capacity,
+				NrOfRows = venue.NrOfRows,
+				NrOfColumns = venue.NrOfColumns,
 				Seats = new List<SeatVM>(venue.Seats)
 			};
 
@@ -326,7 +324,9 @@
 		{
 
 			Venue.Seats = new List<SeatVM>(Seats);
-			Venues.Add(GetVenueClone(Venue)) ;
+			// Venue.NrOfRows = 
+			// Venue.NrOfColumns = 
+			Venues.Add(GetVenueClone(Venue));
 
 			ResetVenue();
 
@@ -334,6 +334,23 @@
 		}
 
 		ShowMessage(MessageCategory.Error,"No Seats Added to the Venue!",4);
+	}
+
+
+	public SeatClass GetSeatClassByRow(int row,int nrOfRows)
+	{
+		if(row <= 3)
+		{
+			return SeatClass.ECONOMY;
+		}
+		else if(row == nrOfRows)
+		{
+			return SeatClass.PREMIUM;
+		}
+		else
+		{
+			return SeatClass.STANDARD;
+		}
 	}
 
 
@@ -350,18 +367,22 @@
 				string label = col.ToString() + row;
 				SeatVM seat = new SeatVM()
 					{
-						Label = label
-					};
+						Label = label,
+						SeatClass = GetSeatClassByRow(row, VenueLayout.Rows)
+			};
 
 				Seats.Add(seat);
 			}
 		}
 
 		Venue.Capacity = Seats.Count();
+		Venue.NrOfColumns = VenueLayout.Columns;
+		Venue.NrOfRows = VenueLayout.Rows;
 
 		ResetSeats();
 
-		ShowMessage(MessageCategory.Success, $"Number of seats updated to {Venue.Capacity}", 4);
+		ShowMessage(MessageCategory.Success,
+			$"Number of seats updated to {Venue.Capacity}", 4);
 	}
 
 

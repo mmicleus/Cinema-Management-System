@@ -12,9 +12,16 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 
 		Task GetSessions();
 
-		Task<bool> DeleteSession(int sessionId);
+		SessionDTO GetLocalSessionById(int sessionId);
+
+		Task<SessionDTO> GetSessionByIdWithSeats(int sessionId);
+
+
+        Task<bool> DeleteSession(int sessionId);
 
 		void DeleteLocalSession(int sessionId);
+
+
 
 
 	}

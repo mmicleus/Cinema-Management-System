@@ -22,6 +22,11 @@ namespace BlazorCinemaMS.Shared.DTOs
 		[JsonIgnore]
 		public BranchDTO Branch { get; set; }
 
+
+		public int NrOfRows { get; set; }
+
+		public int NrOfColumns { get; set; }	
+
 		public IEnumerable<SeatDTO> Seats { get; set; }
 
 		public IEnumerable<SessionDTO> Sessions { get; set; }

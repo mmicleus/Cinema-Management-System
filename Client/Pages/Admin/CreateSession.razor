@@ -1,4 +1,7 @@
-﻿@page "/Admin/CreateSession"
+﻿@* @page "/Admin/CreateSession" *@
+
+@page "/Admin/CreateSession"
+
 
 @inject IBranchesService branchesService
 @inject IMoviesService moviesService
@@ -38,8 +41,8 @@
 			<EditForm Model="PartialSession" OnValidSubmit="AddSession">
 				<DataAnnotationsValidator />
 
-				<div>
-					<label for="branchId">Select branch:</label>
+				<div class="mb-2">
+					<label for="branchId"><b>Select branch:</b></label>
 					@if (branchesService.Branches == null || branchesService.Branches.Count() == 0)
 					{
 						<p>No branches to display</p>
@@ -61,8 +64,8 @@
 				</div>
 
 
-				<div>
-					<label for="venueId">Select Venue:</label>
+				<div class="mb-3">
+					<label for="venueId"><b>Select Venue:</b></label>
 					@if (Branch == null)
 					{
 						<p>No venues to display</p>
@@ -90,13 +93,13 @@
 
 
 
-				<div>
-					<label for="startDate">Start Date</label>
+				<div class="mb-2">
+					<label for="startDate"><b>Start Date</b></label>
 					<InputDate id="startDate" @bind-Value="PartialSession.StartDate" />
 					<ValidationMessage For="@(()=>PartialSession.StartDate)" />
 				</div>
-				<div>
-					<label for="startTime">Start Time</label>
+				<div class="mb-2">
+					<label for="startTime"><b>Start Time</b></label>
 					<InputText type="time" id="startTime" @bind-Value="PartialSession.StartTime" />
 					<ValidationMessage For="@(()=>PartialSession.StartTime)" />
 				</div>
@@ -105,26 +108,26 @@
 
 			
 
-				<div>
-					<label for="economy">Economy Price</label>
+				<div class="mb-2">
+					<label for="economy"><b>Economy Price</b></label>
 					<InputNumber id="economy" @bind-Value="PartialSession.Pricing.Economy" />
 					<ValidationMessage For="@(()=>PartialSession.Pricing.Economy)" />
 				</div>
 
-				<div>
-					<label for="standard">Standard Price</label>
+				<div class="mb-2">
+					<label for="standard"><b>Standard Price</b></label>
 					<InputNumber id="standard" @bind-Value="PartialSession.Pricing.Standard" />
 					<ValidationMessage For="@(()=>PartialSession.Pricing.Standard)" />
 				</div>
 
 				<div>
-					<label for="premium">Premium Price</label>
+					<label for="premium"><b>Premium Price</b></label>
 					<InputNumber id="premium" @bind-Value="PartialSession.Pricing.Premium" />
 					<ValidationMessage For="@(()=>PartialSession.Pricing.Premium)" />
 				</div>
 
 
-				<button type="submit" class="btn btn-primary">Add Session</button>
+				<button type="submit" class="btn btn-primary mt-3">Add Session</button>
 
 			</EditForm>
 
@@ -138,8 +141,8 @@
 						<div class="row">
 							@foreach (var session in Venue.Sessions)
 							{
-								<div class="col-6">
-									<div class="card">
+								<div class="col-6 mb-3">
+									<div class="card w-100 h-100" style="background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 										<img class="card-img-top" src="@session.Movie.BackdropPath" alt="Card image cap">
 										<div class="card-body">
 											<h5 class="card-title">@session.Movie.Title</h5>
@@ -167,20 +170,32 @@
 				<div class="row">
 					<h1>Select a Movie</h1>
 
-
-
-					@if (moviesService.Movies == null || moviesService.Movies.Count() == 0)
+					@if (ShowSpinner)
 					{
-						<p>No movies loaded yet</p>
+						<div class="d-flex justify-content-center">
+							<h5>Loading Movies</h5>
+							@* <span class="sr-only">Loading...</span> *@
+						</div>
+						<div class="d-flex justify-content-center">
+							<div class="spinner-border" role="status">
+								@* <span class="sr-only">Loading...</span> *@
+							</div>
+						</div>
+					}
+					else if (moviesService.Movies == null || moviesService.Movies.Count() == 0)
+					{
+						<div class="d-flex justify-content-center">
+							<h5>No Movies to display</h5>
+						</div>
 					}
 					else
 					{
 						@foreach (var movie in moviesService.Movies)
 						{
-							<div class="col-6">
+							<div class="col-6 mb-3">
 								@if(movie.Id != MovieId)
 								{
-									<div class="card" style="cursor:pointer" @onclick="(() => {SelectMovie(movie.Id);})">
+									<div class="card w-100 h-100" style="cursor:pointer; background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {SelectMovie(movie.Id);})">
 										<img src=@movie.BackdropPath class="card-img-top" alt="...">
 										<div class="card-body">
 											<h4 class="card-title fw-bold">@movie.Title</h4>
@@ -189,7 +204,7 @@
 								}
 								else
 								{
-									<div class="card" style="cursor:pointer;background-color:green" @onclick="(() => {SelectMovie(movie.Id);})">
+									<div class="card w-100 h-100" style="cursor:pointer;background-color:green" @onclick="(() => {SelectMovie(movie.Id);})">
 										<img src=@movie.BackdropPath class="card-img-top" alt="...">
 										<div class="card-body">
 											<h4 class="card-title fw-bold">@movie.Title</h4>
@@ -217,6 +232,7 @@
 
 
 @code {
+
 	//VenueLayout VenueLayout = new VenueLayout();
 	SessionVM SessionVM { get; set; } = new SessionVM();
 
@@ -230,15 +246,25 @@
 
 	public Message Message { get; set; } = new Message();
 
+	public bool EditMode { get; set; } = false;
+
+	public bool ShowSpinner { get; set; } = false;
+
+
+
 	//public IEnumerable<SessionDTO> Sessions = new List<SessionDTO>();
 
 
 
 	protected override async Task OnInitializedAsync()
-	{
+	{	
+
+		ShowSpinner = true;
 		await branchesService.GetAllBranches();
 
+		
 		await moviesService.GetAllMovies();
+		ShowSpinner = false;
 	}
 
 

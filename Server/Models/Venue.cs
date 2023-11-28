@@ -27,6 +27,12 @@ namespace CinemaMS.Models
         //[IgnoreDataMember]
         public IEnumerable<Session> Sessions { get; set; }
 
+        [Required]
+        public int NrOfRows { get; set; }
+
+        [Required]
+        public int NrOfColumns { get; set; }
+
 
         public override string ToString()
         {

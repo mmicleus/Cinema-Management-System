@@ -4,6 +4,7 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+
 h1:focus {
     outline: none;
 }
@@ -99,3 +100,22 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+
+.selected-seat{
+    background-color:green;
+    border-radius:50%;
+}
+
+.booked-seat {
+    background-color: lightgreen;
+    border-radius: 50%;
+}
+
+
+.seat:hover {
+    transform: scale(1.2) !important;
+}
+
+
+

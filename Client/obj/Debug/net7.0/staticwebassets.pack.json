@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\css\\cinema\\cinema.css",
+      "PackagePath": "staticwebassets\\css\\cinema\\cinema.css"
+    },
+    {
       "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "PackagePath": "staticwebassets\\css\\open-iconic"
     },
@@ -61,10 +65,6 @@
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\css\\styles.css",
-      "PackagePath": "staticwebassets\\css\\styles.css"
-    },
-    {
       "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
@@ -75,6 +75,30 @@
     {
       "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\svgIcons\\chair-empty.svg",
+      "PackagePath": "staticwebassets\\svgIcons\\chair-empty.svg"
+    },
+    {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\svgIcons\\chair-fill.svg",
+      "PackagePath": "staticwebassets\\svgIcons\\chair-fill.svg"
+    },
+    {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\svgIcons\\seat-empty.svg",
+      "PackagePath": "staticwebassets\\svgIcons\\seat-empty.svg"
+    },
+    {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\svgIcons\\seat-fill.svg",
+      "PackagePath": "staticwebassets\\svgIcons\\seat-fill.svg"
+    },
+    {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\svgIcons\\sofa-empty.svg",
+      "PackagePath": "staticwebassets\\svgIcons\\sofa-empty.svg"
+    },
+    {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\svgIcons\\sofa-fill.svg",
+      "PackagePath": "staticwebassets\\svgIcons\\sofa-fill.svg"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.BlazorCinemaMS.Client.Microsoft.AspNetCore.StaticWebAssets.props",

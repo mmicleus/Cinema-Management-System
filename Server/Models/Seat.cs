@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlazorCinemaMS.Shared.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CinemaMS.Models
@@ -9,6 +10,8 @@ namespace CinemaMS.Models
         public int Id { get; set; }
 
         public string Label { get; set; }
+
+        public SeatClass SeatClass { get; set; }
 
         [ForeignKey("Venue")]
         public int VenueId { get; set; }

@@ -314,6 +314,9 @@ namespace BlazorCinemaMS.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SeatClass")
+                        .HasColumnType("int");
+
                     b.Property<int>("VenueId")
                         .HasColumnType("int");
 
@@ -370,6 +373,12 @@ namespace BlazorCinemaMS.Server.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NrOfColumns")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrOfRows")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

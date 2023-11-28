@@ -161,12 +161,37 @@ namespace BlazorCinemaMS.Server.Controllers
 		}
 
 
-		[HttpDelete("branches/{id}")]
+		
+
+
+
+
+
+		[HttpGet("justBranches")]
+        public async Task<IEnumerable<BranchDTO>> GetJustBranches()
+        {
+
+            IEnumerable<Branch> branches = await _branchRepo.GetAllBranchesWithoutVenuesAsync();
+
+
+            IEnumerable<BranchDTO> branchDTOs = branches.Adapt<IEnumerable<BranchDTO>>();
+
+            return branchDTOs;
+        }
+
+
+        [HttpDelete("branches/{id}")]
 		public async Task<bool> DeleteBranches(int id)
 		{
             return await _branchRepo.DeleteBranchById(id);
-		}
+        }
 
+
+        [HttpGet("venueSeats/{id}")]
+        public async Task<IEnumerable<Seat>> GetSeatsByVenueId(int id)
+        {
+            return await _branchRepo.GetSeatsByVenueIdAsync(id);
+        }
 
 
 
@@ -194,8 +219,20 @@ namespace BlazorCinemaMS.Server.Controllers
             return _sessionRepo.GetBranchById(id).Adapt<BranchDTO>();
         }
 
+		[HttpGet("fullBranches/{id}")]
+		public async Task<BranchDTO> GetFullBranchById(int id)
+		{
+            Branch branch = await _branchRepo.GetFullBranchById(id);
 
-        [HttpPost("sessions")]
+			return branch.Adapt<BranchDTO>();
+ 
+		}
+
+
+
+
+
+		[HttpPost("sessions")]
 		public async Task<bool> AddSession([FromBody] SessionVM sessionVM)
 		{
 			//BranchVM branchVM = JsonSerializer.Deserialize<BranchVM>(branchAsString);

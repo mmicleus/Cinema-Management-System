@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorCinemaMS.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace BlazorCinemaMS.Shared.ViewModels
 	{
 		[Required(ErrorMessage ="Seat Label Required")]
 		public string Label { get; set; } = string.Empty;
+
+		public SeatClass SeatClass { get; set; }
 
 
 	}

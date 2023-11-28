@@ -4,18 +4,19 @@
 
 
 
-@if (Message != String.Empty)
+
+@if (Message.Text != String.Empty)
 {
-	@if (Message == "Movie Added To Database Successfully")
+	@if (Message.Category == MessageCategory.Success)
 	{
 		<div class="alert alert-success" role="alert">
-			@Message
+			@((MarkupString)Message.Text)
 		</div>
 	}
-	else
+	else if(Message.Category == MessageCategory.Error)
 	{
 		<div class="alert alert-danger" role="alert">
-			@Message
+			@((MarkupString)Message.Text)
 		</div>
 	}
 	
@@ -23,7 +24,8 @@
 
 
 
-<h3>CreateMovie</h3>
+ <h3 class="mb-5">Add movie to cinema database</h3> 
+
 
 
 
@@ -40,19 +42,41 @@
 				<!-- inner container -->
 				<div class="container">
 					<div class="row">
-						<h1>Trending this week</h1>
+						<h1 class="mb-3">Trending this week</h1>
 
-						@foreach (var movie in moviesService.TrendingMovies.results)
+						@if (LoadingTrending)
 						{
-							<div class="col-6">
-								<div class="card" style="cursor:pointer" @onclick="(() => {AddMovie(movie);})">
-									<img src=@movie.backdrop_path class="card-img-top" alt="...">
-									<div class="card-body">
-										<h4 class="card-title fw-bold">@movie.title</h4>
-									</div>
+							<div class="d-flex justify-content-center">
+								<h5>Loading Trending Movies</h5>
+								@* <span class="sr-only">Loading...</span> *@
+							</div>
+							<div class="d-flex justify-content-center">
+								<div class="spinner-border" role="status">
+									@* <span class="sr-only">Loading...</span> *@
 								</div>
 							</div>
+						}
+						else if (moviesService.TrendingMovies.results == null || moviesService.TrendingMovies.results.Count() == 0)
+						{
+							<div class="d-flex justify-content-center">
+								<h5>No Trending Movies to display</h5>
+							</div>
+						}
+						else
+						{
 
+							@foreach (var movie in moviesService.TrendingMovies.results)
+							{
+								<div class="col-6 mb-4">
+									<div class="card w-100 h-100 " style="cursor:pointer;background-color:lightgray; box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {AddMovie(movie);})">
+										<img src=@movie.backdrop_path class="card-img-top" alt="...">
+										<div class="card-body">
+											<h4 class="card-title fw-bold">@movie.title</h4>
+										</div>
+									</div>
+								</div>
+
+							}
 						}
 
 					</div>
@@ -65,7 +89,7 @@
 			<div class="col-6 ps-5">
 				<h1>Search for movies</h1>
 				@* <input @bind="SearchText" @bind:after="PerformSearch" /> *@
-				<input type="text" value="@SearchText" @oninput="@PerformSearch" />
+				<input class="mb-4" type="text" value="@SearchText" @oninput="@PerformSearch" />
 
 
 
@@ -74,51 +98,63 @@
 				<div class="container">
 					<div class="row">
 
-						@if (moviesService.MovieSuggestions != null &&
-								moviesService.MovieSuggestions.results != null &&
-								moviesService.MovieSuggestions.results.Count() > 0)
+
+						@if (LoadingSuggestions)
+						{
+							<div class="d-flex justify-content-center">
+								<h5>Loading Suggesstions</h5>
+								@* <span class="sr-only">Loading...</span> *@
+							</div>
+							<div class="d-flex justify-content-center">
+								<div class="spinner-border" role="status">
+									@* <span class="sr-only">Loading...</span> *@
+								</div>
+							</div>
+						}
+						else if (moviesService.MovieSuggestions == null 
+						|| moviesService.MovieSuggestions.results == null 
+						|| moviesService.MovieSuggestions.results.Count() == 0)
+						{
+							<div class="d-flex justify-content-center">
+								<h5>No Movie Suggestions to display</h5>
+
+							</div>
+						}
+						else
 						{
 							@foreach (var movie in moviesService.MovieSuggestions.results)
 							{
-								<div class="col-6">
-									<div class="card" style="cursor:pointer" @onclick="(() => {AddMovie(movie);})">
+								<div class="col-6 mb-4">
+									<div class="card w-100 h-100" style="cursor:pointer; background-color:lightgray; box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {AddMovie(movie);})">
 										<img src=@movie.backdrop_path class="card-img-top" alt="...">
 										<div class="card-body">
 											<h4 class="card-title fw-bold">@movie.title</h4>
 										</div>
 									</div>
 								</div>
-
 							}
-						}
-						else
-						{
-							<h6>No movies to display</h6>
 						}
 					</div>
 				</div>
 			</div>
 		</div>
-
 	</div>
-
-
-
-
-
-
-
-
-
 </div>
 
 
 
-
 @code {
+
 	public string SearchText { get; set; } = String.Empty;
 
-	public string Message { get; set; } = String.Empty;
+	//public string Message { get; set; } = String.Empty;
+
+	public Message Message { get; set; } = new Message();
+
+	public bool LoadingSuggestions { get; set; } = false;
+
+	public bool LoadingTrending { get; set; } = false;
+
 
 	public async void AddMovie(ApiMovieDTO movie)
 	{
@@ -126,29 +162,31 @@
 
 		if (!success)
 		{
-			Message = "Failed to add movie to database";
-			StateHasChanged();
-			await Task.Delay(20000);
-			Message = String.Empty;
-			StateHasChanged();
+			//await JSRuntime.Current.InvokeAsync<string>("SayHelloJS", "Peter");
+		
+			ShowMessage(MessageCategory.Error, $"Failed to add <b>{movie.title}</b> to database",4);
 		}
 		else
 		{
-			Message = "Movie Added To Database Successfully";
-			StateHasChanged();
-			await Task.Delay(4000);
-			Message = String.Empty;
-			StateHasChanged();
+			ShowMessage(MessageCategory.Success, $"<b>{movie.title}</b> added To Database Successfully" , 4);
+
+			//Message = $"{movie.title} Added To Database Successfully";
+			//StateHasChanged();
+			//await Task.Delay(4000);
+			//Message = String.Empty;
+		//	StateHasChanged();
 		}
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
+		LoadingTrending = true;
 		await moviesService.GetTrendingMovies();
+		LoadingTrending = false;
 
 		//	await moviesService.GetMovieSuggestionsByName("home alone");
 
-		await moviesService.GetMovieById(654974);
+		//await moviesService.GetMovieById(654974);
 
 		Console.Write(moviesService.MovieSuggestions);
 	}
@@ -156,7 +194,23 @@
 	public async Task PerformSearch(ChangeEventArgs args)
 	{
 		SearchText = args.Value.ToString();
+
+		LoadingSuggestions = true;
 		await moviesService.GetMovieSuggestionsByName(SearchText);
+		LoadingSuggestions = false;
+	}
+
+
+	public async Task ShowMessage(MessageCategory category, string message, int seconds)
+	{
+		Message.Category = category;
+		Message.Text = message;
+		StateHasChanged();
+
+		await Task.Delay(seconds * 1000);
+
+		Message.Text = string.Empty;
+		StateHasChanged();
 	}
 
 	

@@ -1,0 +1,245 @@
+﻿@page "/"
+@inject IBranchesService branchesService
+@inject IMoviesService moviesService
+@inject IUtilityService utilityService
+
+
+
+
+<EditForm Model="SessionSelect" OnValidSubmit="SelectBranch">
+				<DataAnnotationsValidator />
+
+				<div class="mb-2">
+					<label for="branchId"><b>Select branch:</b></label>
+
+
+		<InputSelect id="branchId" ValueExpression="@(()=>SessionSelect.branchId)" Value="@SessionSelect.branchId" ValueChanged="@((int branchId) => UpdateBranch(branchId))" class="form-control">
+
+			<option selected>-----------Make a selection----------</option>
+							<!--<option selected>----- SELECT BRANCH -----</option>-->
+							@foreach (var branch in Branches)
+							{
+								<option value="@branch.Id">@branch.Name</option>
+							}
+						</InputSelect>
+					
+
+					<ValidationMessage For="@(()=>SessionSelect.branchId)" />
+
+				</div>
+</EditForm>
+
+
+<div class="container">
+	<div class="row">
+		@foreach (MovieListingVM listing in MovieListings1)
+		{
+			<div class="col-12">
+				<div class="card">
+					<img class="card-img-top" src="@listing.Movie.PosterPath" alt="Card image cap">
+					<div class="card-body">
+
+
+						@if (listing.SessionsWithDate != null)
+						{
+							@foreach (SessionsWithDateVM session in listing.SessionsWithDate)
+							{
+								<h3>@(session.Date.ToString("MMMM dd"))</h3>
+
+								@if (session.Sessions != null)
+								{
+									<div>
+										@foreach (SessionDTO sessionDTO in session.Sessions)
+										{
+											@if (sessionDTO.Venue != null && sessionDTO.Venue.Branch != null)
+											{
+												<div class="card">
+													<p><span>@sessionDTO.Venue.Branch.Name - @sessionDTO.Venue.Name</span></p>
+													<p><span>@sessionDTO.StartTime.ToString("hh:mm tt") - @sessionDTO.EndTime.ToString("hh:mm tt")</span></p>
+												</div>
+											}
+										}
+									</div>
+								}
+								
+							}
+						}
+						
+
+
+					</div>
+
+				</div>
+
+			</div>
+		}
+
+	</div>
+</div>
+
+
+
+@code {
+	public List<MovieListingVM> MovieListings1 = new List<MovieListingVM>();
+	public List<MovieListingVM> MovieListings2= new List<MovieListingVM>();
+
+
+	public List<BranchDTO> Branches = new List<BranchDTO>();
+	public BranchDTO Branch = new BranchDTO();
+	public List<SessionDTO> Sessions = new List<SessionDTO>();
+	public List<MovieDTO> UniqueMovies = new List<MovieDTO>();
+
+
+	public SessionSelectionVM SessionSelect = new SessionSelectionVM();
+
+
+	public List<DateTime> dates = new List<DateTime>()
+	{
+
+		new DateTime(2023,11,21),
+		new DateTime(2023,11,22),
+		new DateTime(2023,11,23),
+		new DateTime(2023,11,24),
+		new DateTime(2023,11,25),
+		new DateTime(2023,11,26),
+		new DateTime(2023,11,27)
+	};
+
+	protected override async Task OnInitializedAsync()
+	{
+		Branches = await branchesService.GetJustBranches();
+	}
+
+	public async Task SelectBranch()
+	{
+
+	}
+
+	public VenueDTO GetVenueById(int venueId)
+	{
+		return Branch.Venues.FirstOrDefault(v => v.Id == venueId);
+	}
+
+	public void ExtractAllSessionsFromBranch()
+	{
+		foreach(VenueDTO venue in Branch.Venues)
+		{
+			if (venue.Sessions != null) Sessions.AddRange(venue.Sessions);
+		}
+	}
+
+
+	
+
+	public void ExtractAllMoviesFromBranch()
+	{
+		List<MovieDTO> movies = new List<MovieDTO>();
+
+		foreach (VenueDTO venue in Branch.Venues)
+		{
+			if (venue.Sessions != null)
+			{
+				foreach (SessionDTO session in venue.Sessions)
+				{
+					//!movies.Select(mv => mv.Id).Contains(session.Movie.Id)
+					if (session.Movie != null)
+					{
+						movies.Add(session.Movie);
+					}
+				}
+			}
+		}
+
+		UniqueMovies = movies.DistinctBy(m => m.Id).ToList();
+	}
+
+
+
+	
+	public void AddBranchAndVenueToSessions()
+	{
+		foreach(SessionDTO session in Sessions)
+		{
+			session.Venue = GetVenueById(session.VenueId);
+			session.Venue.Branch = Branch;
+		}
+	}
+
+
+
+	public List<SessionDTO> FilterSessionsByDate(DateTime dt, List<SessionDTO> sessions)
+	{
+		return sessions.Where(s => utilityService.IsSameDay(dt, s.StartTime)).ToList();
+	}
+
+
+	public List<SessionDTO> GetSessionsByMovie(int movieId)
+	{
+		return Sessions.Where(s => s.Movie.Id == movieId).ToList();
+	}
+
+	
+	public MovieListingVM GetMovieListing(MovieDTO mv)
+	{
+		List<SessionDTO> movieSessions = GetSessionsByMovie(mv.Id);
+
+		List<SessionsWithDateVM> sessionsWithDate =  new List<SessionsWithDateVM>();
+
+		foreach(DateTime dt in dates)
+		{
+
+			List<SessionDTO> matchingSessions = FilterSessionsByDate(dt,movieSessions);
+
+			if (matchingSessions != null && matchingSessions.Count() > 0)
+			{
+				sessionsWithDate.Add(new SessionsWithDateVM()
+					{
+						Date = dt,
+						Sessions = matchingSessions
+					});
+			}
+		}
+
+		if(sessionsWithDate.Count() == 0)
+		{
+			return null;
+		}
+
+		return new MovieListingVM()
+			{
+				Movie = mv,
+				SessionsWithDate = sessionsWithDate
+			};
+	}
+
+
+	public void SetMovieListings()
+	{
+		foreach (MovieDTO mv in UniqueMovies)
+		{
+			MovieListingVM mvListing = GetMovieListing(mv);
+
+			if (mvListing != null) MovieListings1.Add(mvListing);
+
+		}
+	}
+
+
+
+	public async Task UpdateBranch(int branchId)
+	{
+		Branch = await branchesService.GetFullBranchById(branchId);
+
+
+		ExtractAllSessionsFromBranch();
+
+		AddBranchAndVenueToSessions();
+
+		ExtractAllMoviesFromBranch();
+
+		SetMovieListings();
+	}
+
+
+
+}

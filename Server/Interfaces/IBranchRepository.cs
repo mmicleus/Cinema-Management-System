@@ -18,6 +18,15 @@ namespace CinemaMS.Interfaces
 
         Task<IEnumerable<Branch>> GetAllBranchesWithSessionsAsync();
 
+        Task<IEnumerable<Branch>> GetAllBranchesWithoutVenuesAsync();
+
+        Task<Branch> GetFullBranchDataByIdExplicitLoading(int branchId);
+
+        Task<Branch> GetFullBranchById(int branchId);
+
+
+		Task<IEnumerable<Seat>> GetSeatsByVenueIdAsync(int venueId);
+
         Task<bool> DeleteBranchById(int branchId);
 
 

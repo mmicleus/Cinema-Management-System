@@ -109,7 +109,26 @@ namespace CinemaMS.Repositories
             return result;
         }
 
-		public async Task<IEnumerable<Branch>> GetAllBranchesWithSessionsAsync()
+        public async Task<IEnumerable<Branch>> GetAllBranchesWithoutVenuesAsync()
+        {
+            IEnumerable<Branch> result = new List<Branch>();
+
+            try
+            {
+                result = _context.Branches.Include(b => b.Coords).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return result;
+        }
+
+
+
+
+        public async Task<IEnumerable<Branch>> GetAllBranchesWithSessionsAsync()
 		{
 			IEnumerable<Branch> result = new List<Branch>();
 
@@ -127,6 +146,25 @@ namespace CinemaMS.Repositories
 
 			return result;
 		}
+
+
+        public async Task<IEnumerable<Seat>> GetSeatsByVenueIdAsync(int venueId)
+        {
+            IEnumerable<Seat> seats = new List<Seat>();
+
+            try
+            {
+                seats = await _context.Seats.Where(s => s.VenueId == venueId).ToListAsync();
+
+                //.Include(b => b.Venues).ThenInclude(v => v.Sessions).ThenInclude(s => s.Movie).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return seats;
+        }
 
 
 
@@ -156,20 +194,65 @@ namespace CinemaMS.Repositories
         }
 
 
-        //         ---------------- To Delete ----------------------
-        public async Task<Branch> GetFullBranchDataById(int branchId)
-        {
-            return await _context.Branches
-                .Include(b => b.Coords)
-                .Include(b => b.Venues).ThenInclude(v => v.Sessions).ThenInclude(s => s.Movie)
-                .Include(b => b.Venues).ThenInclude(v => v.Seats)
-                .Include(b => b.Venues).ThenInclude(v => v.Sessions).ThenInclude(s => s.Pricing)
-                .FirstOrDefaultAsync(b => b.Id == branchId);
+		//         ---------------- To Delete ----------------------
+		//public async Task<Branch> GetFullBranchById(int branchId)
+		//{
+		//    return await _context.Branches
+		//        .Include(b => b.Coords)
+		//        .Include(b => b.Venues).ThenInclude(v => v.Sessions).ThenInclude(s => s.Movie)
+		//        .Include(b => b.Venues).ThenInclude(v => v.Seats)
+		//        .Include(b => b.Venues).ThenInclude(v => v.Sessions).ThenInclude(s => s.Pricing)
+		//        .FirstOrDefaultAsync(b => b.Id == branchId);
 
-        }
+		//}
 
 
-        public Venue? GetVenueById(int venueId)
+
+		public async Task<Branch> GetFullBranchById(int branchId)
+		{
+            Branch br = _context.Branches.Single(b => b.Id == branchId);
+
+            _context.Entry(br).Reference(b => b.Coords).Load();
+            _context.Entry(br).Collection(b => b.Venues).Load();
+
+            foreach(var venue in br.Venues)
+            {
+                _context.Entry(venue).Collection(v => v.Sessions).Load();
+            }
+
+
+			foreach (var venue in br.Venues)
+			{
+				foreach(var session in venue.Sessions)
+                {
+                    _context.Entry(session).Reference(s => s.Movie).Load();
+                    _context.Entry(session).Reference(s => s.Pricing).Load();
+                }
+			}
+
+
+
+			return br;
+
+		}
+
+
+
+		public async Task<Branch> GetFullBranchDataByIdExplicitLoading(int branchId)
+		{
+            Branch branch = _context.Branches.Single(b => b.Id == branchId);
+
+            await _context.Entry(branch).Reference(b => b.Coords).LoadAsync();
+            await _context.Entry(branch).Collection(b => b.Venues).LoadAsync();
+
+
+            return branch;
+		}
+
+
+
+
+		public Venue? GetVenueById(int venueId)
         {
             return _context.Venues.FirstOrDefault(v => v.Id == venueId);
         }

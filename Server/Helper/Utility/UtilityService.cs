@@ -185,10 +185,13 @@ namespace BlazorCinemaMS.Server.Helper.Utility
                 Venues = branchVM.Venues.Select(venue => new Venue()
                 {
                     Capacity = venue.Capacity,
+                    NrOfRows = venue.NrOfRows,
+                    NrOfColumns = venue.NrOfColumns,
                     Name = venue.Name,
                     Seats = venue.Seats.Select(seat => new Seat()
                     {
                         Label = seat.Label,
+                        SeatClass = seat.SeatClass
                     }).ToList()
                 }).ToList()
             };

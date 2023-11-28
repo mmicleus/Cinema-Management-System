@@ -102,9 +102,52 @@ namespace BlazorCinemaMS.Client.Services.BranchesService
 			Branches = result;
 		}
 
+		
+		public async Task<List<BranchDTO>> GetJustBranches()
+		{
+			string url = "api/Admin/justBranches";
+			IEnumerable<BranchDTO> result;
+
+			//string branchAsString = JsonSerializer.Serialize(branch);
+
+			try
+			{
+				result = await _httpClient.GetFromJsonAsync<IEnumerable<BranchDTO>>(url);
+
+			}
+			catch (Exception ex)
+			{
+				result = new List<BranchDTO>();
+			}
+
+			return result.ToList(); 
+		}
+
+
+
 		public BranchDTO? GetBranchById(int branchId)
 		{
 			return Branches.FirstOrDefault(b => b.Id == branchId);
+		}
+
+		public async Task<BranchDTO> GetFullBranchById(int branchId)
+		{
+			string url = $"api/Admin/fullBranches/{branchId}";
+			BranchDTO result;
+
+			//string branchAsString = JsonSerializer.Serialize(branch);
+
+			try
+			{
+				result = await _httpClient.GetFromJsonAsync<BranchDTO>(url);
+
+			}
+			catch (Exception ex)
+			{
+				result = new BranchDTO();
+			}
+
+			return result;
 		}
 
 	
