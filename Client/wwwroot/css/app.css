@@ -113,9 +113,13 @@ a, .btn-link {
 }
 
 
-.seat:hover {
+/*.seat.available:hover {
     transform: scale(1.2) !important;
-}
+}*/
+
+
+
+
 
 
 

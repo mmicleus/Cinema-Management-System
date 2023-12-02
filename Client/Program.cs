@@ -1,4 +1,5 @@
 using BlazorCinemaMS.Client;
+using BlazorCinemaMS.Client.Services;
 using BlazorCinemaMS.Client.Services.BranchesService;
 using BlazorCinemaMS.Client.Services.MoviesService;
 using BlazorCinemaMS.Client.Services.SessionsService;
@@ -18,6 +19,8 @@ ConfigureMapster();
 
 //Console.WriteLine(builder.HostEnvironment.BaseAddress);
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+builder.Services.AddSingleton<StateContainer>();
 
 builder.Services.AddScoped<IMoviesService,MoviesService>();
 builder.Services.AddScoped<IBranchesService, BranchesService>();

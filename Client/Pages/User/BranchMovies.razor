@@ -1,0 +1,1096 @@
+﻿@page "/branchMovies/{SetHashCode:int}"
+@inject IBranchesService branchesService
+@inject IMoviesService moviesService
+@inject IUtilityService utilityService
+@inject StateContainer stateContainer
+@inject NavigationManager navManager
+
+
+<!-- --------------------------- Quick Book ----------------------------->
+
+<div class=@(!ShowQuickBook ? "quickbook-container bg-info w-100" : "quickbook-container show bg-info w-100")>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="quickbook-title-container col-2 bg-warning d-flex justify-content-end py-2">
+				<div><span class="quickbook-title">Quick <br> Book</span></div>
+			</div>
+			<div class="col-10 py-2 d-flex quickbook-col2" style="align-items:center;">
+				<div class="container-fluid quick-book-controls">
+
+					<div class="row">
+						<div class="col-3">
+
+							<div class="quick-book-control d-flex flex-column">
+								<span class="quickbook-label">Branch</span>
+								<div class="p-2 d-flex justify-content-between" style="border-bottom:1px solid lightgray;cursor:pointer;" data-bs-toggle="modal" data-bs-target="#BranchesModal2">
+									<span class="quickbook-placeholder">@(SelectedBranch != null ? SelectedBranch.Name : "Select Branch")</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-search" viewBox="0 0 16 16">
+										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+									</svg>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-3">
+
+							<div class="quick-book-control d-flex flex-column">
+								<span class="quickbook-label">Film/Event @(MoviesInSelectedBranch != null ? $"(Showing {MoviesInSelectedBranch.Count()})" : "")</span>
+								<div class="p-2 d-flex justify-content-between" style="border-bottom:1px solid lightgray;cursor:pointer;" data-bs-toggle="modal" data-bs-target="#MoviesModal">
+									<span class="quickbook-placeholder">@(SelectedMovie != null ? SelectedMovie.Title : "Select Movie")</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-search" viewBox="0 0 16 16">
+										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+									</svg>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-3">
+
+							<div class="quick-book-control d-flex flex-column">
+								<span class="quickbook-label">Date</span>
+								<div class="p-2 d-flex justify-content-between" style="border-bottom:1px solid lightgray;cursor:pointer;" data-bs-toggle="modal" data-bs-target="#DatesModal">
+									<span class="quickbook-placeholder">@(SelectedDate != null ? SelectedDate.Value.ToString("MMMM dd") : "Select Date")</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-search" viewBox="0 0 16 16">
+										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+									</svg>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-3">
+
+							<div class="quick-book-control d-flex flex-column">
+								<span class="quickbook-label">Time</span>
+								<div class="p-2 d-flex justify-content-between" style="border-bottom:1px solid lightgray;cursor:pointer;" data-bs-toggle="modal" data-bs-target="#TimesModal">
+									<span class="quickbook-placeholder">@(SelectedSession != null ? SelectedSession.StartTime.ToString("h:mm tt") : "Select Time")</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-search" viewBox="0 0 16 16">
+										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+									</svg>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				@if (SelectedSession != null)
+				{
+					<button class="quickbook-search-btn" @onclick="@(()=>{LoadBookingPage(SelectedSession);})">Book</button>
+				}
+				else if (SelectedBranch != null)
+				{
+					<button class="quickbook-search-btn" @onclick="@(()=>{ReloadPageWithNewBranch();})">Search</button>
+				}
+				else
+				{
+					<button class="quickbook-search-btn" disabled>Search</button>
+				}
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- --------------------------- End Of Quick Book ----------------------------->
+<!---------------------------------- Modals ---------------------------->
+
+
+
+
+<!---------------------------------- Branches2 Modal ---------------------------->
+
+<div class="modal gray-modal branches-modal fade" id="BranchesModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content px-4 py-4">
+			<h3 class="mb-4">Choose Cinemax Branch</h3>
+
+			@if (Branches != null && Branches.Count() > 0)
+			{
+				<ul class="modal-list">
+					<li class=" modal-reset-btn" data-bs-dismiss="modal" @onclick="@(()=>{ResetBranch();})">Reset</li>
+					@foreach (BranchDTO branch in Branches)
+					{
+						<li class="mb-3" data-bs-dismiss="modal" @onclick="@(()=>{SelectBranch(branch);})">@branch.Name</li>
+					}
+				</ul>
+			}
+			else
+			{
+				<p class="modal-warning">No Branches to Display</p>
+			}
+
+
+		</div>
+	</div>
+</div>
+
+
+
+<!---------------------------------- Movies Modal ---------------------------->
+
+<div class="modal gray-modal movies-modal fade" id="MoviesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content px-4 py-4">
+			<h3 class="mb-4">Choose Movie</h3>
+
+			@if (MoviesInSelectedBranch == null)
+			{
+				<p class="modal-warning">No Branch Selected</p>
+			}
+			else if (MoviesInSelectedBranch.Count() == 0)
+			{
+				<p>No Movies To Display</p>
+			}
+			else
+			{
+				<ul class="modal-list">
+					<li class="modal-reset-btn" data-bs-dismiss="modal" @onclick="@(()=>{ResetMovie();})">Reset</li>
+					@foreach (MovieDTO movie in MoviesInSelectedBranch)
+					{
+						<li class="mb-3" data-bs-dismiss="modal" @onclick="@(()=>{SelectMovie(movie);})">@movie.Title</li>
+					}
+				</ul>
+			}
+
+
+		</div>
+	</div>
+</div>
+
+<!---------------------------------- End Of Modal ---------------------------->
+<!---------------------------------- Dates Modal ---------------------------->
+
+<div class="modal gray-modal dates-modal fade" id="DatesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content px-4 py-4">
+			<h3 class="mb-4">Choose Date</h3>
+
+			@if (DaysOfWeek == null)
+			{
+				<p class="modal-warning">Nothing to display</p>
+			}
+			else
+			{
+				<ul class="modal-list">
+					<li class="modal-reset-btn" data-bs-dismiss="modal" @onclick="@(()=>{ResetDate();})">Reset</li>
+					@foreach (DateTime date in DaysOfWeek)
+					{
+						<li class="mb-3" data-bs-dismiss="modal" @onclick="@(()=>{SelectDate(date);})">@(date.ToString("MMMM dd"))</li>
+					}
+				</ul>
+			}
+
+
+		</div>
+	</div>
+</div>
+
+<!---------------------------------- End Of Dates Modal ---------------------------->
+<!---------------------------------- Times Modal ---------------------------->
+
+
+
+
+<div class="modal gray-modal times-modal fade" id="TimesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content px-4 py-4">
+			<h3 class="mb-4">Choose Time</h3>
+
+			@if (MatchingSessions != null)
+			{
+				if (MatchingSessions.Count() == 0)
+				{
+					<p class="modal-warning">
+						No Sessions found at <i class="modal-highlight">@SelectedBranch.Name</i> for movie <i class="modal-highlight">@SelectedMovie.Title</i> on
+						<i class="modal-highlight">@SelectedDate.Value.ToString("MMMM dd")</i>
+					</p>
+				}
+				else
+				{
+					<ul class="modal-list">
+						<li class="modal-reset-btn" data-bs-dismiss="modal" @onclick="@(()=>{ResetTime();})">Reset</li>
+						@foreach (SessionDTO session in MatchingSessions)
+						{
+							<li class="mb-3" data-bs-dismiss="modal" @onclick="@(()=>{SelectSession(session);})">@(session.StartTime.ToString("hh: mm tt"))</li>
+						}
+					</ul>
+				}
+
+			}
+			else if (SelectedBranch == null)
+			{
+				<p class="modal-warning">Please Select a Branch</p>
+			}
+			else if (SelectedMovie == null)
+			{
+				<p class="modal-warning">Please Select a Movie</p>
+			}
+			else if (SelectedDate == null)
+			{
+				<p class="modal-warning">Please Select a Date</p>
+			}
+
+
+		</div>
+	</div>
+</div>
+
+<!---------------------------------- End Of Times Modal ---------------------------->
+
+
+<!-- Start of navbar -->
+<nav class="navbar navbar-expand-lg bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand text-warning" href="index.html" id="logo">CINEMAX</a>
+		<button class="navbar-toggler"
+				type="button"
+				data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent"
+				aria-expanded="false"
+				aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link" aria-current="page" href="index.html">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="quiz.html">Play Game</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!-- end of navbar -->
+<!-- Start of the bootstrap carousel -->
+
+<div id="carouselExample" class="carousel slide">
+	<div class="carousel-inner">
+		<!-- Carousel items go in here -->
+		@if (CarouselMovies != null && CarouselMovies.Count() > 0)
+		{
+
+			@for (int i = 0; i < CarouselMovies.Count(); i++)
+			{
+				<div class="@(i == 0 ? "carousel-item active" : "carousel-item")">
+					<img src="@CarouselMovies[i].BackdropPath"
+						 class="d-block w-100" style="height:70vh;"
+						 alt="..." />
+					<div class="carousel-footer">
+						<h2>@CarouselMovies[i].Title</h2>
+						<button class="book-btn" data-name="@CarouselMovies[i].Title">BOOK NOW</button>
+					</div>;
+				</div>
+			}
+		}
+		else
+		{
+			<div class="carousel-item active">
+				<div class="w-100 d-flex justify-content-center align-items-center" style="height:70vh;">
+					<div class="d-flex justify-content-center">
+						<div class="spinner-border" role="status">
+							@* <span class="sr-only">Loading...</span> *@
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+
+	</div>
+	<button class="carousel-control-prev"
+			type="button"
+			data-bs-target="#carouselExample"
+			data-bs-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Previous</span>
+	</button>
+	<button class="carousel-control-next"
+			type="button"
+			data-bs-target="#carouselExample"
+			data-bs-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Next</span>
+	</button>
+</div>
+
+<!-- end of the bootstrap carousel -->
+
+
+
+
+
+
+<div class="container">
+
+
+	@* -------------------------------- start of one-week-dates ----------------------------------- *@
+
+	<div>
+		<ul class="one-week-dates">
+			@foreach (DateTime date in OneWeekDates)
+			{
+				<li class=@(utilityService.IsSameDay(date,StartingDate) ? "active" : "") @onclick=@(()=>{HandleDateClick(date);})>
+					@(utilityService.IsSameDay(date, DateTime.Today) ? "Today" : date.ToString("ddd"))
+				</li>
+			}
+		</ul>
+
+		<hr class="separator">
+	</div>
+
+
+	@* -------------------------------- end of one-week-dates ----------------------------------- *@
+
+
+
+	
+	@if((MovieListings1 == null || MovieListings1.Count() == 0) && !Loading)
+	{
+		<div class="d-flex justify-content-center align-items-center branchMovies-placeholder">No Results</div>
+	}
+	else
+	{
+
+
+		<div class="container branchMovies-container mt-4">
+			<div class="row">
+				@if (Loading)
+				{
+					<div class="col-12 movie-listing-col">
+
+
+						<div class="d-flex">
+							<div class="movie-poster">
+								<div class="skeleton skeleton-image"></div>
+								@* <img src=@listing.Movie.PosterPath /> *@
+							</div>
+
+							@* ------------------------ Column 2 ------------------------ *@
+
+							<div class="movie-information w-100">
+								<div class="skeleton skeleton-text-heading mb-3"></div>
+
+								@for(int i = 0;i < 5; i++)
+								{
+									<div class="skeleton skeleton-text w-100"></div>
+								}
+								@* <p class="movie-overview mt-4 mb-4">@listing.Movie.Overview</p> *@
+
+								<div class="skeleton skeleton-text-small mt-3"></div>
+								@* <p><span class="label">Running Time: </span><span class="duration">@(utilityService.FormatMinutes(listing.Movie.Duration))</span></p> *@
+
+								<hr class="separator">
+
+								<div class="sessions-box">
+
+									
+										<div class="sessions-by-date mb-3">
+											@* <h3 class="sessions-date"> *@
+												<div class="skeleton skeleton-date mb-5"></div>
+												@* @sessionsWithDate.Date.ToString("ddd, dd MMM") *@
+											@* </h3> *@
+
+											<div class="container sessions-container">
+
+												<div class="row">
+
+
+
+													@for (int i2 = 0;i2 < 4;i2++)
+													{
+														<div class="col-3 mb-4">
+
+
+															<div class="card session-card">
+
+																<div class="card-body">
+																	<div class="skeleton skeleton-text"></div>
+
+																	<div class="skeleton skeleton-text mb-3"></div>
+
+																	<div class="skeleton skeleton-text-half"></div>
+
+																</div>
+
+															</div>
+
+														</div>
+													}
+
+												</div>
+
+											</div>
+
+
+										</div>
+
+									
+
+								</div>
+
+							</div>
+
+							@* ------------------------ End of Column 2 ------------------------ *@
+
+						</div>
+
+
+
+
+
+					</div>
+				}
+				else
+				{
+					@foreach (MovieListingVM listing in MovieListings1)
+					{
+						<div class="col-12 movie-listing-col">
+
+
+							<div class="d-flex">
+								<div class="movie-poster">
+									<img src=@listing.Movie.PosterPath />
+								</div>
+
+								@* ------------------------ Column 2 ------------------------ *@
+
+								<div class="movie-information">
+									<h3 class="movie-title">@listing.Movie.Title</h3>
+									<p class="movie-overview mt-4 mb-4">@listing.Movie.Overview</p>
+									<p><span class="label">Running Time: </span><span class="duration">@(utilityService.FormatMinutes(listing.Movie.Duration))</span></p>
+
+									<hr class="separator">
+
+									<div class="sessions-box">
+
+										@foreach (SessionsWithDateVM sessionsWithDate in listing.SessionsWithDate)
+										{
+											<div class="sessions-by-date mb-3">
+												<h3 class="sessions-date">
+													@sessionsWithDate.Date.ToString("ddd, dd MMM")
+												</h3>
+
+												<div class="container sessions-container">
+
+													<div class="row">
+
+														@foreach (SessionDTO s in sessionsWithDate.Sessions)
+														{
+															<div class="col-3 mb-4">
+
+
+																<div class="card session-card" @onclick="@(()=>{LoadBookingPage(s);})">
+
+																	<div class="card-body">
+																		<span class="d-flex"><span class="start-time">@s.StartTime.ToString("hh:mm tt")</span> <span class="hyphen ms-2 me-2"> - </span> <span class="end-time">@s.EndTime.ToString("hh:mm tt")</span></span>
+
+																		<span class="venue-name">@s.Venue.Name</span>
+
+																		<p class="from-price"><span>FROM </span><span>$@s.Pricing.Economy</span></p>
+
+																	</div>
+
+																</div>
+
+															</div>
+														}
+
+													</div>
+
+												</div>
+
+
+											</div>
+
+										}
+
+									</div>
+
+								</div>
+
+								@* ------------------------ End of Column 2 ------------------------ *@
+
+							</div>
+
+
+
+
+
+						</div>
+
+						<hr class="col-separator">
+					}
+				}
+
+				
+
+			</div>
+		</div>
+
+	}
+
+
+	
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="footer">
+	<p>&copy; All rights reserved.</p>
+</div>
+
+<!-- end of footer -->
+@code {
+	// [Parameter]
+	// public string BranchId { get; set; }
+
+	[Parameter]
+	public int SetHashCode { get; set; }
+	public BranchDTO Branch = null;
+	public bool Loading = false;
+	public DateTime StartingDate;
+	public int? SelectedMovieId { get; set; } = null;
+
+	public bool ShowQuickBook = false;
+
+	public List<DateTime> Dates = new List<DateTime>();
+	public List<DateTime> OneWeekDates = new List<DateTime>();
+
+	//quickbook properties
+	public BranchDTO SelectedBranch { get; set; } = null;
+	public List<MovieDTO> MoviesInSelectedBranch = null;
+	public MovieDTO SelectedMovie { get; set; } = null;
+	public DateTime? SelectedDate { get; set; } = null;
+	public SessionDTO SelectedSession { get; set; } = null;
+	public List<DateTime> DaysOfWeek = new List<DateTime>();
+	public List<SessionDTO> MatchingSessions = null;
+
+
+
+	public List<MovieListingVM> MovieListings1 = new List<MovieListingVM>();
+	public List<MovieListingVM> MovieListings2 = new List<MovieListingVM>();
+
+
+	public List<BranchDTO> Branches = new List<BranchDTO>();
+
+	public List<SessionDTO> Sessions = new List<SessionDTO>();
+	public List<MovieDTO> UniqueMovies = new List<MovieDTO>();
+	public List<MovieDTO> CarouselMovies = new List<MovieDTO>();
+
+
+	public SessionSelectionVM SessionSelect = new SessionSelectionVM();
+
+
+	// public List<DateTime> dates = new List<DateTime>()
+	// {
+
+	// 	new DateTime(2023,11,21),
+	// 	new DateTime(2023,11,22),
+	// 	new DateTime(2023,11,23),
+	// 	new DateTime(2023,11,24),
+	// 	new DateTime(2023,11,25),
+	// 	new DateTime(2023,11,26),
+	// 	new DateTime(2023,11,27)
+	// };
+
+	protected override async Task OnInitializedAsync()
+	{
+		Loading = true;
+		StateHasChanged();
+		DaysOfWeek = GetNext20Days();
+		//ShowQuickbookAfterSeconds(4);
+		var data = (DateAndBranchIdDTO)stateContainer.ObjectTunnel[SetHashCode];
+
+
+		//await Task.Delay(1000000);
+
+		//for the quickbook
+		Branches = await branchesService.GetJustBranches();
+
+
+
+		stateContainer.ObjectTunnel.Remove(SetHashCode);
+
+
+
+		Branch = (branchesService.FullBranch != null && branchesService.FullBranch.Id == data.BranchId) ? branchesService.FullBranch : await branchesService.GetFullBranchById(data.BranchId);
+
+
+		StateHasChanged();
+
+
+		SelectedMovieId = data.MovieId;
+
+
+		CarouselMovies = ExtractAllMoviesFromBranch();
+		SetStartingDate(data.DayOfWeek);
+
+		InitializeOneWeekDates();
+		//StartingDate = data.DayOfWeek;
+
+		UpdateModel();
+
+		Loading = false;
+		StateHasChanged();
+
+		ShowQuickbookNow();
+
+
+		//Branches = await branchesService.GetJustBranches();
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		//Branch = await branchesService.GetFullBranchById(int.Parse(BranchId));
+	}
+
+
+	
+
+	public void UpdateModel()
+	{
+		InitializeDates();
+		ProcessBranch();
+
+	}
+
+
+	public List<DateTime> GetNext20Days()
+	{
+		List<DateTime> days = new List<DateTime>();
+		DateTime today = DateTime.Now;
+		days.Add(today);
+
+		for (int i = 0; i < 19; i++)
+		{
+			DateTime day = today.AddDays(i + 1);
+			days.Add(day);
+		}
+
+		return days;
+	}
+
+
+
+	public void InitializeDates()
+	{
+		Dates = new List<DateTime>();
+
+		Dates.Add(StartingDate);
+
+		for (int i = 0; i < 20; i++)
+		{
+			DateTime dateToAdd = StartingDate.AddDays(i + 1);
+
+			if ((dateToAdd - DateTime.Now).TotalDays <= 19)
+			{
+				Dates.Add(dateToAdd);
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+
+
+	public void ShowQuickbookNow()
+	{
+		ShowQuickBook = true;
+		StateHasChanged();
+	}
+
+
+	public async Task ShowQuickbookAfterSeconds(int seconds)
+	{
+		await Task.Delay(seconds * 1000);
+
+		ShowQuickBook = true;
+		StateHasChanged();
+	}
+
+
+
+
+
+	public void InitializeOneWeekDates()
+	{
+		OneWeekDates = new List<DateTime>();
+
+		DateTime today = DateTime.Today;
+		OneWeekDates.Add(today);
+
+		for(int i = 1;i <= 6; i++)
+		{
+			OneWeekDates.Add(today.AddDays(i));
+		}
+	}
+
+
+	public void InitializeCarouselMovies()
+	{
+		CarouselMovies = ExtractAllMoviesFromBranch();
+	}
+
+	public void InitializeUniqueMovies()
+	{
+		UniqueMovies = ExtractAllMoviesFromBranch();
+
+		if (SelectedMovieId != null) UniqueMovies = UniqueMovies.Where(m => m.Id == SelectedMovieId).ToList();
+
+
+	}
+
+	public void ResetMovie()
+	{
+		SelectedMovie = null;
+		SelectedDate = null;
+		SelectedSession = null;
+		MatchingSessions = null;
+	}
+
+	public void ResetBranch()
+	{
+		SelectedBranch = null;
+		SelectedMovie = null;
+		SelectedDate = null;
+		SelectedSession = null;
+		MatchingSessions = null;
+
+	}
+
+	public void ResetDate()
+	{
+		SelectedDate = null;
+		SelectedSession = null;
+		MatchingSessions = null;
+	}
+
+	public void ResetTime()
+	{
+		SelectedSession = null;
+	}
+
+
+	public void SetStartingDate(DateTime date)
+	{
+		StartingDate = date;
+	}
+
+
+	public List<MovieDTO> GetAllMoviesInBranch(BranchDTO branch)
+	{
+		List<MovieDTO> movies = new List<MovieDTO>();
+
+		foreach (VenueDTO venue in branch.Venues)
+		{
+			if (venue.Sessions != null)
+			{
+				foreach (SessionDTO session in venue.Sessions)
+				{
+					movies.Add(session.Movie);
+				}
+			}
+		}
+
+		return movies.DistinctBy(m => m.Id).ToList();
+	}
+
+
+
+
+	//------------------ event handlers -----------------
+	public void HandleDateClick(DateTime date)
+	{
+		SetStartingDate(date);
+		UpdateModel();
+	}
+
+	public void LoadBookingPage(SessionDTO session)
+	{
+		navManager.NavigateTo($"/Booking/{session.Id}");
+	}
+
+
+	// --------------------- TO UPDATE ------------------------
+
+	public async Task LoadBranchMoviesPage()
+	{
+		DateAndBranchIdDTO data = new DateAndBranchIdDTO()
+			{
+				DayOfWeek = SelectedDate ?? DateTime.Now,
+				BranchId = SelectedBranch.Id,
+				MovieId = SelectedMovie != null ? SelectedMovie.Id : null
+			};
+		stateContainer.ObjectTunnel.Add(data.GetHashCode(), data);
+
+		branchesService.FullBranch = SelectedBranch;
+		navManager.NavigateTo($"/branchMovies/{data.GetHashCode()}");
+	}
+
+
+
+
+
+
+	public async Task SelectBranch(BranchDTO branch)
+	{
+		SelectedBranch = await branchesService.GetFullBranchById(branch.Id);
+
+		ResetMovie();
+
+		MoviesInSelectedBranch = GetAllMoviesInBranch(SelectedBranch);
+		StateHasChanged();
+	}
+
+
+	public async Task SelectMovie(MovieDTO movie)
+	{
+		SelectedMovie = movie;
+		ResetDate();
+	}
+
+
+	public async Task SelectDate(DateTime date)
+	{
+		SelectedDate = date;
+
+		ResetTime();
+
+		// --------------- Left Off -----------------------
+
+		List<SessionDTO> sessions = ExtractAllSessionsFromBranch(SelectedBranch);
+
+		MatchingSessions = GetMatchingSessions(sessions);
+	}
+
+
+	public async Task SelectSession(SessionDTO session)
+	{
+		SelectedSession = session;
+
+	}
+
+
+
+
+
+
+
+	public async Task SelectBranch()
+	{
+
+	}
+
+	public VenueDTO GetVenueById(int venueId)
+	{
+		return Branch.Venues.FirstOrDefault(v => v.Id == venueId);
+	}
+
+
+
+
+	public void ExtractAllSessionsFromBranch()
+	{
+		Sessions = new List<SessionDTO>();
+		foreach (VenueDTO venue in Branch.Venues)
+		{
+			if (venue.Sessions != null) Sessions.AddRange(venue.Sessions);
+		}
+	}
+
+
+
+	public List<SessionDTO> ExtractAllSessionsFromBranch(BranchDTO branch)
+	{
+		List<SessionDTO> sessions = new List<SessionDTO>();
+
+		foreach (VenueDTO venue in branch.Venues)
+		{
+			if (venue.Sessions != null) sessions.AddRange(venue.Sessions);
+		}
+
+		return sessions;
+	}
+
+
+
+	public List<MovieDTO> ExtractAllMoviesFromBranch()
+	{
+		List<MovieDTO> movies = new List<MovieDTO>();
+
+		foreach (VenueDTO venue in Branch.Venues)
+		{
+			if (venue.Sessions != null)
+			{
+				foreach (SessionDTO session in venue.Sessions)
+				{
+					//!movies.Select(mv => mv.Id).Contains(session.Movie.Id)
+					if (session.Movie != null)
+					{
+						movies.Add(session.Movie);
+					}
+				}
+			}
+		}
+
+		return movies.DistinctBy(m => m.Id).ToList();
+	}
+
+
+
+
+	public void AddBranchAndVenueToSessions()
+	{
+		foreach (SessionDTO session in Sessions)
+		{
+			session.Venue = GetVenueById(session.VenueId);
+			session.Venue.Branch = Branch;
+		}
+	}
+
+
+
+	public List<SessionDTO> FilterSessionsByDate(DateTime dt, List<SessionDTO> sessions)
+	{
+		List<SessionDTO> aux;
+		aux = sessions.Where(s => utilityService.IsSameDay(dt, s.StartTime)).ToList();
+	//	aux = aux.Where(s => s.StartTime > DateTime.Now).ToList();
+		aux = aux.OrderBy(s => s.StartTime).ToList();
+
+		return aux;
+	}
+
+
+	public List<SessionDTO> GetSessionsByMovie(int movieId)
+	{
+		return Sessions.Where(s => s.Movie.Id == movieId).ToList();
+	}
+
+	public List<SessionDTO> GetMatchingSessions(List<SessionDTO> sessions)
+	{
+		sessions = sessions.Where(s => s.MovieId == SelectedMovie.Id).ToList();
+
+		sessions = sessions.Where(s => utilityService.IsSameDay(s.StartTime, SelectedDate.Value)).ToList();
+
+		sessions = sessions.Where(s => s.StartTime > DateTime.Now).ToList();
+
+		sessions = sessions.OrderBy(s => s.StartTime).ToList();
+
+		return sessions;
+	}
+
+
+	public MovieListingVM GetMovieListing(MovieDTO mv)
+	{
+		List<SessionDTO> movieSessions = GetSessionsByMovie(mv.Id);
+
+		List<SessionsWithDateVM> sessionsWithDate = new List<SessionsWithDateVM>();
+
+		for(int i = 0;i < Dates.Count();i++)
+		{
+
+			List<SessionDTO> matchingSessions = FilterSessionsByDate(Dates[i], movieSessions);
+
+
+			if (matchingSessions != null && matchingSessions.Count() > 0)
+			{
+				sessionsWithDate.Add(new SessionsWithDateVM()
+					{
+						Date = Dates[i],
+						Sessions = matchingSessions
+					});
+			}
+		}
+
+		if (sessionsWithDate.Count() == 0)
+		{
+			return null;
+		}
+
+		return new MovieListingVM()
+			{
+				Movie = mv,
+				SessionsWithDate = sessionsWithDate
+			};
+	}
+
+
+	public void SetMovieListings()
+	{
+		MovieListings1 = new List<MovieListingVM>();
+		foreach (MovieDTO mv in UniqueMovies)
+		{
+			MovieListingVM mvListing = GetMovieListing(mv);
+
+			if (mvListing != null) MovieListings1.Add(mvListing);
+
+		}
+	}
+
+
+	public void ReloadPageWithNewBranch()
+	{
+		Branch = SelectedBranch;
+		SelectedMovieId = SelectedMovie != null ? SelectedMovie.Id : null;
+
+
+		CarouselMovies = ExtractAllMoviesFromBranch();
+		SetStartingDate(SelectedDate != null ? SelectedDate.Value : DateTime.Today);
+
+		//InitializeOneWeekDates();
+		//StartingDate = data.DayOfWeek;
+
+		UpdateModel();
+	}
+
+
+
+	public async Task UpdateBranch(int branchId)
+	{
+		Branch = await branchesService.GetFullBranchById(branchId);
+
+		ExtractAllSessionsFromBranch();
+
+		AddBranchAndVenueToSessions();
+
+		ExtractAllMoviesFromBranch();
+
+		SetMovieListings();
+	}
+
+	public async Task ProcessBranch()
+	{
+
+		ExtractAllSessionsFromBranch();
+
+		AddBranchAndVenueToSessions();
+
+
+		InitializeCarouselMovies();
+
+		InitializeUniqueMovies();
+
+	//	ExtractAllMoviesFromBranch();
+
+		SetMovieListings();
+	}
+
+
+
+}

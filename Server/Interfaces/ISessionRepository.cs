@@ -30,6 +30,8 @@ namespace CinemaMS.Interfaces
 
         Task<Session> GetSessionByIdAsync(int id);
 
+        Task<Session> GetCompleteSessionByIdAsync(int id);
+
         Task<Session> GetSessionWithBookingsByIdAsync(int sessionId);
 
         Task<IEnumerable<Session>> GetSessionsByBranchIdAsync(int branchId);

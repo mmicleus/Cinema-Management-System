@@ -100,6 +100,18 @@ namespace BlazorCinemaMS.Server.Controllers
 		}
 
 
+        [HttpGet("activeMovies")]
+		public async Task<IEnumerable<MovieDTO>> GetAllActiveMovies()
+		{
+			IEnumerable<Movie> movies = await _movieRepo.GetAllActiveMoviesAsync();
+
+			IEnumerable<MovieDTO> movieDTOs = movies.Adapt<IEnumerable<MovieDTO>>();
+
+
+			return movieDTOs;
+		}
+
+
 
 
 		[HttpPost("branches")]
@@ -271,6 +283,27 @@ namespace BlazorCinemaMS.Server.Controllers
 		}
 
 
+        [HttpGet("completeSessions/{id}")]
+        public async Task<SessionDTO> GetCompleteSessionById(int id)
+        {
+            var result = await _sessionRepo.GetCompleteSessionByIdAsync(id);
+            var finalResult = result.Adapt<SessionDTO>();
+            
+            return finalResult;
+        }
+
+
+        [HttpGet("sessions/{id}")]
+		public async Task<SessionDTO> GetSessionById(int id)
+		{
+			var result = await _sessionRepo.GetSessionByIdAsync(id);
+			var finalResult = result.Adapt<SessionDTO>();
+
+			return finalResult;
+		}
+
+
+       
 
 
 
@@ -278,8 +311,10 @@ namespace BlazorCinemaMS.Server.Controllers
 
 
 
-		// GET api/<AdminController>/5
-		[HttpGet("{id}")]
+
+
+        // GET api/<AdminController>/5
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";

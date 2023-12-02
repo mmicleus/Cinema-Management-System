@@ -98,7 +98,49 @@ namespace CinemaMS.Repositories
         }
 
 
+        public async Task<Session> GetCompleteSessionByIdAsync(int id)
+        {
+            Session session = new Session();
+            try
+            {
+                session = await GetSessionByIdAsync(id);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+
+            _context.Entry(session).Collection(s => s.Bookings).Load();
+
+
+            if(session.Bookings != null)
+            {
+                foreach (Booking b in session.Bookings)
+                {
+                    _context.Entry(b).Reference(b => b.User).Load();
+                    _context.Entry(b).Reference(b => b.Customer).Load();
+                    _context.Entry(b).Collection(b => b.Seats).Load();
+                }
+            }
+
+
+            //_context.Entry(session).Reference(s => s.Venue).Load();
+
+            //_context.Entry(session.Venue).Reference(v => v.Branch).Load();
+
+            //_context.Entry(session.Venue).Collection(s => s.Seats).Load();
+
+
+
+
+
+            return session;
+        }
 		
+
+
 
 		public async Task<bool> DeleteSessionByIdAsync(int sessionId)
 		{

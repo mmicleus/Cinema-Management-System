@@ -8,7 +8,10 @@ namespace CinemaMS.Interfaces
 
         Task<IEnumerable<Movie>> GetAllMoviesNoTrackingsAsync();
 
-        Task<IEnumerable<Genre>> GetAllGenresAsync();
+        Task<IEnumerable<Movie>> GetAllActiveMoviesAsync();
+
+
+		Task<IEnumerable<Genre>> GetAllGenresAsync();
 
         Task<Genre> GetGenreByNameAsync(string name);
 

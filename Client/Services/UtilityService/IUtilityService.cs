@@ -3,5 +3,7 @@
 	public interface IUtilityService
 	{
 		bool IsSameDay(DateTime date1, DateTime date2);
+
+		string FormatMinutes(int minutes);
 	}
 }

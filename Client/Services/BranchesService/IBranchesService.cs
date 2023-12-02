@@ -5,6 +5,7 @@ namespace BlazorCinemaMS.Client.Services.BranchesService
 {
 	public interface IBranchesService
 	{
+		BranchDTO FullBranch { get; set; }
 		IEnumerable<BranchDTO> Branches { get; set; }
 		Task<bool> AddBranch(BranchVM branch);
 

@@ -144,6 +144,23 @@ namespace BlazorCinemaMS.Client.Services.MoviesService
             Movies = result.ToList();
 		}
 
+        public async Task<List<MovieDTO>> GetAllActiveMovies()
+        {
+			IEnumerable<MovieDTO> result = new List<MovieDTO>();
+			string url = "api/Admin/activeMovies";
+
+			try
+			{
+				result = await _http.GetFromJsonAsync<IEnumerable<MovieDTO>>(url);
+			}
+			catch (Exception ex)
+			{
+                result = null;
+			}
+
+            return result.ToList();
+		}
+
 
 		//public async Task<List<MovieDTO>> GetAllMoviesByBranch(int)
 

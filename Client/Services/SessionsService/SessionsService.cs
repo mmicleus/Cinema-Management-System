@@ -92,6 +92,64 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
             return Sessions.FirstOrDefault(s => s.Id == sessionId);
         }
 
+
+        public async Task<SessionDTO> GetFullSessionById(int sessionId)
+        {
+			string url = $"api/Admin/sessions/{sessionId}";
+            SessionDTO result;
+
+            //SessionDTO session = Sessions.FirstOrDefault(s => s.Id == sessionId);
+
+            try {
+				result = await _httpClient.GetFromJsonAsync<SessionDTO>(url);
+			}
+            catch (Exception ex)
+            {
+                result = null;
+            }
+			
+
+            //await _httpClient.GetFromJsonAsync<IEnumerable<SeatDTO>>(url);
+
+            return result;
+		}
+
+
+        public async Task<SessionDTO> GetFullSessionByIdForUser(int sessionId)
+        {
+            string url = $"api/Admin/completeSessions/{sessionId}";
+            string venueUrl = "api/Admin/venues/";
+            string branchUrl = "api/Admin/branches/";
+            string seatsUrl = "api/Admin/venueSeats/";
+            SessionDTO session;
+            
+
+            //SessionDTO session = Sessions.FirstOrDefault(s => s.Id == sessionId);
+
+            try
+            {
+                session = await _httpClient.GetFromJsonAsync<SessionDTO>(url);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            session.Venue = await _httpClient.GetFromJsonAsync<VenueDTO>(venueUrl + session.VenueId);
+            session.Venue.Branch = await _httpClient.GetFromJsonAsync<BranchDTO>(branchUrl + session.Venue.BranchId);
+            session.Venue.Seats = await _httpClient.GetFromJsonAsync<IEnumerable<SeatDTO>>(seatsUrl + session.VenueId);
+
+
+            //await _httpClient.GetFromJsonAsync<IEnumerable<SeatDTO>>(url);
+
+            return session;
+        }
+
+
+
+
+
+
         public async Task<SessionDTO> GetSessionByIdWithSeats(int sessionId)
         {
             string url = "api/Admin/venueSeats/";

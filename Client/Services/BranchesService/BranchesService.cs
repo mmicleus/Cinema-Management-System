@@ -14,6 +14,9 @@ namespace BlazorCinemaMS.Client.Services.BranchesService
 			_httpClient = client;
 		}
 
+
+		public BranchDTO FullBranch { get; set; }
+
 		public IEnumerable<BranchDTO> Branches { get; set; } = new List<BranchDTO>();
 
 		public IEnumerable<VenueDTO> Venues { get; set; } = new List<VenueDTO>();

@@ -19,9 +19,11 @@ namespace BlazorCinemaMS.Client.Services.MoviesService
 
         Task GetAllMovies();
 
-        // Task DeleteMovie(int id);
+        Task<List<MovieDTO>> GetAllActiveMovies();
 
-        Task<bool> DeleteMovie(int movieId);
+		// Task DeleteMovie(int id);
+
+		Task<bool> DeleteMovie(int movieId);
 
 
 

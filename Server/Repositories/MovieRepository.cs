@@ -102,6 +102,13 @@ namespace CinemaMS.Repositories
             return await _context.Movies.Include(m => m.Sessions).AsNoTracking().ToListAsync();
         }
 
+		public async Task<IEnumerable<Movie>> GetAllActiveMoviesAsync()
+		{
+            return await _context.Movies.Where(m => m.Sessions != null && m.Sessions.Count() > 0).ToListAsync();
+		}
 
-    }
+
+
+
+	}
 }

@@ -9,6 +9,14 @@
 
 			return false;
 		}
+
+		public string FormatMinutes(int minutes)
+		{
+			int hrs = minutes / 60;
+			int mins = minutes % 60;
+
+			return hrs > 0 ? $"{hrs} hrs, {mins} mins" : $"{mins} mins";
+		}
 		
 	}
 }
