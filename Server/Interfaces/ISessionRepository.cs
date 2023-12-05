@@ -13,6 +13,10 @@ namespace CinemaMS.Interfaces
 
         Task<bool> SaveAsync();
 
+        Task<bool> AddBooking(Booking booking);
+
+        Task<int> AddBookingWithId(Booking booking);
+
        // Task<IEnumerable<Session>> GetAllSessionsAsync();
 
         Task<List<Session>> GetAllSessionsAsync();

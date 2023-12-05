@@ -4,6 +4,7 @@ using CinemaMS.Interfaces;
 using CinemaMS.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.ComponentModel;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CinemaMS.Repositories
@@ -138,11 +139,27 @@ namespace CinemaMS.Repositories
 
             return session;
         }
-		
+
+
+        public async Task<bool> AddBooking(Booking booking)
+        {
+            await _context.Bookings.AddAsync(booking);
+
+            return await SaveAsync();
+        }
+
+        public async Task<int> AddBookingWithId(Booking booking)
+        {
+            await _context.Bookings.AddAsync(booking);
+            await SaveAsync();
+
+            return booking.Id;
+        }
 
 
 
-		public async Task<bool> DeleteSessionByIdAsync(int sessionId)
+
+        public async Task<bool> DeleteSessionByIdAsync(int sessionId)
 		{
 			Session session = await GetSessionByIdAsync(sessionId);
 

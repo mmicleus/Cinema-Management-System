@@ -639,7 +639,6 @@
 
 		CarouselMovies = ExtractAllMoviesFromBranch();
 		SetStartingDate(data.DayOfWeek);
-
 		InitializeOneWeekDates();
 		//StartingDate = data.DayOfWeek;
 
@@ -660,7 +659,7 @@
 	}
 
 
-	
+
 
 	public void UpdateModel()
 	{
@@ -732,7 +731,11 @@
 	{
 		OneWeekDates = new List<DateTime>();
 
+
+		// ---------------------------------- Come Back ---------------------------------
 		DateTime today = DateTime.Today;
+		//DateTime today = new DateTime(2023, 11, 28);
+
 		OneWeekDates.Add(today);
 
 		for(int i = 1;i <= 6; i++)
@@ -789,7 +792,9 @@
 
 	public void SetStartingDate(DateTime date)
 	{
-		StartingDate = date;
+		// --------------------------- Come back ----------------------
+		//StartingDate = date;
+		StartingDate = new DateTime(2023, 11, 28);
 	}
 
 
@@ -829,19 +834,19 @@
 
 	// --------------------- TO UPDATE ------------------------
 
-	public async Task LoadBranchMoviesPage()
-	{
-		DateAndBranchIdDTO data = new DateAndBranchIdDTO()
-			{
-				DayOfWeek = SelectedDate ?? DateTime.Now,
-				BranchId = SelectedBranch.Id,
-				MovieId = SelectedMovie != null ? SelectedMovie.Id : null
-			};
-		stateContainer.ObjectTunnel.Add(data.GetHashCode(), data);
+	// public async Task LoadBranchMoviesPage()
+	// {
+	// 	DateAndBranchIdDTO data = new DateAndBranchIdDTO()
+	// 		{
+	// 			DayOfWeek = SelectedDate ?? DateTime.Now,
+	// 			BranchId = SelectedBranch.Id,
+	// 			MovieId = SelectedMovie != null ? SelectedMovie.Id : null
+	// 		};
+	// 	stateContainer.ObjectTunnel.Add(data.GetHashCode(), data);
 
-		branchesService.FullBranch = SelectedBranch;
-		navManager.NavigateTo($"/branchMovies/{data.GetHashCode()}");
-	}
+	// 	branchesService.FullBranch = SelectedBranch;
+	// 	navManager.NavigateTo($"/branchMovies/{data.GetHashCode()}");
+	// }
 
 
 

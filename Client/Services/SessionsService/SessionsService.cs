@@ -4,6 +4,7 @@ using BlazorCinemaMS.Shared.ViewModels;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 
 namespace BlazorCinemaMS.Client.Services.SessionsService
 {
@@ -193,6 +194,29 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
             Sessions.Remove(session);
 
 		}
+
+
+        public async Task<bool> AddBooking(BookingDTO booking)
+        {
+            string url = $"api/Admin/bookings";
+            bool result;
+
+            //string branchAsString = JsonSerializer.Serialize(branch);
+
+            string bookingAsString = JsonSerializer.Serialize(booking);
+
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(url,bookingAsString);
+
+                result = await response.Content.ReadAsAsync<bool>();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return result;
+        }
 
 
 

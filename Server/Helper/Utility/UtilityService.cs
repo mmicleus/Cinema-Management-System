@@ -23,6 +23,33 @@ namespace BlazorCinemaMS.Server.Helper.Utility
             _config = config;
         }
 
+        public Customer GetCustomerFromCustomerDTO(CustomerDTO customerDTO)
+        {
+            return new Customer()
+            {
+                FirstName = customerDTO.FirstName,
+                LastName = customerDTO.LastName,
+                Email = customerDTO.Email,
+                Phone = customerDTO.Phone,
+                Address = customerDTO.Address,
+                NameOnCard = customerDTO.NameOnCard,
+                CardNumber = customerDTO.CardNumber,
+                ExpMonth = customerDTO.ExpMonth,
+                ExpYear = customerDTO.ExpYear,
+                CVV = customerDTO.CVV,
+            };
+        }
+
+
+        public Booking GetBookingFromBookingDTO(BookingDTO bookingDTO)
+        {
+            return new Booking()
+            {
+                TotalAmount = bookingDTO.TotalAmount,
+                Customer = GetCustomerFromCustomerDTO(bookingDTO.Customer),
+                Seats = bookingDTO.Seats.Adapt<IEnumerable<Seat>>()
+            };
+        }
 
         public List<Session> GetSessionsByDate(List<Session> sessions, DateOnly date)
         {

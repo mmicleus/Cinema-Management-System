@@ -19,10 +19,34 @@ namespace BlazorCinemaMS.Shared.DTOs
 
 		public string Email { get; set; }
 
+		public string Phone { get; set; }
+
 		public string Address { get; set; }
 
+        //-----------------  Credit Card Details ----------------
 
-		public int BookingId { get; set; }
+      //  [Required]
+        public string NameOnCard { get; set; }
+
+     //   [Required]
+        public string CardNumber { get; set; }
+
+     //   [Required]
+        //[CreditCard(ErrorMessage = "Invalid Card Number")]
+        public string ExpMonth { get; set; }
+
+       // [Required]
+        //[CreditCard(ErrorMessage = "Invalid Card Number")]
+        public string ExpYear { get; set; }
+
+      //  [Required]
+        public string CVV { get; set; }
+
+
+        //-----------------  End of Credit Card Details ----------------
+
+
+        public int BookingId { get; set; }
 		public BookingDTO Booking { get; set; }
 
 

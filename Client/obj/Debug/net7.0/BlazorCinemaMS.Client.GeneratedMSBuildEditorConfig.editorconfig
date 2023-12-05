@@ -68,6 +68,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxCcmFuY2hNb3ZpZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/User/Checkout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxDaGVja291dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/User/LandingPage.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxMYW5kaW5nUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

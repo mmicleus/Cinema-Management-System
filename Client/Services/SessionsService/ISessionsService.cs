@@ -20,6 +20,8 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 
 		Task<SessionDTO> GetFullSessionByIdForUser(int sessionId);
 
+		Task<bool> AddBooking(BookingDTO booking);
+
 
 
 

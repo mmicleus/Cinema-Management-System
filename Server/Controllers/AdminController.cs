@@ -1,4 +1,5 @@
-﻿using BlazorCinemaMS.Server.Helper.Utility;
+﻿using BlazorCinemaMS.Client.Pages.Admin;
+using BlazorCinemaMS.Server.Helper.Utility;
 using BlazorCinemaMS.Server.Repositories.SharedRepository;
 using BlazorCinemaMS.Server.Services.NetworkService;
 using BlazorCinemaMS.Shared.DTOs;
@@ -303,7 +304,29 @@ namespace BlazorCinemaMS.Server.Controllers
 		}
 
 
-       
+        [HttpPost("bookings")]
+        public async Task<bool> AddBooking([FromBody] string bookingAsString)
+        {
+            BookingDTO bookingDTO = JsonSerializer.Deserialize<BookingDTO>(bookingAsString);
+            Booking booking = _utility.GetBookingFromBookingDTO(bookingDTO);
+
+            bool result = await _sessionRepo.AddBooking(booking);
+
+            return result; 
+        }
+
+        //[HttpPost("bookings")]
+        //public async Task<bool> AddBooking([FromBody] int bookingId)
+        //{
+        //    // Booking booking = bookingDTO.Adapt<Booking>();
+
+        //    // bool result = await _sessionRepo.AddBooking(booking);
+
+        //    return true ;
+        //}
+
+
+
 
 
 

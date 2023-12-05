@@ -45,8 +45,10 @@ builder.Services.AddScoped<IUtilityService, UtilityService>();
 builder.Services.AddScoped<ISharedRepository, SharedRepository>();
 
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
+builder.Services.AddDbContext<AppDbContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+  //  options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    }
 );
 
 

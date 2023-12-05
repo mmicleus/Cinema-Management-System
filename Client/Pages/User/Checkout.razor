@@ -1,0 +1,309 @@
+﻿@page "/Checkout/{SetHashCode:int}"
+@inject StateContainer stateContainer;
+@inject ISessionsService SessionsService
+
+<div class="container main-container">
+    <div class="row">
+        <!-- first column -->
+        <div class="col-12 col-md-6 first-column">
+
+            <!-- Movie container -->
+
+            <div class="container movie-container">
+                <div class="row">
+                    <div class="col-12 p-0">
+                        <img src=@(Session != null ? Session.Movie.BackdropPath : "") class="movie-img" alt="">
+                    </div>
+                    <div class="col-12">
+                        <div class="booking-details mt-4">
+                            <h3 class="hero-booking">NOW BOOKING</h3>
+                            <h3 class="hero-name">@(Session != null ? Session.Movie.Title : "-")</h3>
+                            <p class="movie-time">@(Session != null ? (Session.StartTime.ToString("MMMM dd")+", "+ @Session.StartTime.ToString("h:mm tt") + " - " + @Session.EndTime.ToString("h:mm tt")) : "-")</p>
+                        </div>
+
+
+                        @if(SeatsWithClass != null)
+                        {
+                            @foreach (SeatsWithClassVM group in SeatsWithClass)
+                            {
+                                @if (group.Seats != null && group.Seats.Count() > 0)
+                                {
+                                    <div class="seats">
+                                        <hr>
+                                        <div class="d-flex justify-content-between">
+                                            <span><span class="nr-of-seats">@group.Seats.Count()</span> <span>@group.SeatClass.ToString()</span> Seats</span>
+                                            <div class="seats-container d-flex flex-wrap">
+
+                                                @foreach (SeatDTO seat in group.Seats)
+                                                {
+                                                    <span>@seat.Label</span>
+                                                }
+
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                }
+                            }
+                        }
+
+                      
+                        <div>
+                            <div class="d-flex justify-content-between total"><span>Total</span><span>€<span class="total-euros">@BookingCost</span></span></div>
+                            <hr>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- second column -->
+        <div class="col-12 col-md-6 second-column">
+
+            <!-- Form Container -->
+            <div class="container form-container py-5">
+                <h1 class="mb-4">Cinema Ticket Checkout</h1>
+                <EditForm Model="Customer" OnValidSubmit="HandleValidFormSubmit">
+                    <DataAnnotationsValidator/>
+
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <InputText id="name" @bind-Value="Customer.FirstName" class="form-control" maxlength="40" placeholder="John"></InputText>
+                        <ValidationMessage For="@(() => Customer.FirstName)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <InputText id="lastname" @bind-Value="Customer.LastName" class="form-control" max-length="40" placeholder="Doe"></InputText>
+                        <ValidationMessage For="@(() => Customer.LastName)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <InputText id="email" @bind-Value="Customer.Email" class="form-control" placeholder="example@gmail.com"></InputText>
+                        <ValidationMessage For="@(() => Customer.Email)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <InputText id="phone" @bind-Value="Customer.Phone" class="form-control" placeholder="+353 891234567"></InputText>
+                        <ValidationMessage For="@(() => Customer.Phone)" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <InputText id="address" @bind-Value="Customer.Address" class="form-control" maxlength="40" placeholder="One Park Place Hatch St, 2, Dublin, Ireland"></InputText>
+                        <ValidationMessage For="@(() => Customer.Address)" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="nameOnCard" class="form-label">Name On Card</label>
+                        <InputText id="nameOnCard" @bind-Value="Customer.CreditCardDetails.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
+                        <ValidationMessage For="@(() => Customer.CreditCardDetails.NameOnCard)" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="creditcard" class="form-label">Credit Card Number</label>
+                        <InputText id="creditcard" @bind-Value="Customer.CreditCardDetails.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
+                        <ValidationMessage For="@(() => Customer.CreditCardDetails.CardNumber)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="expmonth" class="form-label">Exp Month</label>
+                        <InputText id="expmonth" @bind-Value="Customer.CreditCardDetails.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
+                        <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpMonth)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="expyear" class="form-label">Exp Year</label>
+                        <InputText id="expyear" @bind-Value="Customer.CreditCardDetails.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
+                        <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpYear)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cvv" class="form-label">CVV</label>
+                        <InputText id="cvv" @bind-Value="Customer.CreditCardDetails.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
+                        <ValidationMessage For="@(() => Customer.CreditCardDetails.CVV)" />
+                    </div>
+                    <br>
+                    @* <ValidationSummary /> *@
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+
+                    @* <div class="mb-3">
+                        <label for="name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="name" onInput="validateFullName()" required placeholder="John More Doe" aria-describedby="validationFullName">
+                        <div id="validationFullName" class="invalid-feedback">
+                            Please provide your name
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" onInput="validateEmail()" required placeholder="john@example.com" aria-describedby="validationEmail">
+                        <div id="validationEmail" class="invalid-feedback">
+                            Invalid email
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone" onInput="validatePhone()" required placeholder="+353 123456789" maxlength="14" aria-describedby="validationPhoneNumber">
+                        <div id="validationPhoneNumber" class="invalid-feedback">
+                            Invalid phone number
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cardName" class="form-label">Name on Card</label>
+                        <input type="tel" class="form-control" id="cardName" onInput="validateNameOnCard()" required placeholder="John More Doe" aria-describedby="validationNameOnCard">
+                        <div id="validationNameOnCard" class="invalid-feedback">
+                            Please provide the name on your card
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Credit card number</label>
+                        <input type="text" class="form-control" id="cardNumber" onInput="validateCreditCardNumber()" placeholder="1111 2222 3333 4444" maxlength="19" aria-describedby="validationCreditCardNumber">
+                        <div id="validationCreditCardNumber" class="invalid-feedback">
+                            Invalid credit card number
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exp-month" class="form-label">Exp Month</label>
+                        <input type="text" class="form-control" id="exp-month" onInput="validateExpMonth()" required placeholder="01" maxlength="2" aria-describedby="validationExpMonth">
+                        <div id="validationExpMonth" class="invalid-feedback">
+                            Please provide your card's expiration month
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exp-year" class="form-label">Exp Year</label>
+                        <input type="text" class="form-control" id="exp-year" onInput="validateExpYear()" required placeholder="24" maxlength="2" aria-describedby="validationExpYear">
+                        <div id="validationExpYear" class="invalid-feedback">
+                            Please provide your card's expiration year
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cvv" class="form-label">CVV</label>
+                        <input type="text" class="form-control" id="cvv" onInput="validateCVV()" required placeholder="123" maxlength="3" aria-describedby="validationCVV">
+                        <div id="validationCVV" class="invalid-feedback">
+                            Please provide your card's CVV
+                        </div>
+                    </div>
+                    <!-- submit button -->
+                    <button type="button" onclick="onSubmit()" class="btn btn-primary">Pay</button> *@
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int SetHashCode { get; set; }
+    public SessionDTO Session { get; set; }
+    public List<SeatDTO> Seats { get; set; }
+    public double BookingCost { get; set; }
+    public List<SeatsWithClassVM> SeatsWithClass { get; set; }
+
+    public CustomerVM Customer { get; set; } = new CustomerVM() { CreditCardDetails = new CreditCardDetailsVM() };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //ShowQuickbookAfterSeconds(4);
+        var data = (SessionAndSeatsDTO)stateContainer.ObjectTunnel[SetHashCode];
+        Session = data.Session;
+        Seats = data.Seats.ToList();
+
+        BookingCost = GetBookingCost();
+        SeatsWithClass = GetSeatsByClass();
+
+    }
+
+
+    public double GetSeatPrice(SeatDTO seat)
+    {
+        switch (seat.SeatClass)
+        {
+            case SeatClass.ECONOMY:
+                return Session.Pricing.Economy;
+                break;
+            case SeatClass.STANDARD:
+                return Session.Pricing.Standard;
+                break;
+            case SeatClass.PREMIUM:
+                return Session.Pricing.Premium;
+                break;
+            default:
+                return 0;
+        }
+    }
+
+
+    public double GetBookingCost()
+    {
+        if (Seats == null) return 0;
+
+        return Seats.Sum(s => GetSeatPrice(s));
+    }
+
+    public async Task HandleValidFormSubmit()
+    {
+        CustomerDTO customerDTO = GetCustomerDTOFromCustomerVM(Customer);
+        BookingDTO bookingDTO = new BookingDTO()
+        {
+            TotalAmount = BookingCost,
+            Customer = customerDTO,
+            Seats = Seats,
+            SessionId = Session.Id
+        };
+
+       bool result = await SessionsService.AddBooking(bookingDTO);
+    }
+
+
+    public CustomerDTO GetCustomerDTOFromCustomerVM(CustomerVM customerVM)
+    {
+        return new CustomerDTO()
+            {
+                FirstName = customerVM.FirstName,
+                LastName = customerVM.LastName,
+                Email = customerVM.Email,
+                Phone = customerVM.Phone,
+                Address = customerVM.Address,
+                NameOnCard = customerVM.CreditCardDetails.NameOnCard,
+                CardNumber = customerVM.CreditCardDetails.CardNumber,
+                ExpMonth = customerVM.CreditCardDetails.ExpMonth,
+                ExpYear = customerVM.CreditCardDetails.ExpYear,
+                CVV = customerVM.CreditCardDetails.CVV
+            };
+    }
+
+
+    public List<SeatsWithClassVM> GetSeatsByClass()
+    {
+        List<SeatsWithClassVM> seats = new List<SeatsWithClassVM>();
+        List<SeatDTO> EconomySeats = Seats.Where(s => s.SeatClass == SeatClass.ECONOMY).ToList();
+        List<SeatDTO> StandardSeats = Seats.Where(s => s.SeatClass == SeatClass.STANDARD).ToList();
+        List<SeatDTO> PremiumSeats = Seats.Where(s => s.SeatClass == SeatClass.PREMIUM).ToList();
+
+        seats.Add(new SeatsWithClassVM()
+            {
+                SeatClass = SeatClass.ECONOMY,
+                Seats = EconomySeats
+            });
+
+        seats.Add(new SeatsWithClassVM()
+            {
+                SeatClass = SeatClass.STANDARD,
+                Seats = StandardSeats
+            });
+
+        seats.Add(new SeatsWithClassVM()
+            {
+                SeatClass = SeatClass.PREMIUM,
+                Seats = PremiumSeats
+            });
+
+        return seats;
+    }
+
+}
