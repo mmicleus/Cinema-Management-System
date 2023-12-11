@@ -87,7 +87,7 @@
 					// DayOfWeek = SelectedDate ?? DateTime.Now,
 					// BranchId = SelectedBranch.Id,
 					// MovieId = SelectedMovie != null ? SelectedMovie.Id : null
-					<button class="quickbook-search-btn" @onclick="@(()=>{LoadBranchMoviesPage(SelectedDate ?? DateTime.Now,SelectedBranch.Id,SelectedBranch,SelectedMovie != null ? SelectedMovie.Id : null);})">Search</button>
+					<button class="quickbook-search-btn" @onclick="@(()=>{LoadBranchMoviesPage(SelectedDate ?? null,SelectedBranch.Id,SelectedBranch,SelectedMovie != null ? SelectedMovie.Id : null);})">Search</button>
 				}
 				else
 				{
@@ -124,7 +124,7 @@
 				<ul class="modal-list">
 					@foreach(BranchDTO branch in Branches)
 					{
-						<li class="mb-3" data-bs-dismiss="modal" @onclick="@(()=>{LoadBranchMoviesPage(DateTime.Today,branch.Id,null,null);})">@branch.Name</li>
+						<li class="mb-3" data-bs-dismiss="modal" @onclick="@(()=>{SaveSelectedBranch(branch);})">@branch.Name</li>
 					}
 				</ul>
 			}
@@ -286,7 +286,7 @@
 <!-- Start of navbar -->
 <nav class="navbar navbar-expand-lg bg-dark">
 	<div class="container-fluid">
-		<a class="navbar-brand text-warning" href="index.html" id="logo">CINEMAX</a>
+		<a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
 		<button class="navbar-toggler"
 				type="button"
 				data-bs-toggle="collapse"
@@ -321,16 +321,16 @@
 		
 		@if(ActiveMovies != null && ActiveMovies.Count() > 0)
 		{
-			
-			@for(int i = 0; i < ActiveMovies.Count();i++)
+
+			@foreach (var item in ActiveMovies.Select((movie, index) => (movie, index)))
 			{
-				<div class="@(i == 0 ? "carousel-item active" : "carousel-item")">
-					<img src="@ActiveMovies[i].BackdropPath"
+				<div class="@(item.index == 0 ? "carousel-item active" : "carousel-item")">
+					<img src="@item.movie.BackdropPath"
 						  class="d-block w-100" style="height:70vh;"
 						  alt="..." />
 					<div class="carousel-footer">
-						<h2>@ActiveMovies[i].Title</h2>
-						<button class="book-btn" data-name="@ActiveMovies[i].Title">BOOK NOW</button>
+						<h2>@item.movie.Title</h2>
+						<button class="book-btn" data-name="@item.movie.Title" @onclick="@(() => {LoadBranchMoviesPage(DateTime.Today,Branch1.Id,null,item.movie.Id);})">BOOK NOW</button>
 					</div>;
 				</div>
 			}
@@ -370,7 +370,7 @@
 
 @* ------------------------ Start of main container -------------------------- *@
 
-<div class="container">
+<div class="container mb-5">
 
 
 	<!-- Start of search bar -->
@@ -378,17 +378,19 @@
 	<div class="container mt-5 mb-5">
 		<div class="row">
 			<div class="col-12 col-md-6">
-				<h2 class="title">SEE WHAT'S ON AT</h2>
+				<h4 class="title text-warning">SEE WHAT'S ON AT</h4>
 			</div>
 			<div class="col-12 col-md-6">
+				<div class="d-flex">
 
-				<div class="p-2 d-flex justify-content-between" style="border-bottom:1px solid lightgray;cursor:pointer;" data-bs-toggle="modal" data-bs-target="#BranchesModal1">
+				<div class="p-2 d-flex justify-content-between me-3" style="border-bottom:1px solid lightgray;cursor:pointer;width:30rem;" data-bs-toggle="modal" data-bs-target="#BranchesModal1">
 					<span style="color:lightgray;">@(Branch1 != null ? Branch1.Name : "Select Branch")</span>
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-search" viewBox="0 0 16 16">
 						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
 					</svg>
 				</div>
-				@* <button type="button" class="btn btn-outline-dark" @onclick="@(() => ShowMoviesInBranch())">Go</button> *@
+				 <button type="button" class="btn btn-outline-warning" @onclick="@(() => SearchBtnClicked())">Go</button>
+				</div>
 				
 			</div>
 		</div>
@@ -401,23 +403,29 @@
 
 
 	<div class="top-movies-container">
-		<h3>Top Films</h3>
+		<h4 class="text-warning mb-4">Top Films at <span>@(Branch1!=null ? Branch1.Name:"-")</span></h4>
 
 		<div class="container">
 			<div class="row">
 
 				@if(ActiveMovies != null && ActiveMovies.Count() > 0)
 				{
-					@for(int i = 0;i < Math.Min(ActiveMovies.Count(),12); i++)
+					@foreach (var item in ActiveMovies.Select((movie, index) => (movie, index)))
 					{
-						<div class="col-2 mb-4">
-							<div class="d-flex flex-column justify-content-center active-movie-container" @onclick="@(()=>{LoadBranchMoviesPage(DateTime.Today,Branch1.Id,null,ActiveMovies[i].Id);})">
-								<img class="w-100 mb-3" style="height:auto;" src="@ActiveMovies[i].PosterPath">
-								<span class="text-center movie-title">@ActiveMovies[i].Title</span>
+						@if (item.index <= 11)
+						{
+							<div class="col-2 mb-4">
+
+								<div class="d-flex flex-column justify-content-center active-movie-container" @onclick="@(()=>{LoadBranchMoviesPage(null,Branch1.Id,null,item.movie.Id);})">
+									<img class="w-100 mb-3" style="height:auto;" src="@item.movie.PosterPath">
+									<span class="text-center text-light movie-title">@item.movie.Title</span>
+								</div>
+
 							</div>
-							
-						</div>
+						}
 					}
+
+				
 
 				}
 				else
@@ -476,6 +484,8 @@
 	public List<DateTime> DaysOfWeek = new List<DateTime>();
 	public List<SessionDTO> MatchingSessions = null;
 
+	public DateAndBranchIdDTO SelectedData { get; set; } = null;
+
 
 	public List<MovieDTO> MoviesInSelectedBranch = null;
 
@@ -490,8 +500,14 @@
 		//ShowQuickbookAfterSeconds(4);
 		DaysOfWeek = GetNext20Days();
 		Branches = await branchesService.GetJustBranches();
-		if (Branches != null && Branches.Count() > 0) Branch1 = Branches[0];
-		ActiveMovies = await moviesService.GetAllActiveMovies();
+		if (Branches != null && Branches.Count() > 0) { 
+
+			Branch1 = await branchesService.GetFullBranchById(Branches[0].Id);
+
+			ActiveMovies = GetAllMoviesInBranch(Branch1);
+
+		}
+		//ActiveMovies = await moviesService.GetAllActiveMovies();
 		ShowQuickbookNow();
 	}
 
@@ -568,6 +584,11 @@
 				foreach (SessionDTO session in venue.Sessions)
 				{
 					movies.Add(session.Movie);
+
+					// if (session.StartTime > DateTime.Now)
+					// {
+					// 	movies.Add(session.Movie);
+					// }
 				}
 			}
 		}
@@ -642,12 +663,12 @@
 		return sessions;
 	}
 
-	public void ShowMoviesInBranch()
-	{
-		if (Branch1 == null) return;
+	// public void ShowMoviesInBranch()
+	// {
+	// 	if (Branch1 == null) return;
 
-		navManager.NavigateTo($"/branchMovies/{Branch1.Id}");
-	}
+	// 	navManager.NavigateTo($"/branchMovies/{Branch1.Id}");
+	// }
 
 
 	public void LoadBookingPage(SessionDTO session)
@@ -656,8 +677,26 @@
 	}
 
 
-	public async Task LoadBranchMoviesPage(DateTime dayOfWeek,int branchId,BranchDTO branch, int? movieId)
+	public async Task SaveSelectedBranch(BranchDTO branch)
 	{
+		Branch1 = await branchesService.GetFullBranchById(branch.Id);
+		ActiveMovies = GetAllMoviesInBranch(Branch1);
+		StateHasChanged();
+
+	}
+
+	public void SearchBtnClicked()
+	{
+		if (Branch1 != null)
+		{
+			LoadBranchMoviesPage(null, Branch1.Id, null, null);
+		}
+	}
+
+
+	public void LoadBranchMoviesPage(DateTime? dayOfWeek,int branchId,BranchDTO branch, int? movieId)
+	{
+		
 		DateAndBranchIdDTO data = new DateAndBranchIdDTO()
 			{
 				DayOfWeek = dayOfWeek,

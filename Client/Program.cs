@@ -1,6 +1,7 @@
 using BlazorCinemaMS.Client;
 using BlazorCinemaMS.Client.Services;
 using BlazorCinemaMS.Client.Services.BranchesService;
+using BlazorCinemaMS.Client.Services.EmailService;
 using BlazorCinemaMS.Client.Services.MoviesService;
 using BlazorCinemaMS.Client.Services.SessionsService;
 using BlazorCinemaMS.Client.Services.UtilityService;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IMoviesService,MoviesService>();
 builder.Services.AddScoped<IBranchesService, BranchesService>();
 builder.Services.AddScoped<ISessionsService, SessionsService>();
 builder.Services.AddScoped<IUtilityService, UtilityService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 await builder.Build().RunAsync();

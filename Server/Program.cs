@@ -1,5 +1,6 @@
 using BlazorCinemaMS.Server.Helper.Utility;
 using BlazorCinemaMS.Server.Repositories.SharedRepository;
+using BlazorCinemaMS.Server.Services.EmailService;
 using BlazorCinemaMS.Server.Services.NetworkService;
 using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.ViewModels;
@@ -27,14 +28,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-
-
 builder.Services.AddRazorPages();
 
 
 
 
 builder.Services.AddTransient<DataSeeder>();
+builder.Services.AddTransient<IEmailService,EmailService>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();

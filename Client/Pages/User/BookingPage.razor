@@ -12,7 +12,7 @@
 <!-- Start of navbar -->
 <nav class="navbar navbar-expand-lg bg-dark">
 	<div class="container-fluid">
-		<a class="navbar-brand text-warning" href="index.html" id="logo">CINEMAX</a>
+		<a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
 		<button class="navbar-toggler"
 				type="button"
 				data-bs-toggle="collapse"
@@ -76,7 +76,31 @@
 
                     <div class="d-flex flex-column mb-2">
 
-                        <table class="me-3">
+                        @if (Message.Text != String.Empty)
+                        {
+                            @if (Message.Category == MessageCategory.Success)
+                            {
+                                <div class="alert alert-success text-center" role="alert">
+                                   <b>@((MarkupString)Message.Text)</b>
+                                </div>
+                            }
+                            else if (Message.Category == MessageCategory.Error)
+                            {
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <b>@((MarkupString)Message.Text)</b>
+                                </div>
+                            }
+
+                        }
+
+                        @if (Session != null && NrOfAvailableSeats == 0)
+                        {
+                                    <div class="alert alert-danger w-100 text-center" role="alert">
+                                        <b>Seats booked out!</b>
+                                    </div>   
+                        }
+
+                        <table class="me-3" style=@(NrOfAvailableSeats == 0 ? "opacity:0.3;":"opacity:1;")>
                             <tr>
                                 <td></td>
                                 @for (int i = 0; i < Session.Venue.NrOfColumns; i++)
@@ -253,9 +277,27 @@
                         <div class=" align-items-center">
                             <h1 class="how-many-seats text-center">HOW MANY SEATS?</h1>
                             <div class="seats-selection d-flex justify-content-center mt-3">
-                                <button class="minus" @onclick="DecrementSeatCount">-</button>
+                                @if(NrOfAvailableSeats > 0)
+                                {
+                                    <button class="minus" @onclick="DecrementSeatCount">-</button>
+                                }
+                                else
+                                {
+                                    <button class="minus" @onclick="DecrementSeatCount" disabled>-</button>
+                                }
+
                                 <span id="seatsDisplay" class="ms-3 me-3 d-flex align-items-center">@SeatCount</span>
-                                <button class="plus" @onclick="IncrementSeatCount">+</button>
+
+                                @if(NrOfAvailableSeats > 0){
+                                    <button class="plus" @onclick="IncrementSeatCount">+</button>
+                                }
+                                else
+                                {
+                                    <button class="plus" @onclick="IncrementSeatCount" disabled>+</button>
+                                }
+
+                                
+                                
                             </div>
                         </div>
 
@@ -351,13 +393,24 @@
 
                         </div>
 
-                        <div class="total mb-5 mt-3">
-                            <span>Total:</span>
+                        <div class="total mb-5 mt-3" style="color:#000;">
+                            <span><b>Total:</b></span>
 
-                            <span class="totalDisplay">€@TotalBookingCost</span>
+                            <span class="totalDisplay ms-3">€@TotalBookingCost</span>
                         </div>
+                        
+                        @if(NrOfAvailableSeats > 0)
+                        {
+                            <button class="payBtn" @onclick="(() => {OnReviewAndPayClick();})">
+                                    <span>REVIEW AND PAY</span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="payBtn" @onclick="(() => {OnReviewAndPayClick();})" disabled>REVIEW AND PAY</button>
+                        }
 
-                        <button class="payBtn" @onclick="(() => {OnReviewAndPayClick();})">REVIEW AND PAY</button>
+                        
 
 
 
@@ -432,9 +485,6 @@
                         </div>
                     </div>
 
-
-
-
                 </div>
 
                 <div class="col-12 col-lg-4">
@@ -460,10 +510,6 @@
                         </div>
 
                         <button class="payBtn" >REVIEW AND PAY</button>
-
-
-
-
                     </div>
 
                 </div>
@@ -502,6 +548,8 @@
 
     public SessionDTO Session { get; set; } = null;
 
+    public Message Message { get; set; } = new Message();
+
     List<SeatStatus> selectedSeats = new List<SeatStatus>();
 
     List<SeatDTO> AddedSeats = new List<SeatDTO>();
@@ -511,7 +559,13 @@
 
     public int SeatCount { get; set; } = 1;
 
+    public int NrOfAvailableSeats { get; set; }
+    public int NrOfBookedSeats { get; set; }
+
+
     double TotalBookingCost { get; set; } = 0;
+
+    public bool ShowSpinner = false;
 
 
 
@@ -528,7 +582,22 @@
         // await Task.Delay(1000000);
         Session = await SessionsService.GetFullSessionByIdForUser(int.Parse(SessionId));
 
+        NrOfAvailableSeats = GetNrOfAvailableSeats();
+        NrOfBookedSeats = GetNrOfBookedSeats();
+
         InitializeSelectedSeatsList();
+    }
+
+    public async Task ShowMessage(MessageCategory category, string message, int seconds)
+    {
+        Message.Category = category;
+        Message.Text = message;
+        StateHasChanged();
+
+        await Task.Delay(seconds * 1000);
+
+        Message.Text = string.Empty;
+        StateHasChanged();
     }
 
 
@@ -543,22 +612,38 @@
         }
     }
 
-  
+
 
     public void OnReviewAndPayClick()
     {
-        if (AddedSeats == null || AddedSeats.Count() == 0) return;
 
-        SessionAndSeatsDTO data = new SessionAndSeatsDTO()
-            {
-                Session = Session,
-                Seats = AddedSeats
-            };
+        if (AddedSeats == null || AddedSeats.Count() == 0){
 
-        stateContainer.ObjectTunnel.Add(data.GetHashCode(), data);
+            ShowMessage(MessageCategory.Error, "No Seats Selected", 4);
+            return;
+        }
 
-      //  branchesService.FullBranch = branch;
-        navManager.NavigateTo($"/Checkout/{data.GetHashCode()}");
+        ShowSpinner = true;
+
+        try
+        {
+            SessionAndSeatsDTO data = new SessionAndSeatsDTO()
+                {
+                    Session = Session,
+                    Seats = AddedSeats
+                };
+
+            stateContainer.ObjectTunnel.Add(data.GetHashCode(), data);
+
+            //  branchesService.FullBranch = branch;
+            navManager.NavigateTo($"/Checkout/{data.GetHashCode()}");
+        }
+        catch
+        {
+            ShowSpinner = false;
+        }
+
+        
     }
 
 

@@ -1,6 +1,7 @@
 ﻿using BlazorCinemaMS.Client.Pages.Admin;
 using BlazorCinemaMS.Server.Helper.Utility;
 using BlazorCinemaMS.Server.Repositories.SharedRepository;
+using BlazorCinemaMS.Server.Services.EmailService;
 using BlazorCinemaMS.Server.Services.NetworkService;
 using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.ViewModels;
@@ -25,13 +26,15 @@ namespace BlazorCinemaMS.Server.Controllers
         private readonly IBranchRepository _branchRepo;
         private readonly ISessionRepository _sessionRepo;
         private readonly ISharedRepository _sharedRepo;
+        public readonly IEmailService _emailService;    
 		public AdminController(
             IMoviesService moviesService,
             IUtilityService utilityService,
             IMovieRepository movieRepository,
             IBranchRepository branchRepository,
             ISessionRepository sessionRepository,
-			ISharedRepository sharedRepo) {
+			ISharedRepository sharedRepo,
+            IEmailService emailService) {
             
            _moviesService = moviesService;
             _utility = utilityService; 
@@ -39,6 +42,7 @@ namespace BlazorCinemaMS.Server.Controllers
             _branchRepo = branchRepository;
             _sessionRepo = sessionRepository;
             _sharedRepo = sharedRepo;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -309,10 +313,38 @@ namespace BlazorCinemaMS.Server.Controllers
         {
             BookingDTO bookingDTO = JsonSerializer.Deserialize<BookingDTO>(bookingAsString);
             Booking booking = _utility.GetBookingFromBookingDTO(bookingDTO);
+            ICollection<Seat> Seats = _sessionRepo.GetTrackedSeats(booking.Seats);
+            booking.Seats = Seats;
+
 
             bool result = await _sessionRepo.AddBooking(booking);
 
+
             return result; 
+        }
+
+        [HttpPost("confirmationEmail")]
+        public async Task SendConfirmationEmail([FromBody] string data)
+        {
+            SessionAndBookingDTO sessionAndBooking = JsonSerializer.Deserialize<SessionAndBookingDTO>(data);
+
+            Venue venue = await _branchRepo.GetVenueByIdWithBranch(sessionAndBooking.Session.VenueId);
+
+            sessionAndBooking.Session.Venue = venue.Adapt<VenueDTO>();
+
+            EmailDTO email = _utility.GetEmail(sessionAndBooking);
+
+            _emailService.SendEmail(email);
+        }
+
+
+
+        [HttpGet("customerByBooking/{bookingId}")]
+        public async Task<CustomerDTO> GetCustomerByBookingId(int bookingId)
+        {
+            Customer customer = await _sessionRepo.GetCustomerByBookingId(bookingId);
+
+            return customer != null ? _utility.GetCustomerDTOFromCustomer(customer) : null;
         }
 
         //[HttpPost("bookings")]

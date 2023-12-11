@@ -257,6 +257,11 @@ namespace CinemaMS.Repositories
             return _context.Venues.FirstOrDefault(v => v.Id == venueId);
         }
 
+        public async Task<Venue> GetVenueByIdWithBranch(int venueId)
+        {
+            return await _context.Venues.Include(v => v.Branch).FirstOrDefaultAsync(v => v.Id == venueId);
+        }
+
 
 
 

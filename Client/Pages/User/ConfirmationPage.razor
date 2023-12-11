@@ -1,0 +1,184 @@
+﻿@page "/confirmation/{SetHashCode:int}" 
+@* @page "/confirmation" *@
+@inject StateContainer stateContainer
+@inject NavigationManager navManager
+
+
+<!-- Start of navbar -->
+
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="quiz.html">Play Game</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- end of navbar -->
+
+<div class="container confirmation-container mt-5 mb-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8">
+
+
+            <div class="card">
+                <div class="invoice p-5">
+                    <h3 id="message">Your order is Confirmed!</h3>
+                    <div class="d-flex justify-content-center"><i class="fa-solid fa-square-check" style="color: #37d317;"></i></div>
+
+                    <div class="cust-information-card">
+                        <h3 class="mb-4"><b>Customer Information</b></h3>
+
+                        <div class="container-fluid info-container">
+                            <div class="row mb-4">
+                                <div class="customer-name col-6">
+                                    <h5><b>Full name</b></h5>
+                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.FirstName + " " + data.Booking.Customer.LastName : "-")</span>
+                                </div>
+                                <div class="customer-name col-6">
+                                    <h5><b>Phone</b></h5>
+                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.Phone : "-")</span>
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="customer-email col-6">
+                                    <h5><b>Email</b></h5>
+                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.Email : "-")</span>
+                                </div>
+                                <div class="customer-email col-6">
+                                    <h5><b>Address</b></h5>
+                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.Address : "-")</span>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+
+                    <div class="order-details-card card">
+                        <h3 class="mb-4"><b>Credit Card Details</b></h3>
+
+                        <div class="container-fluid info-container">
+                            <div class="row mb-4">
+                                <div class="customer-name col-6">
+                                    <h5><b>Name On Card</b></h5>
+                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.NameOnCard : "-")</span>
+                                </div>
+                                <div class="customer-email col-6">
+                                    <h5><b>Exp. Month</b></h5>
+                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.ExpMonth : "-")</span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="customer-name col-6">
+                                    <h5><b>Card Number</b></h5>
+                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.CardNumber : "-")</span>
+                                </div>
+                                <div class="customer-email col-6">
+                                    <h5><b>Exp. Year</b></h5>
+                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.ExpYear : "-")</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="customer-name col-6">
+                                   
+                                </div>
+                                <div class="customer-email col-6">
+                                    <h5><b>CVV</b></h5>
+                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.CVV : "-")</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="order-details-card">
+                        <h3 class="mb-4"><b>Order Details</b></h3>
+
+                        <div class="container-fluid container order-details-container">
+                            <div class="row">
+                                <div class="col-6"><h5><b>Your movie choice</b></h5><span class="detail" id="movie-output">@(data != null ? data.Session.Movie.Title : "Insidious")</span></div>
+                                <div class="col-6"><h5><b>Time</b></h5><span class="detail" id="time-output">@(data != null ? data.Session.StartTime.ToString("ddd, dd MMMM") : "-")</span></div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h5><b>Location</b></h5><span class="detail" id="movie-output">
+                                       <span> @(data != null ? (data.Session.Venue.Branch.Name)  : "-") </span>
+                                        <br/>
+                                        <span> @(data != null ? (data.Session.Venue.Name) : "-") </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12"><h5><b>Seats</b></h5>
+                                    <span class="detail seats-container" id="seat-output">
+                                        @if(data != null)
+                                        {
+                                            @foreach(SeatDTO seat in data.Booking.Seats)
+                                            {
+                                                <span>@seat.Label</span>
+                                            }
+                                        }
+                                </span></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="total-section">
+                        <hr>
+                        <div class="total-container d-flex justify-content-between ps-5 pe-5">
+                            <span class="total-label">Total:</span><span><span id="total-output">@(data != null ? data.Booking.TotalAmount : "0")</span> €</span>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <button class="home-btn" @onclick="@(() => {GoToLandingPage();})">Home</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int SetHashCode { get; set; }
+
+    SessionAndBookingDTO data { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = (SessionAndBookingDTO)stateContainer.ObjectTunnel[SetHashCode];
+        StateHasChanged();
+
+        stateContainer.ObjectTunnel.Remove(SetHashCode);
+    }
+
+    public void GoToLandingPage()
+    {
+        navManager.NavigateTo("/");
+    }
+
+}

@@ -4,6 +4,7 @@ using CinemaMS.Interfaces;
 using CinemaMS.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Collections;
 using System.ComponentModel;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -77,7 +78,7 @@ namespace CinemaMS.Repositories
                 .Include(s => s.Pricing)
                 .Include(s => s.Movie)
                 .Include(s => s.Bookings).ThenInclude(b => b.User)
-                .Include(s => s.Bookings).ThenInclude(b => b.Customer)
+                //.Include(s => s.Bookings).ThenInclude(b => b.Customer)
 				.Include(s => s.Bookings).ThenInclude(b => b.Seats)
 				// .Include(s => s.Venue).ThenInclude(v => v.Branch)
 				.ToListAsync();
@@ -121,7 +122,7 @@ namespace CinemaMS.Repositories
                 foreach (Booking b in session.Bookings)
                 {
                     _context.Entry(b).Reference(b => b.User).Load();
-                    _context.Entry(b).Reference(b => b.Customer).Load();
+                  //  _context.Entry(b).Reference(b => b.Customer).Load();
                     _context.Entry(b).Collection(b => b.Seats).Load();
                 }
             }
@@ -140,6 +141,16 @@ namespace CinemaMS.Repositories
             return session;
         }
 
+        public Seat GetSeatById(int seatId)
+        {
+            return _context.Seats.FirstOrDefault(s => s.Id == seatId);
+        }
+
+        public ICollection<Seat> GetTrackedSeats(IEnumerable<Seat> seats)
+        {
+            return (ICollection<Seat>)seats.Select(s => GetSeatById(s.Id)).ToList();
+        }
+
 
         public async Task<bool> AddBooking(Booking booking)
         {
@@ -154,6 +165,11 @@ namespace CinemaMS.Repositories
             await SaveAsync();
 
             return booking.Id;
+        }
+
+        public async Task<Customer> GetCustomerByBookingId(int bookingId)
+        {
+            return await _context.Customers.AsNoTracking().FirstOrDefaultAsync(c => c.BookingId == bookingId);
         }
 
 

@@ -6,9 +6,20 @@ namespace BlazorCinemaMS.Server.Helper.Utility
 {
 	public interface IUtilityService
 	{
-		Booking GetBookingFromBookingDTO(BookingDTO bookingDTO);
+		string GetFormattedMovieStartTime(DateTime time);
+
+		string GetSeatAsHTML(SeatDTO seat);
+
+		public string GetTicketsAsString(SessionAndBookingDTO data);
+        string GetBookingAsString(SessionAndBookingDTO booking);
+
+        EmailDTO GetEmail(SessionAndBookingDTO data);
+
+        Booking GetBookingFromBookingDTO(BookingDTO bookingDTO);
 
 		Customer GetCustomerFromCustomerDTO(CustomerDTO customerDTO);
+
+        CustomerDTO GetCustomerDTOFromCustomer(Customer customer);
 
         List<Session> GetSessionsByDate(List<Session> sessions, DateOnly date);
 

@@ -79,7 +79,7 @@
 				}
 				else if (SelectedBranch != null)
 				{
-					<button class="quickbook-search-btn" @onclick="@(()=>{ReloadPageWithNewBranch();})">Search</button>
+					<button class="quickbook-search-btn" @onclick="@(()=>{ReloadPageWithNewBranch(SelectedBranch,SelectedMovie != null ? SelectedMovie.Id : null,SelectedDate);})">Search</button>
 				}
 				else
 				{
@@ -243,7 +243,7 @@
 <!-- Start of navbar -->
 <nav class="navbar navbar-expand-lg bg-dark">
 	<div class="container-fluid">
-		<a class="navbar-brand text-warning" href="index.html" id="logo">CINEMAX</a>
+		<a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
 		<button class="navbar-toggler"
 				type="button"
 				data-bs-toggle="collapse"
@@ -275,15 +275,15 @@
 		@if (CarouselMovies != null && CarouselMovies.Count() > 0)
 		{
 
-			@for (int i = 0; i < CarouselMovies.Count(); i++)
+			@foreach (var item in CarouselMovies.Select((movie, index) => (movie, index)))
 			{
-				<div class="@(i == 0 ? "carousel-item active" : "carousel-item")">
-					<img src="@CarouselMovies[i].BackdropPath"
+				<div class="@(item.index == 0 ? "carousel-item active" : "carousel-item")">
+					<img src="@item.movie.BackdropPath"
 						 class="d-block w-100" style="height:70vh;"
 						 alt="..." />
 					<div class="carousel-footer">
-						<h2>@CarouselMovies[i].Title</h2>
-						<button class="book-btn" data-name="@CarouselMovies[i].Title">BOOK NOW</button>
+						<h2>@item.movie.Title</h2>
+						<button class="book-btn" data-name="@item.movie.Title" @onclick="@(() => {ReloadPageWithNewBranch(Branch,item.movie.Id,null);})">BOOK NOW</button>
 					</div>;
 				</div>
 			}
@@ -333,12 +333,17 @@
 
 	<div>
 		<ul class="one-week-dates">
-			@foreach (DateTime date in OneWeekDates)
+			@if(OneWeekDates != null && MovieListings1 != null)
 			{
-				<li class=@(utilityService.IsSameDay(date,StartingDate) ? "active" : "") @onclick=@(()=>{HandleDateClick(date);})>
-					@(utilityService.IsSameDay(date, DateTime.Today) ? "Today" : date.ToString("ddd"))
-				</li>
+				@foreach (DateTime date in OneWeekDates)
+				{
+					<li class=@((utilityService.IsSameDay(date,StartingDate) && !AllTimes) ? "active" : (!SessionsExistOnDate(date) ? "disabled":"")  ) @onclick=@(()=>{HandleDateClick(date);})>
+						@(utilityService.IsSameDay(date, DateTime.Today) ? "Today" : date.ToString("ddd"))
+					</li>
+				}
+				<li class=@(AllTimes ? "active" : "") @onclick=@(()=>{HandleAllTimesClick();})>All times</li>
 			}
+			
 		</ul>
 
 		<hr class="separator">
@@ -346,6 +351,9 @@
 
 
 	@* -------------------------------- end of one-week-dates ----------------------------------- *@
+
+
+	<h3 class="title text-warning mb-5"><span>@(TheMovie != null ? TheMovie.Title : "Movies" ) At</span> <span><i>@(Branch != null ? Branch.Name : "-")</i></span> @(!AllTimes ? $" on {StartingDate.ToString("MMMM dd")}" : "")</h3>
 
 
 
@@ -448,98 +456,103 @@
 				}
 				else
 				{
-					@foreach (MovieListingVM listing in MovieListings1)
+					@if (MovieListings1 != null)
 					{
-						<div class="col-12 movie-listing-col">
+						@if (AnySessions(MovieListings1))
+						{
 
 
-							<div class="d-flex">
-								<div class="movie-poster">
-									<img src=@listing.Movie.PosterPath />
-								</div>
+							@foreach (MovieListingVM listing in MovieListings1)
+							{
 
-								@* ------------------------ Column 2 ------------------------ *@
+								@if (ContainsMatchingSessions(listing))
+								{
+									<div class="col-12 movie-listing-col">
 
-								<div class="movie-information">
-									<h3 class="movie-title">@listing.Movie.Title</h3>
-									<p class="movie-overview mt-4 mb-4">@listing.Movie.Overview</p>
-									<p><span class="label">Running Time: </span><span class="duration">@(utilityService.FormatMinutes(listing.Movie.Duration))</span></p>
 
-									<hr class="separator">
+										<div class="d-flex">
+											<div class="movie-poster">
+												<img src=@listing.Movie.PosterPath />
+											</div>
 
-									<div class="sessions-box">
+											@* ------------------------ Column 2 ------------------------ *@
 
-										@foreach (SessionsWithDateVM sessionsWithDate in listing.SessionsWithDate)
-										{
-											<div class="sessions-by-date mb-3">
-												<h3 class="sessions-date">
-													@sessionsWithDate.Date.ToString("ddd, dd MMM")
-												</h3>
+											<div class="movie-information">
+												<h3 class="movie-title">@listing.Movie.Title</h3>
+												<p class="movie-overview mt-4 mb-4">@listing.Movie.Overview</p>
+												<p><span class="label">Running Time: </span><span class="duration">@(utilityService.FormatMinutes(listing.Movie.Duration))</span></p>
 
-												<div class="container sessions-container">
+												<hr class="separator">
 
-													<div class="row">
+												<div class="sessions-box">
 
-														@foreach (SessionDTO s in sessionsWithDate.Sessions)
+													@foreach (SessionsWithDateVM sessionsWithDate in listing.SessionsWithDate)
+													{
+														@if (DateMatches(sessionsWithDate.Date))
 														{
-															<div class="col-3 mb-4">
+															<div class="sessions-by-date mb-3">
+																<h3 class="sessions-date">
+																	@sessionsWithDate.Date.ToString("ddd, dd MMM")
+																</h3>
+
+																<div class="container sessions-container">
+
+																	<div class="row">
+
+																		@foreach (SessionDTO s in sessionsWithDate.Sessions)
+																		{
+																			<div class="col-3 mb-4">
 
 
-																<div class="card session-card" @onclick="@(()=>{LoadBookingPage(s);})">
+																				<div class="card session-card" @onclick="@(()=>{LoadBookingPage(s);})">
 
-																	<div class="card-body">
-																		<span class="d-flex"><span class="start-time">@s.StartTime.ToString("hh:mm tt")</span> <span class="hyphen ms-2 me-2"> - </span> <span class="end-time">@s.EndTime.ToString("hh:mm tt")</span></span>
+																					<div class="card-body">
+																						<span class="d-flex"><span class="start-time">@s.StartTime.ToString("hh:mm tt")</span> <span class="hyphen ms-2 me-2"> - </span> <span class="end-time">@s.EndTime.ToString("hh:mm tt")</span></span>
 
-																		<span class="venue-name">@s.Venue.Name</span>
+																						<span class="venue-name">@s.Venue.Name</span>
 
-																		<p class="from-price"><span>FROM </span><span>$@s.Pricing.Economy</span></p>
+																						<p class="from-price"><span>FROM </span><span>$@s.Pricing.Economy</span></p>
+
+																					</div>
+
+																				</div>
+
+																			</div>
+																		}
 
 																	</div>
 
 																</div>
-
 															</div>
 														}
 
-													</div>
+													}
 
 												</div>
 
-
 											</div>
 
-										}
+											@* ------------------------ End of Column 2 ------------------------ *@
+
+										</div>
 
 									</div>
 
-								</div>
+									<hr class="col-separator">
+								}
 
-								@* ------------------------ End of Column 2 ------------------------ *@
-
-							</div>
-
-
-
-
-
-						</div>
-
-						<hr class="col-separator">
-					}
+							}
+						}
+						else
+						{
+							<div class="d-flex justify-content-center align-items-center branchMovies-placeholder">No Results</div>
+						}
 				}
-
-				
+				}
 
 			</div>
 		</div>
-
 	}
-
-
-	
-
-
-
 </div>
 
 
@@ -564,7 +577,9 @@
 	public BranchDTO Branch = null;
 	public bool Loading = false;
 	public DateTime StartingDate;
+	public bool AllTimes { get; set; }
 	public int? SelectedMovieId { get; set; } = null;
+	public MovieDTO TheMovie { get; set; } = null;
 
 	public bool ShowQuickBook = false;
 
@@ -635,9 +650,14 @@
 
 
 		SelectedMovieId = data.MovieId;
+		TheMovie = GetMovieById(SelectedMovieId);
 
 
-		CarouselMovies = ExtractAllMoviesFromBranch();
+
+
+		InitializeCarouselMovies();
+		//StateHasChanged();
+
 		SetStartingDate(data.DayOfWeek);
 		InitializeOneWeekDates();
 		//StartingDate = data.DayOfWeek;
@@ -653,9 +673,61 @@
 		//Branches = await branchesService.GetJustBranches();
 	}
 
+	public bool AnySessions(List<MovieListingVM> listings)
+	{
+		foreach(MovieListingVM item in listings)
+		{
+			if (ContainsMatchingSessions(item)) return true;
+		}
+
+		return false;
+	}
+
+
+
 	protected override async Task OnParametersSetAsync()
 	{
 		//Branch = await branchesService.GetFullBranchById(int.Parse(BranchId));
+	}
+
+
+	public bool SessionsExistOnDate(DateTime date)
+	{
+		int count = 0;
+		foreach(MovieListingVM listing in MovieListings1)
+		{
+			count = count + listing.SessionsWithDate.Where(s => utilityService.IsSameDay(s.Date, date)).Count();
+		}
+
+		return count > 0;
+	}
+
+
+	public bool ContainsMatchingSessions(MovieListingVM listing)
+	{
+
+		return (listing.SessionsWithDate.Where(s => utilityService.IsSameDay(s.Date, StartingDate)).Count() > 0) || (AllTimes);
+	}
+
+
+	public bool DateMatches(DateTime date)
+	{
+		if(utilityService.IsSameDay(date, StartingDate) || AllTimes)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	public List<MovieDTO> BringMovieInFront(List<MovieDTO> movies, int? movieId)
+	{
+		MovieDTO movie = movies.FirstOrDefault(m => m.Id == movieId);
+
+		movies.Remove(movie);
+		movies.Insert(0, movie);
+
+		return movies;
 	}
 
 
@@ -690,11 +762,12 @@
 	{
 		Dates = new List<DateTime>();
 
-		Dates.Add(StartingDate);
+		Dates.Add(DateTime.Today);
+		//Dates.Add(StartingDate);
 
 		for (int i = 0; i < 20; i++)
 		{
-			DateTime dateToAdd = StartingDate.AddDays(i + 1);
+			DateTime dateToAdd = DateTime.Today.AddDays(i + 1);
 
 			if ((dateToAdd - DateTime.Now).TotalDays <= 19)
 			{
@@ -724,6 +797,12 @@
 	}
 
 
+	// public int GetNrOfSessionsOnDate(DateTime date)
+	// {
+
+	// }
+
+
 
 
 
@@ -732,22 +811,54 @@
 		OneWeekDates = new List<DateTime>();
 
 
+
+
 		// ---------------------------------- Come Back ---------------------------------
 		DateTime today = DateTime.Today;
-		//DateTime today = new DateTime(2023, 11, 28);
 
 		OneWeekDates.Add(today);
+		//DateTime today = new DateTime(2023, 11, 28);
 
-		for(int i = 1;i <= 6; i++)
+		for (int i = 1; i <= 6; i++)
 		{
 			OneWeekDates.Add(today.AddDays(i));
 		}
+
+		//OneWeekDates.Add(new WeekDay(){Date = today});
+
+		// for(int i = 1;i <= 6; i++)
+		// {
+		// 	OneWeekDates.Add(new WeekDay() { Date = today.AddDays(i) });
+		// }
+
+		// foreach(WeekDay item in OneWeekDates)
+		// {
+		// 	item.nrOfSessions = GetNrOfSessionOnDate(item.Date);
+		// }
+	}
+
+
+	public MovieDTO GetMovieById(int? movieId)
+	{
+		var aux = ExtractAllMoviesFromBranch();
+
+		if (movieId.HasValue) return aux.FirstOrDefault(m => m.Id == movieId);
+
+		return null;
 	}
 
 
 	public void InitializeCarouselMovies()
 	{
-		CarouselMovies = ExtractAllMoviesFromBranch();
+		var aux = ExtractAllMoviesFromBranch();
+		if (SelectedMovieId != null)
+		{
+			CarouselMovies = BringMovieInFront(aux, SelectedMovieId);
+		}
+		else
+		{
+			CarouselMovies = aux;
+		}
 	}
 
 	public void InitializeUniqueMovies()
@@ -790,11 +901,17 @@
 	}
 
 
-	public void SetStartingDate(DateTime date)
+	public void SetStartingDate(DateTime? date)
 	{
+		AllTimes = false;
+		if(date == null)
+		{
+			AllTimes = true;
+			return;
+		}
 		// --------------------------- Come back ----------------------
-		//StartingDate = date;
-		StartingDate = new DateTime(2023, 11, 28);
+		StartingDate = date.Value;
+		//StartingDate = new DateTime(2023, 11, 28);
 	}
 
 
@@ -822,14 +939,23 @@
 	//------------------ event handlers -----------------
 	public void HandleDateClick(DateTime date)
 	{
+		AllTimes = false;
 		SetStartingDate(date);
-		UpdateModel();
+		//UpdateModel();
+	}
+
+	public void HandleAllTimesClick()
+	{
+		AllTimes = true;
 	}
 
 	public void LoadBookingPage(SessionDTO session)
 	{
 		navManager.NavigateTo($"/Booking/{session.Id}");
 	}
+
+
+
 
 
 	// --------------------- TO UPDATE ------------------------
@@ -975,7 +1101,7 @@
 	{
 		List<SessionDTO> aux;
 		aux = sessions.Where(s => utilityService.IsSameDay(dt, s.StartTime)).ToList();
-	//	aux = aux.Where(s => s.StartTime > DateTime.Now).ToList();
+		aux = aux.Where(s => s.StartTime > DateTime.Now).ToList();
 		aux = aux.OrderBy(s => s.StartTime).ToList();
 
 		return aux;
@@ -1049,20 +1175,37 @@
 	}
 
 
-	public void ReloadPageWithNewBranch()
+
+	public void ReloadPageWithNewBranch(BranchDTO newBranch,int? movieId,DateTime? date)
 	{
-		Branch = SelectedBranch;
-		SelectedMovieId = SelectedMovie != null ? SelectedMovie.Id : null;
+		Branch = newBranch;
+		SelectedMovieId = movieId;
+		TheMovie = GetMovieById(SelectedMovieId);
 
 
-		CarouselMovies = ExtractAllMoviesFromBranch();
-		SetStartingDate(SelectedDate != null ? SelectedDate.Value : DateTime.Today);
+		//CarouselMovies = ExtractAllMoviesFromBranch();
+		SetStartingDate(date);
 
 		//InitializeOneWeekDates();
 		//StartingDate = data.DayOfWeek;
 
 		UpdateModel();
 	}
+
+
+	// public void ReloadPageWithNewBranch()
+	// {
+	// 	Branch = SelectedBranch;
+	// 	SelectedMovieId = SelectedMovie != null ? SelectedMovie.Id : null;
+
+	// 	//CarouselMovies = ExtractAllMoviesFromBranch();
+	// 	SetStartingDate(SelectedDate);
+
+	// 	//InitializeOneWeekDates();
+	// 	//StartingDate = data.DayOfWeek;
+
+	// 	UpdateModel();
+	// }
 
 
 

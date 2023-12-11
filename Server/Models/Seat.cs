@@ -18,7 +18,7 @@ namespace CinemaMS.Models
         public Venue Venue { get; set; }
         
        
-        public IEnumerable<Booking> Bookings { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
 
         public override string ToString()
         {

@@ -1,6 +1,35 @@
 ﻿@page "/Checkout/{SetHashCode:int}"
+@using BlazorCinemaMS.Client.Services.EmailService;
 @inject StateContainer stateContainer;
-@inject ISessionsService SessionsService
+@inject ISessionsService SessionsService;
+@inject IEmailService emailService;
+@inject StateContainer stateContainer
+@inject NavigationManager navManager
+
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="quiz.html">Play Game</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container main-container">
     <div class="row">
@@ -47,9 +76,10 @@
                             }
                         }
 
+
                       
                         <div>
-                            <div class="d-flex justify-content-between total"><span>Total</span><span>€<span class="total-euros">@BookingCost</span></span></div>
+                            <div class="d-flex justify-content-between total" style="color:#fff;"><span>Total</span><span>€<span class="total-euros">@BookingCost</span></span></div>
                             <hr>
                         </div>
 
@@ -125,7 +155,18 @@
                     </div>
                     <br>
                     @* <ValidationSummary /> *@
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">
+                        @if (!ShowSpinner)
+                        {
+                            <span>Submit</span>
+                        }
+                        else
+                        {
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        }
+                    </button>
 
 
                     @* <div class="mb-3">
@@ -201,6 +242,8 @@
     public double BookingCost { get; set; }
     public List<SeatsWithClassVM> SeatsWithClass { get; set; }
 
+    public bool ShowSpinner { get; set; } = false;
+
     public CustomerVM Customer { get; set; } = new CustomerVM() { CreditCardDetails = new CreditCardDetailsVM() };
 
 
@@ -247,6 +290,8 @@
 
     public async Task HandleValidFormSubmit()
     {
+        ShowSpinner = true;
+
         CustomerDTO customerDTO = GetCustomerDTOFromCustomerVM(Customer);
         BookingDTO bookingDTO = new BookingDTO()
         {
@@ -256,7 +301,31 @@
             SessionId = Session.Id
         };
 
-       bool result = await SessionsService.AddBooking(bookingDTO);
+
+        bool success = await SessionsService.AddBooking(bookingDTO);
+
+        if (success)
+        {
+            SessionAndBookingDTO data = new SessionAndBookingDTO()
+                {
+                    Session = Session,
+                    Booking = bookingDTO
+                };
+
+
+            emailService.SendConfirmationEmail(data);
+
+
+            stateContainer.ObjectTunnel.Add(data.GetHashCode(), data);
+
+            ShowSpinner = false;
+
+            navManager.NavigateTo($"/confirmation/{data.GetHashCode()}");
+        }
+        else
+        {
+            ShowSpinner = false;
+        }
     }
 
 

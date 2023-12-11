@@ -8,6 +8,10 @@
 @inject ISessionsService sessionsService
 
 
+<div class="white-background-container" style="background-color:#fff;min-height:100vh;">
+
+
+
 
 @if (Message.Text != string.Empty)
 {
@@ -31,204 +35,205 @@
 	}
 }
 
+<div class="container pt-5">
 
-<div class="container">
-	<div class="row">
+		<div class="container">
+			<div class="row">
 
-		<div class="col-6">
+				<div class="col-6">
 
 
-			<EditForm Model="PartialSession" OnValidSubmit="AddSession">
-				<DataAnnotationsValidator />
+					<EditForm Model="PartialSession" OnValidSubmit="AddSession">
+						<DataAnnotationsValidator />
 
-				<div class="mb-2">
-					<label for="branchId"><b>Select branch:</b></label>
-					@if (branchesService.Branches == null || branchesService.Branches.Count() == 0)
-					{
-						<p>No branches to display</p>
-					}
-					else
-					{
-						<InputSelect id="branchId" ValueExpression="@(()=>PartialSession.BranchId)" Value="@PartialSession.BranchId" ValueChanged="@((int branchId) => UpdateBranch(branchId))" class="form-control">
-
-							<!--<option selected>----- SELECT BRANCH -----</option>-->
-							@foreach (var branch in branchesService.Branches)
+						<div class="mb-2">
+							<label for="branchId"><b>Select branch:</b></label>
+							@if (branchesService.Branches == null || branchesService.Branches.Count() == 0)
 							{
-								<option value="@branch.Id">@branch.Name</option>
+								<p>No branches to display</p>
 							}
-						</InputSelect>
-					}
-
-					<ValidationMessage For="@(()=>PartialSession.BranchId)" />
-
-				</div>
-
-
-				<div class="mb-3">
-					<label for="venueId"><b>Select Venue:</b></label>
-					@if (Branch == null)
-					{
-						<p>No venues to display</p>
-					}
-					else
-					{
-						//<InputSelect id="venueId" @bind-Value="PartialSession.VenueId" class="form-control">
-						<InputSelect id="venueId" ValueExpression="@(()=>PartialSession.VenueId)" Value="@PartialSession.VenueId" ValueChanged="@((int venueId) => UpdateVenue(venueId))" class="form-control">
-
-							<!--<option selected>----- SELECT BRANCH -----</option>-->
-							@foreach (var venue in Branch.Venues)
+							else
 							{
-								<option value="@venue.Id">@venue.Name</option>
+								<InputSelect id="branchId" ValueExpression="@(()=>PartialSession.BranchId)" Value="@PartialSession.BranchId" ValueChanged="@((int branchId) => UpdateBranch(branchId))" class="form-control">
+
+									<!--<option selected>----- SELECT BRANCH -----</option>-->
+									@foreach (var branch in branchesService.Branches)
+									{
+										<option value="@branch.Id">@branch.Name</option>
+									}
+								</InputSelect>
 							}
-						</InputSelect>
-					}
 
-					<ValidationMessage For="@(()=>PartialSession.VenueId)" />
+							<ValidationMessage For="@(()=>PartialSession.BranchId)" />
 
-				</div>
-
-				
-
-				
+						</div>
 
 
-
-				<div class="mb-2">
-					<label for="startDate"><b>Start Date</b></label>
-					<InputDate id="startDate" @bind-Value="PartialSession.StartDate" />
-					<ValidationMessage For="@(()=>PartialSession.StartDate)" />
-				</div>
-				<div class="mb-2">
-					<label for="startTime"><b>Start Time</b></label>
-					<InputText type="time" id="startTime" @bind-Value="PartialSession.StartTime" />
-					<ValidationMessage For="@(()=>PartialSession.StartTime)" />
-				</div>
-
-			
-
-			
-
-				<div class="mb-2">
-					<label for="economy"><b>Economy Price</b></label>
-					<InputNumber id="economy" @bind-Value="PartialSession.Pricing.Economy" />
-					<ValidationMessage For="@(()=>PartialSession.Pricing.Economy)" />
-				</div>
-
-				<div class="mb-2">
-					<label for="standard"><b>Standard Price</b></label>
-					<InputNumber id="standard" @bind-Value="PartialSession.Pricing.Standard" />
-					<ValidationMessage For="@(()=>PartialSession.Pricing.Standard)" />
-				</div>
-
-				<div>
-					<label for="premium"><b>Premium Price</b></label>
-					<InputNumber id="premium" @bind-Value="PartialSession.Pricing.Premium" />
-					<ValidationMessage For="@(()=>PartialSession.Pricing.Premium)" />
-				</div>
-
-
-				<button type="submit" class="btn btn-primary mt-3">Add Session</button>
-
-			</EditForm>
-
-			@if (Branch != null && Venue != null)
-			{
-				<h3 class="mt-5 mb-4">@Branch.Name @Venue.Name Sessions</h3>
-
-				@if (Venue.Sessions != null && Venue.Sessions.Count() > 0)
-				{
-					<div class="container">
-						<div class="row">
-							@foreach (var session in Venue.Sessions)
+						<div class="mb-3">
+							<label for="venueId"><b>Select Venue:</b></label>
+							@if (Branch == null)
 							{
-								<div class="col-6 mb-3">
-									<div class="card w-100 h-100" style="background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-										<img class="card-img-top" src="@session.Movie.BackdropPath" alt="Card image cap">
-										<div class="card-body">
-											<h5 class="card-title">@session.Movie.Title</h5>
-											<p class="card-text">@session.StartTime.ToString("MMMM dd")</p>
-											<span class="card-text">@session.StartTime.ToString("hh:mm tt")</span> -
-											<span class="card-text">@session.EndTime.ToString("hh:mm tt")</span>
+								<p>No venues to display</p>
+							}
+							else
+							{
+								//<InputSelect id="venueId" @bind-Value="PartialSession.VenueId" class="form-control">
+								<InputSelect id="venueId" ValueExpression="@(()=>PartialSession.VenueId)" Value="@PartialSession.VenueId" ValueChanged="@((int venueId) => UpdateVenue(venueId))" class="form-control">
+
+									<!--<option selected>----- SELECT BRANCH -----</option>-->
+									@foreach (var venue in Branch.Venues)
+									{
+										<option value="@venue.Id">@venue.Name</option>
+									}
+								</InputSelect>
+							}
+
+							<ValidationMessage For="@(()=>PartialSession.VenueId)" />
+
+						</div>
+
+
+						<div class="mb-2">
+							<label for="startDate"><b>Start Date</b></label>
+							<InputDate id="startDate" @bind-Value="PartialSession.StartDate" />
+							<ValidationMessage For="@(()=>PartialSession.StartDate)" />
+						</div>
+						<div class="mb-2">
+							<label for="startTime"><b>Start Time</b></label>
+							<InputText type="time" id="startTime" @bind-Value="PartialSession.StartTime" />
+							<ValidationMessage For="@(()=>PartialSession.StartTime)" />
+						</div>
+
+
+
+
+
+						<div class="mb-2">
+							<label for="economy"><b>Economy Price</b></label>
+							<InputNumber id="economy" @bind-Value="PartialSession.Pricing.Economy" />
+							<ValidationMessage For="@(()=>PartialSession.Pricing.Economy)" />
+						</div>
+
+						<div class="mb-2">
+							<label for="standard"><b>Standard Price</b></label>
+							<InputNumber id="standard" @bind-Value="PartialSession.Pricing.Standard" />
+							<ValidationMessage For="@(()=>PartialSession.Pricing.Standard)" />
+						</div>
+
+						<div>
+							<label for="premium"><b>Premium Price</b></label>
+							<InputNumber id="premium" @bind-Value="PartialSession.Pricing.Premium" />
+							<ValidationMessage For="@(()=>PartialSession.Pricing.Premium)" />
+						</div>
+
+
+						<button type="submit" class="btn btn-primary mt-3">Add Session</button>
+
+					</EditForm>
+
+					@if (Branch != null && Venue != null)
+					{
+						<h3 class="mt-5 mb-4">@Branch.Name @Venue.Name Sessions</h3>
+
+						@if (Venue.Sessions != null && Venue.Sessions.Count() > 0)
+						{
+							<div class="container">
+								<div class="row">
+									@foreach (var session in Venue.Sessions)
+									{
+										<div class="col-6 mb-3">
+											<div class="card w-100 h-100" style="background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+												<img class="card-img-top" src="@session.Movie.BackdropPath" alt="Card image cap">
+												<div class="card-body">
+													<h5 class="card-title">@session.Movie.Title</h5>
+													<p class="card-text">@session.StartTime.ToString("MMMM dd")</p>
+													<span class="card-text">@session.StartTime.ToString("hh:mm tt")</span> -
+													<span class="card-text">@session.EndTime.ToString("hh:mm tt")</span>
+												</div>
+											</div>
+
 										</div>
-									</div>
+									}
 
 								</div>
-							}
-
-						</div>
-					</div>
-				}
-				else
-				{
-					<p>No Sessions To Display</p>
-				}
-			}
-
-		</div>
-		<div class="col-6">
-			<div class="container">
-				<div class="row">
-					<h1>Select a Movie</h1>
-
-					@if (ShowSpinner)
-					{
-						<div class="d-flex justify-content-center">
-							<h5>Loading Movies</h5>
-							@* <span class="sr-only">Loading...</span> *@
-						</div>
-						<div class="d-flex justify-content-center">
-							<div class="spinner-border" role="status">
-								@* <span class="sr-only">Loading...</span> *@
 							</div>
-						</div>
-					}
-					else if (moviesService.Movies == null || moviesService.Movies.Count() == 0)
-					{
-						<div class="d-flex justify-content-center">
-							<h5>No Movies to display</h5>
-						</div>
-					}
-					else
-					{
-						@foreach (var movie in moviesService.Movies)
+						}
+						else
 						{
-							<div class="col-6 mb-3">
-								@if(movie.Id != MovieId)
-								{
-									<div class="card w-100 h-100" style="cursor:pointer; background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {SelectMovie(movie.Id);})">
-										<img src=@movie.BackdropPath class="card-img-top" alt="...">
-										<div class="card-body">
-											<h4 class="card-title fw-bold">@movie.Title</h4>
-										</div>
-									</div>
-								}
-								else
-								{
-									<div class="card w-100 h-100" style="cursor:pointer;background-color:green" @onclick="(() => {SelectMovie(movie.Id);})">
-										<img src=@movie.BackdropPath class="card-img-top" alt="...">
-										<div class="card-body">
-											<h4 class="card-title fw-bold">@movie.Title</h4>
-										</div>
-									</div>
-								}
-
-								
-							</div>
-
+							<p>No Sessions To Display</p>
 						}
 					}
 
 				</div>
+				<div class="col-6">
+					<div class="container database-movies-container">
+						<div class="row">
+							<h1>Select a Movie</h1>
+
+							@if (ShowSpinner)
+							{
+								<div class="d-flex justify-content-center">
+									<h5>Loading Movies</h5>
+									@* <span class="sr-only">Loading...</span> *@
+								</div>
+								<div class="d-flex justify-content-center">
+									<div class="spinner-border" role="status">
+										@* <span class="sr-only">Loading...</span> *@
+									</div>
+								</div>
+							}
+							else if (moviesService.Movies == null || moviesService.Movies.Count() == 0)
+							{
+								<div class="d-flex justify-content-center">
+									<h5>No Movies to display</h5>
+								</div>
+							}
+							else
+							{
+								@foreach (var movie in moviesService.Movies)
+								{
+									<div class="col-6 mb-3">
+										@if (movie.Id != MovieId)
+										{
+											<div class="card movie-card w-100 h-100" style="cursor:pointer; background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {SelectMovie(movie.Id);})">
+												<img src=@movie.BackdropPath class="card-img-top" alt="...">
+												<div class="card-body">
+													<h4 class="card-title fw-bold">@movie.Title</h4>
+												</div>
+											</div>
+										}
+										else
+										{
+											<div class="card w-100 h-100" style="cursor:pointer;background-color:green" @onclick="(() => {SelectMovie(movie.Id);})">
+												<img src=@movie.BackdropPath class="card-img-top" alt="...">
+												<div class="card-body">
+													<h4 class="card-title fw-bold">@movie.Title</h4>
+												</div>
+											</div>
+										}
+
+									</div>
+
+								}
+							}
+
+						</div>
+					</div>
+				</div>
+
 			</div>
+
+
 		</div>
 
+
+</div>
+
+
+
+
+
 	</div>
-
-
-	</div>
-
-
-
 
 
 @code {

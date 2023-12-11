@@ -32,6 +32,8 @@ namespace CinemaMS.Interfaces
 
 		Task<Venue> GetVenueByIdWithSeatsAsync(int venueId);
 
+        Task<Venue> GetVenueByIdWithBranch(int venueId);
+
         Task<bool> SaveAsync();
     }
 }

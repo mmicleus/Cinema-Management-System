@@ -10,7 +10,7 @@ namespace BlazorCinemaMS.Shared.DTOs
 	{
 		public int BranchId { get; set; }
 
-		public DateTime DayOfWeek { get; set; }
+		public DateTime? DayOfWeek { get; set; }
 
 		public int? MovieId { get; set; }
 	}

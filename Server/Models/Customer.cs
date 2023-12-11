@@ -1,6 +1,7 @@
 ﻿using BlazorCinemaMS.Server.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CinemaMS.Models
 {
@@ -46,7 +47,10 @@ namespace CinemaMS.Models
 
 
         [ForeignKey("Booking")]
-        public int BookingId { get; set; }  
+        public int BookingId { get; set; }
+
+
+        [JsonIgnore]
         public Booking Booking { get; set; }
 
        

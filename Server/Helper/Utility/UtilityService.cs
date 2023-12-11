@@ -3,8 +3,13 @@ using BlazorCinemaMS.Shared.ViewModels;
 using CinemaMS.Data;
 using CinemaMS.Interfaces;
 using CinemaMS.Models;
+
 using Mapster;
 using Microsoft.Identity.Client;
+using Org.BouncyCastle.Asn1.X509;
+using System;
+using System.Collections.ObjectModel;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlazorCinemaMS.Server.Helper.Utility
 {
@@ -21,6 +26,52 @@ namespace BlazorCinemaMS.Server.Helper.Utility
             _movieRepo = movieRepository;
             _sessionRepo = sessionRepository;
             _config = config;
+        }
+
+        public string GetFormattedMovieStartTime(DateTime time)
+        {
+            return time.ToString("ddd, dd MMMM");
+        }
+
+        public string GetSeatAsHTML(SeatDTO seat)
+        {
+            return $"<span>{seat.Label}</span>";
+        }
+
+
+        public string GetTicketsAsString(SessionAndBookingDTO data)
+        {
+            return string.Join("&nbsp;&nbsp;&nbsp;", data.Booking.Seats.Select(s => GetSeatAsHTML(s)));    
+        }
+
+        public string GetBookingAsString(SessionAndBookingDTO booking)
+        {   
+           return $"<div> <h2>{booking.Session.Movie.Title}</h2><span>{booking.Session.Venue.Branch.Name + " " + booking.Session.Venue.Name} </span> <br> <span> {GetFormattedMovieStartTime(booking.Session.StartTime)} </span> <div><h3><b>Seats:</b></h3> <div>{GetTicketsAsString(booking)}</div></div> <p><span><h3><b>Paid:</b></h3></span> <span>€{booking.Booking.TotalAmount}</span> </p><div>";
+        }
+
+        public string GetEmailBody(SessionAndBookingDTO data)
+        {
+
+            string intro = $"<h2>Dear {data.Booking.Customer.FirstName},<br> The following booking has been made:</h2><br>";
+
+
+            var bookingAsString = GetBookingAsString(data);
+            //var bookings = fo.bookings.Select((booking) => GetBookingAsString(booking));
+
+
+            return intro + bookingAsString;
+        }
+
+
+
+        public EmailDTO GetEmail(SessionAndBookingDTO data)
+        {
+            return new EmailDTO
+            {
+                To = data.Booking.Customer.Email,
+                Subject = "Order Confirmation",
+                Body = GetEmailBody(data)
+            };
         }
 
         public Customer GetCustomerFromCustomerDTO(CustomerDTO customerDTO)
@@ -41,15 +92,43 @@ namespace BlazorCinemaMS.Server.Helper.Utility
         }
 
 
+        public CustomerDTO GetCustomerDTOFromCustomer(Customer customer)
+        {
+            return new CustomerDTO()
+            {
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                Email = customer.Email,
+                Phone = customer.Phone,
+                Address = customer.Address,
+                NameOnCard = customer.NameOnCard,
+                CardNumber = customer.CardNumber,
+                ExpMonth = customer.ExpMonth,
+                ExpYear = customer.ExpYear,
+                CVV = customer.CVV,
+            };
+        }
+
+
+
         public Booking GetBookingFromBookingDTO(BookingDTO bookingDTO)
         {
             return new Booking()
             {
                 TotalAmount = bookingDTO.TotalAmount,
                 Customer = GetCustomerFromCustomerDTO(bookingDTO.Customer),
-                Seats = bookingDTO.Seats.Adapt<IEnumerable<Seat>>()
+                Seats = bookingDTO.Seats.Adapt<Collection<Seat>>(),
+                SessionId = bookingDTO.SessionId
             };
         }
+
+
+
+
+
+     
+
+
 
         public List<Session> GetSessionsByDate(List<Session> sessions, DateOnly date)
         {

@@ -17,6 +17,12 @@ namespace CinemaMS.Interfaces
 
         Task<int> AddBookingWithId(Booking booking);
 
+        ICollection<Seat> GetTrackedSeats(IEnumerable<Seat> seats);
+
+        Task<Customer> GetCustomerByBookingId(int bookingId);
+
+        Seat GetSeatById(int seatId);
+
        // Task<IEnumerable<Session>> GetAllSessionsAsync();
 
         Task<List<Session>> GetAllSessionsAsync();

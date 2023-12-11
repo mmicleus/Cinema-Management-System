@@ -59,6 +59,39 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
         //    Sessions = result;
         //}
 
+        public async Task<CustomerDTO> GetCustomerByBookingId(int bookingId)
+        {
+            string url = $"api/Admin/customerByBooking/{bookingId}";
+            CustomerDTO result;
+
+            //string branchAsString = JsonSerializer.Serialize(branch);
+
+            try
+            {
+                result = await _httpClient.GetFromJsonAsync<CustomerDTO>(url);
+            }
+            catch (Exception ex)
+            {
+                result = null;
+            }
+
+
+
+
+
+            return result;
+        }
+
+        public async Task GetCustomerForBookings(IEnumerable<BookingDTO> bookings)
+        {
+            foreach(BookingDTO booking in bookings)
+            {
+                    booking.Customer = await GetCustomerByBookingId(booking.Id);
+                
+               
+            }
+        }
+
 
         public async Task GetSessions()
         {
@@ -82,11 +115,16 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
             {
                 session.Venue = await _httpClient.GetFromJsonAsync<VenueDTO>(venueUrl + session.VenueId);
                 session.Venue.Branch = await _httpClient.GetFromJsonAsync<BranchDTO>(branchUrl + session.Venue.BranchId);
+                if(session.Bookings != null) await GetCustomerForBookings(session.Bookings);
+
+
             }
             
 
             Sessions = result;
         }
+
+
 
         public SessionDTO GetLocalSessionById(int sessionId)
         {

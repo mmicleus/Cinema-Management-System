@@ -134,6 +134,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
             "Mapster": {
               "target": "Package",
               "version": "[7.4.0, )"
@@ -163,6 +167,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.13, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [

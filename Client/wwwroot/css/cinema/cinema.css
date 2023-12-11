@@ -25,6 +25,8 @@
 
 
 
+
+
 /*----------------------- skeleton loading -------------------------------*/
 
 .skeleton{
@@ -122,6 +124,99 @@
 
 
 /*----------------------- end of skeleton loading -------------------------------*/
+
+
+
+/*----------------------------------- Branches Styling -------------------------------------*/
+/*.venue-container .venue-card{
+    transition:all 0.4s;
+    cursor:pointer;
+}
+
+.venue-container .venue-card:hover{
+    background-color:gray !important;
+
+}*/
+
+
+
+
+
+
+/*------------------------------------- End color-profile Branches styling ---------------------------*/
+
+
+/*--------------------------------------- Confirmation Page Styling -----------------------------*/
+
+
+.confirmation-container h1 {
+    color: aliceblue;
+}
+
+.confirmation-container p {
+    color: aliceblue;
+    justify-content: center;
+}
+
+.confirmation-container h3#message {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.confirmation-container .fa-square-check {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.confirmation-container .info-container {
+    row-gap: 2rem;
+    flex-direction: column;
+}
+
+.confirmation-container .order-details-card, .cust-information-card {
+    border: 1px solid lightgray;
+    padding: 2rem;
+    border-radius: 5px;
+    margin-top: 2rem;
+}
+
+
+.confirmation-container .order-details-container .col-6,
+.confirmation-container .order-details-container .col-12 {
+    padding-left: 0;
+}
+
+.confirmation-container .total-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.confirmation-container .home-btn {
+    padding: 10px 30px;
+    background-color: #f5e1a6;
+    color: #000;
+    border: 3px solid #ffc107;
+    border-radius: 5px;
+    transition: 0.5s;
+    font-family: 'Lato', sans-serif;
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto 1rem;
+}
+
+.confirmation-container .home-btn:hover {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.confirmation-container .seats-container {
+    display: flex;
+    column-gap: 0.5rem;
+    row-gap: 1rem;
+}
+
+/*--------------------------------------- End of Confirmation Page Styling -----------------------------*/
 
 
 
@@ -256,7 +351,7 @@ button {
    .book-btn:hover {
         background-color: #ffc107;
         color: #000;
-    }
+   }
 
 
 .quickbook-title-container {
@@ -471,6 +566,22 @@ h1 {
 
 
 
+/*----------------------------------------- Create Movie Styling ------------------------------------------*/
+
+.database-movies-container .movie-card {
+    transition: 0.2s all;
+}
+
+.database-movies-container .movie-card:hover {
+    /*background-color: gray !important;*/
+    transform:scale(1.08);
+}
+    
+
+
+
+/*------------------------------------------- End of Create Movie ---------------------------------*/
+
 
 
 
@@ -502,9 +613,13 @@ h1 {
 }
 
 
-.active-movie-container {
+.active-movie-container{
     cursor:pointer;
+    transition:0.5s all; 
+}
 
+.active-movie-container:hover{
+    transform:scale(1.1) !important;
 }
 
 
@@ -533,7 +648,8 @@ h1 {
 
 .container .one-week-dates li.disabled{
     text-decoration:line-through;
-    color:lightgray;
+    color:gray !important;
+    cursor:default;
 }
 
 
@@ -619,6 +735,12 @@ h1 {
     background-color: #333333;
     border-color:lightgray;
     cursor:pointer !important;
+
+    transition:all 0.4s;
+}
+
+.session-card:hover {
+    transform:scale(1.06) !important;
 }
 
 .session-card .start-time{
@@ -865,8 +987,11 @@ h1 {
 
 .total {
     display: flex;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
+    color:#000;
 }
+
+
 
 .payBtn {
     width: 100%;
@@ -1060,3 +1185,10 @@ h1 {
 
 
 /* end of movie-details.html styling */
+
+
+
+
+
+
+

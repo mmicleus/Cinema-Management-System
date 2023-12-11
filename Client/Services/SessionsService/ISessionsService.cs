@@ -22,6 +22,8 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 
 		Task<bool> AddBooking(BookingDTO booking);
 
+		Task<CustomerDTO> GetCustomerByBookingId(int bookingId);
+
 
 
 

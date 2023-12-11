@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CinemaMS.Models
 {
@@ -9,7 +10,6 @@ namespace CinemaMS.Models
         public int Id { get; set; }
 
         public double TotalAmount { get; set; }
-
 
         public Customer? Customer { get; set; }
 
@@ -25,7 +25,7 @@ namespace CinemaMS.Models
         public Session Session { get; set; }  
         
 
-       public IEnumerable<Seat> Seats { get; set; }
+       public ICollection<Seat> Seats { get; set; }
 
 
         public override string ToString()

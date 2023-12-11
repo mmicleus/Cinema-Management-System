@@ -1,6 +1,8 @@
 ﻿@page "/Admin/Movies"
 @inject IMoviesService moviesService;
 
+<div class="white-background-container" style="background-color:#fff;min-height:100vh;">
+
 @if (Message.Text != string.Empty)
 {
 	if (Message.Category == MessageCategory.Error)
@@ -23,63 +25,70 @@
 	}
 }
 
-<h3>Movies in the Database</h3>
 
+<div class="container pt-5">
 
-@if (ShowSpinner)
-{
-	<div class="d-flex justify-content-center">
-		<h5>Loading Movies</h5>
-		@* <span class="sr-only">Loading...</span> *@
-	</div>
-	<div class="d-flex justify-content-center">
-		<div class="spinner-border" role="status">
-			@* <span class="sr-only">Loading...</span> *@
-		</div>
-	</div>
-}
-else if (moviesService.Movies == null || moviesService.Movies.Count() == 0)
-{
-	<div class="d-flex justify-content-center">
-		<h5>No Movies to display</h5>
-	</div>
-}
-else
-{
-	<div class="container">
-		<div class="row gx-5" style="display:flex;flex-wrap:wrap;">
-
-
-			@foreach (var movie in moviesService.Movies)
-			{
-				<div class="col-xl-3 col-md-6 col-12 ps-3 pe-3 pt-3 pb-3" style="display:flex;flex-direction:column;">
-					<div class="card w-100 h-100" style="cursor:pointer; background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {})">
-						<img src=@movie.BackdropPath class="card-img-top" alt="...">
-						<div class="card-body d-flex flex-column justify-content-between">
-
-							<div>
-								<h4 class="card-title fw-bold">@movie.Title</h4>
-								<p><span><b>Release Date:</b> </span><span>@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("dd/MM/yyyy") : "---")</span></p>
-								<p><span><b>Duration:</b> </span><span>@movie.Duration mins</span></p>
-								<p><span><b>Genres:</b></span><span>@GetGenresAsString(movie.Genres)</span></p>
-							</div>
-							<div>
-								<button class="btn btn-danger" @onclick="(() => {DeleteMovie(movie);})">Delete</button>
-							</div>
-
-
-
-						</div>
-					</div>
+		@if (ShowSpinner)
+		{
+			<div class="d-flex justify-content-center">
+				<h5>Loading Movies</h5>
+				@* <span class="sr-only">Loading...</span> *@
+			</div>
+			<div class="d-flex justify-content-center">
+				<div class="spinner-border" role="status">
+					@* <span class="sr-only">Loading...</span> *@
 				</div>
+			</div>
+		}
+		else if (moviesService.Movies == null || moviesService.Movies.Count() == 0)
+		{
+			<div class="d-flex justify-content-center">
+				<h5>No Movies to display</h5>
+			</div>
+		}
+		else
+		{
+			<h1>Movies in the database</h1>
+			<div class="container database-movies-container">
+				<div class="row gx-5" style="display:flex;flex-wrap:wrap;">
 
-			}
-		</div>
-	</div>
-}
+
+					@foreach (var movie in moviesService.Movies)
+					{
+						<div class="col-xl-3 col-md-6 col-12 ps-3 pe-3 pt-3 pb-3" style="display:flex;flex-direction:column;">
+							<div class="card movie-card w-100 h-100" style="cursor:pointer; background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {})">
+								<img src=@movie.BackdropPath class="card-img-top" alt="...">
+								<div class="card-body  d-flex flex-column justify-content-between">
+
+									<div>
+										<h4 class="card-title fw-bold">@movie.Title</h4>
+										<p><span><b>Release Date:</b> </span><span>@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("dd/MM/yyyy") : "---")</span></p>
+										<p><span><b>Duration:</b> </span><span>@movie.Duration mins</span></p>
+										<p><span><b>Genres:</b></span><span>@GetGenresAsString(movie.Genres)</span></p>
+									</div>
+									<div>
+										<button class="btn btn-danger" @onclick="(() => {DeleteMovie(movie);})">Delete</button>
+									</div>
 
 
 
+								</div>
+							</div>
+						</div>
+
+					}
+				</div>
+			</div>
+		}
+
+
+</div>
+
+
+
+
+
+</div>
 
 
 
