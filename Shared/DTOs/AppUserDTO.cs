@@ -13,9 +13,22 @@ namespace BlazorCinemaMS.Shared.DTOs
 		public IEnumerable<BookingDTO> Bookings { get; set; }
 
 
+        public string Username { get; set; }
+        public string Phone { get; set; }
+
 		public string Address { get; set; }
 
 		public string Email { get; set; }
+
+		public string NameOnCard { get; set; }
+
+		public string CreditCardNumber { get; set; }
+
+		public string ExpMonth { get; set; }
+
+		public string ExpYear { get; set; }
+
+		public string CVV { get; set; }
 
 		//public string? UserName { get; set; }
 

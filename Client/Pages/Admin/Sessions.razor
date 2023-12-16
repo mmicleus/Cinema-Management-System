@@ -1,6 +1,9 @@
 ﻿
 @page "/Admin/Sessions"
+@attribute [Authorize(Roles = "admin")]
+
 @using BlazorCinemaMS.Shared.Others;
+@using Microsoft.AspNetCore.Authorization;
 @inject ISessionsService SessionsService;
 @inject IBranchesService BranchesService;
 @inject IMoviesService MoviesService;

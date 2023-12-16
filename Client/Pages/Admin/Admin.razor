@@ -1,16 +1,39 @@
 ﻿@page "/admin"
+@attribute [Authorize(Roles = "admin")]
+
 @using BlazorCinemaMS.Client.Services;
 @using BlazorCinemaMS.Client.Services.MoviesService;
+@using Microsoft.AspNetCore.Authorization;
 @inject IMoviesService moviesService
 @inject IJSRuntime Javascript
 
-<PageTitle>Index</PageTitle>
+<div class="page white-background-container" style="background-color:#fff;min-height:100vh;">
+     <div class="sidebar">
+    <NavMenu />
+    </div> 
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+
+    <main>
+        @* <div class="top-row px-4"> *@
+        @* <LoginLogoutButton/> *@
+        @* <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a> *@
+        @* </div>  *@
+
+        <article class="content px-4">
+        <p> asd as ,as ,as</p>
+        </article> 
+
+
+        
+
+
+
+    </main>
+</div>
 
 
 

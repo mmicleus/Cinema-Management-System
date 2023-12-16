@@ -11,6 +11,7 @@ using CinemaMS.Models;
 using CinemaMS.Repositories;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -45,11 +46,17 @@ builder.Services.AddScoped<IUtilityService, UtilityService>();
 builder.Services.AddScoped<ISharedRepository, SharedRepository>();
 
 
+
+
 builder.Services.AddDbContext<AppDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
   //  options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 );
+
+builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 
 
@@ -60,8 +67,11 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 
 
 //make sure this line of code is just below the "AddDbContext" one
-builder.Services.AddIdentity<AppUser, IdentityRole>()
-        .AddEntityFrameworkStores<AppDbContext>();
+//builder.Services.AddIdentity<AppUser, IdentityRole>()
+//        .AddEntityFrameworkStores<AppDbContext>();
+
+
+
 
 builder.Services.AddMemoryCache();
 
@@ -77,6 +87,9 @@ builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
+
+
+
 // --------------------------------------- End Of Identity Framework related ----------------------------------------
 
 
@@ -86,8 +99,12 @@ builder.Services.AddHttpClient<IMoviesService, MoviesService>(
     // client.BaseAddress = new Uri("https://api.themoviedb.org/3/")
     );
 
+builder.Services.AddAuthentication().AddJwtBearer();
+
 
 ConfigureMapster();
+
+
 
 
 var app = builder.Build();
@@ -134,6 +151,49 @@ app.UseRouting();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+//    var roles = new[] { "Admin", "Manager", "Member" };
+
+//    foreach(var role in roles)
+//    {
+//        if(!await roleManager.RoleExistsAsync(role))
+//        {
+//            await roleManager.CreateAsync(new IdentityRole(role));
+//        }
+//    }
+//}
+
+//using (var scope = app.Services.CreateScope())
+//{
+//	var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+
+//    string email = "miclemarian5@gmail.com";
+//    string password = "Test1234!";
+
+//    if(await userManager.FindByEmailAsync(email) == null)
+//    {
+//        var user = new AppUser();
+//        user.UserName = email;
+//        user.Email = email;
+//        user.Address = "New York";
+        
+//        user.NameOnCard = "Marik Micle";
+//        user.CardNumber = "1234 5678 9123 4567";
+//        user.ExpMonth = "01";
+//        user.ExpYear = "23";
+//		user.CVV = "123";
+
+
+//		await userManager.CreateAsync(user,password);
+
+//        await userManager.AddToRoleAsync(user, "Admin");
+//    }
+//}
 
 app.Run();
 

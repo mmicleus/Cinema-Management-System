@@ -1,4 +1,5 @@
 ﻿using CinemaMS.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,12 @@ namespace CinemaMS.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
+
+        public DbSet<AppUser> Users { get; set; }
+
+        //public DbSet<IdentityRole> Roles { get; set; }
+
+        //public DbSet<IdentityUserRole<int>> UserRoles { get; set; }
 
         public DbSet<Movie> Movies { get; set; }
 
@@ -28,8 +35,6 @@ namespace CinemaMS.Data
 
         public DbSet<Seat> Seats { get; set; }
 
-        public DbSet<Customer> Customers { get; set; }
-
-        
+        public DbSet<Customer> Customers { get; set; } 
     }
 }

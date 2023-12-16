@@ -1,4 +1,7 @@
 ﻿@page "/Admin/Branches"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "admin")]
+
 @inject IBranchesService branchesService
 @inject IJSRuntime Javascript
 @inject NavigationManager navManager

@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\BlazorCinemaMS.Client.styles.css"
     },
     {
+      "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\NotPass.jpg",
+      "PackagePath": "staticwebassets\\NotPass.jpg"
+    },
+    {
       "Id": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\css\\app.css",
       "PackagePath": "staticwebassets\\css\\app.css"
     },

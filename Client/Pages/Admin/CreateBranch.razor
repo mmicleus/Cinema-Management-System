@@ -1,7 +1,10 @@
 ﻿@* @page "/Admin/CreateBranch" *@
 @page "/Admin/Branch/{Id}"
 @page "/Admin/Branch"
+
+@attribute [Authorize(Roles = "admin")]
 @using Mapster;
+@using Microsoft.AspNetCore.Authorization;
 @inject IBranchesService branchesService;
 @inject NavigationManager navManager;
 

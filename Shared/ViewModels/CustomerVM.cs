@@ -12,13 +12,15 @@ namespace BlazorCinemaMS.Shared.ViewModels
 	{
 		//	public int Id { get; set; }
 
-		[Required(ErrorMessage="First Name Required")]
+		[Required(ErrorMessage = "First Name Required")]
 		public string FirstName { get; set; }
 
-		[Required(ErrorMessage="Last Name Required")]
+		[Required(ErrorMessage = "Last Name Required")]
 		public string LastName { get; set; }
 
-		[Required(ErrorMessage = "Last Name Required")]
+
+
+		[Required(ErrorMessage="Email Required")]
 		[EmailAddress(ErrorMessage="Invalid Email Format")]
 		public string Email { get; set; }
 

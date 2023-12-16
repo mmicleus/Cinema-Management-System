@@ -8,9 +8,12 @@ using BlazorCinemaMS.Shared.ViewModels;
 using CinemaMS.Interfaces;
 using CinemaMS.Models;
 using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.Text.Json;
+
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,7 +29,8 @@ namespace BlazorCinemaMS.Server.Controllers
         private readonly IBranchRepository _branchRepo;
         private readonly ISessionRepository _sessionRepo;
         private readonly ISharedRepository _sharedRepo;
-        public readonly IEmailService _emailService;    
+        public readonly IEmailService _emailService;
+        public readonly UserManager<AppUser> _userManager;
 		public AdminController(
             IMoviesService moviesService,
             IUtilityService utilityService,
@@ -34,7 +38,8 @@ namespace BlazorCinemaMS.Server.Controllers
             IBranchRepository branchRepository,
             ISessionRepository sessionRepository,
 			ISharedRepository sharedRepo,
-            IEmailService emailService) {
+            IEmailService emailService,
+            UserManager<AppUser> userManager) {
             
            _moviesService = moviesService;
             _utility = utilityService; 
@@ -43,6 +48,7 @@ namespace BlazorCinemaMS.Server.Controllers
             _sessionRepo = sessionRepository;
             _sharedRepo = sharedRepo;
             _emailService = emailService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -181,7 +187,7 @@ namespace BlazorCinemaMS.Server.Controllers
 		
 
 
-
+        
 
 
 		[HttpGet("justBranches")]
@@ -312,7 +318,25 @@ namespace BlazorCinemaMS.Server.Controllers
         public async Task<bool> AddBooking([FromBody] string bookingAsString)
         {
             BookingDTO bookingDTO = JsonSerializer.Deserialize<BookingDTO>(bookingAsString);
-            Booking booking = _utility.GetBookingFromBookingDTO(bookingDTO);
+            Booking booking;
+
+            if(bookingDTO.User != null)
+            {
+                AppUser user = await _userManager.FindByEmailAsync(bookingDTO.User.Email);
+                if (_utility.CardDetailsAreDifferent(bookingDTO.User, user))
+                {
+                    _utility.UpdateUser(bookingDTO.User,user);
+                    await _userManager.UpdateAsync(user);
+                }
+
+                booking = _utility.GetBookingFromBookingDTO(bookingDTO,user);
+            }
+            else
+            {
+                booking = _utility.GetBookingFromBookingDTO(bookingDTO, null);
+            }
+
+
             ICollection<Seat> Seats = _sessionRepo.GetTrackedSeats(booking.Seats);
             booking.Seats = Seats;
 
@@ -323,6 +347,9 @@ namespace BlazorCinemaMS.Server.Controllers
             return result; 
         }
 
+
+
+
         [HttpPost("confirmationEmail")]
         public async Task SendConfirmationEmail([FromBody] string data)
         {
@@ -330,6 +357,7 @@ namespace BlazorCinemaMS.Server.Controllers
 
             Venue venue = await _branchRepo.GetVenueByIdWithBranch(sessionAndBooking.Session.VenueId);
 
+         
             sessionAndBooking.Session.Venue = venue.Adapt<VenueDTO>();
 
             EmailDTO email = _utility.GetEmail(sessionAndBooking);

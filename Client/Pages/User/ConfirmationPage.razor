@@ -50,11 +50,12 @@
                             <div class="row mb-4">
                                 <div class="customer-name col-6">
                                     <h5><b>Full name</b></h5>
-                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.FirstName + " " + data.Booking.Customer.LastName : "-")</span>
+                                    <span class="name-display" id="customerName-output">@(data != null ? (data.Booking.Customer != null ? (data.Booking.Customer.FirstName + " " + data.Booking.Customer.LastName) : data.Booking.User.Username) : "-")</span>
+                                   
                                 </div>
                                 <div class="customer-name col-6">
                                     <h5><b>Phone</b></h5>
-                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.Phone : "-")</span>
+                                    <span class="name-display" id="customerName-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.Phone : data.Booking.User.Phone) : "-")</span>
                                 </div>
                                 
                             </div>
@@ -62,11 +63,11 @@
                             <div class="row">
                                 <div class="customer-email col-6">
                                     <h5><b>Email</b></h5>
-                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.Email : "-")</span>
+                                    <span class="email-display" id="email-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.Email : data.Booking.User.Email) : "-")</span>
                                 </div>
                                 <div class="customer-email col-6">
                                     <h5><b>Address</b></h5>
-                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.Address : "-")</span>
+                                    <span class="email-display" id="email-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.Address : data.Booking.User.Address) : "-")</span>
                                 </div>
                             </div>
                            
@@ -81,22 +82,22 @@
                             <div class="row mb-4">
                                 <div class="customer-name col-6">
                                     <h5><b>Name On Card</b></h5>
-                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.NameOnCard : "-")</span>
+                                    <span class="name-display" id="customerName-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.NameOnCard : data.Booking.User.NameOnCard) : "-")</span>
                                 </div>
                                 <div class="customer-email col-6">
                                     <h5><b>Exp. Month</b></h5>
-                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.ExpMonth : "-")</span>
+                                    <span class="email-display" id="email-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.ExpMonth: data.Booking.User.ExpMonth) : "-")</span>
                                 </div>
                             </div>
 
                             <div class="row mb-4">
                                 <div class="customer-name col-6">
                                     <h5><b>Card Number</b></h5>
-                                    <span class="name-display" id="customerName-output">@(data != null ? data.Booking.Customer.CardNumber : "-")</span>
+                                    <span class="name-display" id="customerName-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.CardNumber : data.Booking.User.CreditCardNumber) : "-")</span>
                                 </div>
                                 <div class="customer-email col-6">
                                     <h5><b>Exp. Year</b></h5>
-                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.ExpYear : "-")</span>
+                                    <span class="email-display" id="email-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.ExpYear : data.Booking.User.ExpYear) : "-")</span>
                                 </div>
                             </div>
 
@@ -106,7 +107,7 @@
                                 </div>
                                 <div class="customer-email col-6">
                                     <h5><b>CVV</b></h5>
-                                    <span class="email-display" id="email-output">@(data != null ? data.Booking.Customer.CVV : "-")</span>
+                                    <span class="email-display" id="email-output">@(data != null ? (data.Booking.Customer != null ? data.Booking.Customer.CVV : data.Booking.User.CVV) : "-")</span>
                                 </div>
                             </div>
 

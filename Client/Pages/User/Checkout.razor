@@ -1,10 +1,38 @@
 ﻿@page "/Checkout/{SetHashCode:int}"
 @using BlazorCinemaMS.Client.Services.EmailService;
+@using System.Security.Claims;
+@using BlazorCinemaMS.Client.Services.UserService;
+@using System.Text.RegularExpressions;
 @inject StateContainer stateContainer;
 @inject ISessionsService SessionsService;
 @inject IEmailService emailService;
 @inject StateContainer stateContainer
 @inject NavigationManager navManager
+@inject AuthenticationStateProvider stateProvider
+@inject IUserService userService
+
+
+@if (Message.Text != string.Empty)
+{
+    if (Message.Category == MessageCategory.Error)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Message.Text
+        </div>
+    }
+    else if (Message.Category == MessageCategory.Warning)
+    {
+        <div class="alert alert-warning" role="alert">
+            @Message.Text
+        </div>
+    }
+    else if (Message.Category == MessageCategory.Success)
+    {
+        <div class="alert alert-success" role="alert">
+            @Message.Text
+        </div>
+    }
+}
 
 <nav class="navbar navbar-expand-lg bg-dark">
     <div class="container-fluid">
@@ -94,141 +122,196 @@
             <!-- Form Container -->
             <div class="container form-container py-5">
                 <h1 class="mb-4">Cinema Ticket Checkout</h1>
-                <EditForm Model="Customer" OnValidSubmit="HandleValidFormSubmit">
-                    <DataAnnotationsValidator/>
 
-                    <div class="mb-3">
-                        <label for="firstname" class="form-label">First Name</label>
-                        <InputText id="name" @bind-Value="Customer.FirstName" class="form-control" maxlength="40" placeholder="John"></InputText>
-                        <ValidationMessage For="@(() => Customer.FirstName)" />
-                    </div>
+                @if(authState!=null && authState.User.Identity.IsAuthenticated)
+                {
+                    @* ---------------------- Authenticated Form -------------------- *@
 
-                    <div class="mb-3">
-                        <label for="lastname" class="form-label">Last Name</label>
-                        <InputText id="lastname" @bind-Value="Customer.LastName" class="form-control" max-length="40" placeholder="Doe"></InputText>
-                        <ValidationMessage For="@(() => Customer.LastName)" />
-                    </div>
+                    <EditForm Model="User" OnValidSubmit="HandleValidFormSubmit">
+                        <DataAnnotationsValidator />
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <InputText id="email" @bind-Value="Customer.Email" class="form-control" placeholder="example@gmail.com"></InputText>
-                        <ValidationMessage For="@(() => Customer.Email)" />
-                    </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
 
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <InputText id="phone" @bind-Value="Customer.Phone" class="form-control" placeholder="+353 891234567"></InputText>
-                        <ValidationMessage For="@(() => Customer.Phone)" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <InputText id="address" @bind-Value="Customer.Address" class="form-control" maxlength="40" placeholder="One Park Place Hatch St, 2, Dublin, Ireland"></InputText>
-                        <ValidationMessage For="@(() => Customer.Address)" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="nameOnCard" class="form-label">Name On Card</label>
-                        <InputText id="nameOnCard" @bind-Value="Customer.CreditCardDetails.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
-                        <ValidationMessage For="@(() => Customer.CreditCardDetails.NameOnCard)" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="creditcard" class="form-label">Credit Card Number</label>
-                        <InputText id="creditcard" @bind-Value="Customer.CreditCardDetails.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
-                        <ValidationMessage For="@(() => Customer.CreditCardDetails.CardNumber)" />
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="expmonth" class="form-label">Exp Month</label>
-                        <InputText id="expmonth" @bind-Value="Customer.CreditCardDetails.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
-                        <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpMonth)" />
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="expyear" class="form-label">Exp Year</label>
-                        <InputText id="expyear" @bind-Value="Customer.CreditCardDetails.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
-                        <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpYear)" />
-                    </div>
+                            <p>@userService.GetUser().Username</p>
 
-                    <div class="mb-3">
-                        <label for="cvv" class="form-label">CVV</label>
-                        <InputText id="cvv" @bind-Value="Customer.CreditCardDetails.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
-                        <ValidationMessage For="@(() => Customer.CreditCardDetails.CVV)" />
-                    </div>
-                    <br>
-                    @* <ValidationSummary /> *@
-                    <button type="submit" class="btn btn-primary">
-                        @if (!ShowSpinner)
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+
+                            <p>@userService.GetUser().Email</p>
+
+
+                        </div>
+
+                        @if(userService.GetUser().Phone != null)
                         {
-                            <span>Submit</span>
-                        }
-                        else
-                        {
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+
+                                <p>@userService.GetUser().Phone</p>
+
                             </div>
                         }
-                    </button>
+
+                        @if(userService.GetUser().Address != null)
+                        {
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+
+                                <p>@userService.GetUser().Address</p>
+
+                            </div>
+                        }
+
+                        
+                        <div class="mb-3">
+                            <label for="nameOnCard" class="form-label">Name On Card</label>
+                            <InputText id="nameOnCard" @bind-Value="User.CreditCardDetails.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
+                            <ValidationMessage For="@(() => User.CreditCardDetails.NameOnCard)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="creditcard" class="form-label">Credit Card Number</label>
+                            <InputText id="creditcard" @bind-Value="User.CreditCardDetails.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
+                            <ValidationMessage For="@(() => User.CreditCardDetails.CardNumber)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="expmonth" class="form-label">Exp Month</label>
+                            <InputText id="expmonth" @bind-Value="User.CreditCardDetails.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
+                            <ValidationMessage For="@(() => User.CreditCardDetails.ExpMonth)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="expyear" class="form-label">Exp Year</label>
+                            <InputText id="expyear" @bind-Value="User.CreditCardDetails.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
+                            <ValidationMessage For="@(() => User.CreditCardDetails.ExpYear)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <InputText id="cvv" @bind-Value="User.CreditCardDetails.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
+                            <ValidationMessage For="@(() => User.CreditCardDetails.CVV)" />
+                        </div>
+                        <ValidationSummary/>
+                        <br>
+                        <button type="submit" class="btn btn-primary">
+                            @if (!ShowSpinner)
+                            {
+                                <span>Submit</span>
+                            }
+                            else
+                            {
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            }
+                        </button>
+
+                    </EditForm>
+
+                    @* ---------------------- End Of Authenticated Form -------------------- *@
+                }
+                else
+                {
+                    @* ---------------------- Non-Authenticated Form -------------------- *@
+
+                    <EditForm Model="Customer" OnValidSubmit="HandleValidFormSubmit">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">First Name</label>
+
+                            <InputText id="name" @bind-Value="Customer.FirstName" class="form-control" maxlength="40" placeholder="John"></InputText>
+                            <ValidationMessage For="@(() => Customer.FirstName)" />
 
 
-                    @* <div class="mb-3">
-                        <label for="name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="name" onInput="validateFullName()" required placeholder="John More Doe" aria-describedby="validationFullName">
-                        <div id="validationFullName" class="invalid-feedback">
-                            Please provide your name
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" onInput="validateEmail()" required placeholder="john@example.com" aria-describedby="validationEmail">
-                        <div id="validationEmail" class="invalid-feedback">
-                            Invalid email
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Last Name</label>
+
+                            <InputText id="lastname" @bind-Value="Customer.LastName" class="form-control" max-length="40" placeholder="Doe"></InputText>
+                            <ValidationMessage For="@(() => Customer.LastName)" />
+
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="tel" class="form-control" id="phone" onInput="validatePhone()" required placeholder="+353 123456789" maxlength="14" aria-describedby="validationPhoneNumber">
-                        <div id="validationPhoneNumber" class="invalid-feedback">
-                            Invalid phone number
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+
+                            <InputText id="email" @bind-Value="Customer.Email" class="form-control" placeholder="example@gmail.com"></InputText>
+                            <ValidationMessage For="@(() => Customer.Email)" />
+
+
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cardName" class="form-label">Name on Card</label>
-                        <input type="tel" class="form-control" id="cardName" onInput="validateNameOnCard()" required placeholder="John More Doe" aria-describedby="validationNameOnCard">
-                        <div id="validationNameOnCard" class="invalid-feedback">
-                            Please provide the name on your card
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+
+                            <InputText id="phone" @bind-Value="Customer.Phone" class="form-control" placeholder="+353 891234567"></InputText>
+                            <ValidationMessage For="@(() => Customer.Phone)" />
+
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cardNumber" class="form-label">Credit card number</label>
-                        <input type="text" class="form-control" id="cardNumber" onInput="validateCreditCardNumber()" placeholder="1111 2222 3333 4444" maxlength="19" aria-describedby="validationCreditCardNumber">
-                        <div id="validationCreditCardNumber" class="invalid-feedback">
-                            Invalid credit card number
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+
+                            <InputText id="address" @bind-Value="Customer.Address" class="form-control" maxlength="40" placeholder="One Park Place Hatch St, 2, Dublin, Ireland"></InputText>
+                            <ValidationMessage For="@(() => Customer.Address)" />
+
+
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exp-month" class="form-label">Exp Month</label>
-                        <input type="text" class="form-control" id="exp-month" onInput="validateExpMonth()" required placeholder="01" maxlength="2" aria-describedby="validationExpMonth">
-                        <div id="validationExpMonth" class="invalid-feedback">
-                            Please provide your card's expiration month
+                        <div class="mb-3">
+                            <label for="nameOnCard" class="form-label">Name On Card</label>
+                            <InputText id="nameOnCard" @bind-Value="Customer.CreditCardDetails.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
+                            <ValidationMessage For="@(() => Customer.CreditCardDetails.NameOnCard)" />
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exp-year" class="form-label">Exp Year</label>
-                        <input type="text" class="form-control" id="exp-year" onInput="validateExpYear()" required placeholder="24" maxlength="2" aria-describedby="validationExpYear">
-                        <div id="validationExpYear" class="invalid-feedback">
-                            Please provide your card's expiration year
+                        <div class="mb-3">
+                            <label for="creditcard" class="form-label">Credit Card Number</label>
+                            <InputText id="creditcard" @bind-Value="Customer.CreditCardDetails.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
+                            <ValidationMessage For="@(() => Customer.CreditCardDetails.CardNumber)" />
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cvv" class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cvv" onInput="validateCVV()" required placeholder="123" maxlength="3" aria-describedby="validationCVV">
-                        <div id="validationCVV" class="invalid-feedback">
-                            Please provide your card's CVV
+
+                        <div class="mb-3">
+                            <label for="expmonth" class="form-label">Exp Month</label>
+                            <InputText id="expmonth" @bind-Value="Customer.CreditCardDetails.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
+                            <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpMonth)" />
                         </div>
-                    </div>
-                    <!-- submit button -->
-                    <button type="button" onclick="onSubmit()" class="btn btn-primary">Pay</button> *@
-                </EditForm>
+
+                        <div class="mb-3">
+                            <label for="expyear" class="form-label">Exp Year</label>
+                            <InputText id="expyear" @bind-Value="Customer.CreditCardDetails.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
+                            <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpYear)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <InputText id="cvv" @bind-Value="Customer.CreditCardDetails.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
+                            <ValidationMessage For="@(() => Customer.CreditCardDetails.CVV)" />
+                        </div>
+                        <br>
+                        <ValidationSummary />
+                        <button type="submit" class="btn btn-primary">
+                            @if (!ShowSpinner)
+                            {
+                                <span>Submit</span>
+                            }
+                            else
+                            {
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            }
+                        </button>
+
+                    </EditForm>
+
+                    @* ---------------------- End Of Non-Authenticated Form -------------------- *@
+                }
+
             </div>
         </div>
     </div>
@@ -242,14 +325,28 @@
     public double BookingCost { get; set; }
     public List<SeatsWithClassVM> SeatsWithClass { get; set; }
 
+    public Message Message { get; set; } = new Message();
+
+
     public bool ShowSpinner { get; set; } = false;
 
     public CustomerVM Customer { get; set; } = new CustomerVM() { CreditCardDetails = new CreditCardDetailsVM() };
+
+    public UserVM User { get; set; } = new UserVM() { CreditCardDetails = new CreditCardDetailsVM()};
+
+    public AuthenticationState authState;
 
 
 
     protected override async Task OnInitializedAsync()
     {
+        authState = await stateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            PopulateForm(authState.User);
+        }
+
 
         //ShowQuickbookAfterSeconds(4);
         var data = (SessionAndSeatsDTO)stateContainer.ObjectTunnel[SetHashCode];
@@ -258,8 +355,56 @@
 
         BookingCost = GetBookingCost();
         SeatsWithClass = GetSeatsByClass();
+    }
+
+    public async Task ShowMessage(MessageCategory category, string message, int seconds)
+    {
+        Message.Category = category;
+        Message.Text = message;
+        StateHasChanged();
+
+        await Task.Delay(seconds * 1000);
+
+        Message.Text = string.Empty;
+        StateHasChanged();
+    }
+
+    public string GetEmailClaim(ClaimsPrincipal user)
+    {
+        return user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+    }
+
+    public string GetAddressClaim(ClaimsPrincipal user)
+    {
+        return user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.StreetAddress).Value;
+    }
+
+    public string GetPhoneNumberClaim(ClaimsPrincipal user)
+    {
+        return user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone).Value;
+    }
+
+    public string GetUsernameClaim(ClaimsPrincipal user)
+    {
+        return user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+    }
+
+
+    public void PopulateForm(ClaimsPrincipal user)
+    {
+        User.Email = GetEmailClaim(user);
+        User.Username = GetUsernameClaim(user);
+        User.Address = GetAddressClaim(user);
+        User.Phone = GetPhoneNumberClaim(user);
+
+        User.CreditCardDetails.NameOnCard = string.IsNullOrEmpty(userService.GetUser().NameOnCard) ? null : userService.GetUser().NameOnCard;
+        User.CreditCardDetails.CardNumber = string.IsNullOrEmpty(userService.GetUser().CreditCardNumber) ? null : userService.GetUser().CreditCardNumber;
+        User.CreditCardDetails.ExpYear = string.IsNullOrEmpty(userService.GetUser().ExpYear) ? null : userService.GetUser().ExpYear;
+        User.CreditCardDetails.ExpMonth = string.IsNullOrEmpty(userService.GetUser().ExpMonth) ? null : userService.GetUser().ExpMonth;
+        User.CreditCardDetails.CVV = string.IsNullOrEmpty(userService.GetUser().CVV) ? null : userService.GetUser().CVV;
 
     }
+
 
 
     public double GetSeatPrice(SeatDTO seat)
@@ -288,24 +433,179 @@
         return Seats.Sum(s => GetSeatPrice(s));
     }
 
+    // public AppUserDTO GetUserDTO()
+    // {
+    //     new AppUserDTO()
+    //         {
+    //             Address = GetAddressClaim(authState.User),
+    //             Email = GetEmailClaim(authState.User)
+    //         },
+    // }
+
+
+    // public bool ValidCardDetails()
+    // {
+    //     return User.CreditCardDetails.NameOnCard  
+
+    // }
+
+
+    public bool ValidCardDetails()
+    {
+        return User.CreditCardDetails.NameOnCard != null &&
+        User.CreditCardDetails.CardNumber != null &&
+        User.CreditCardDetails.ExpYear != null &&
+        User.CreditCardDetails.ExpMonth != null &&
+        User.CreditCardDetails.CVV != null;
+    }
+
+    public bool ValidNameOnCard()
+    {
+        return User.CreditCardDetails.NameOnCard != null && !string.IsNullOrEmpty(User.CreditCardDetails.NameOnCard);
+    }
+
+    public bool ValidCardNumber()
+    {
+        string pattern = @"^\d{4} \d{4} \d{4} \d{4}$";
+        Regex regex = new Regex(pattern);
+
+
+        return regex.IsMatch(User.CreditCardDetails.CardNumber);
+    }
+
+    public bool ValidCVV()
+    {
+        string pattern = @"^\d{3}$";
+        Regex regex = new Regex(pattern);
+
+
+        return regex.IsMatch(User.CreditCardDetails.CVV);
+    }
+
+    public bool ValidExpYear()
+    {
+        string pattern = @"^\d{2}$";
+        Regex regex = new Regex(pattern);
+
+
+        return regex.IsMatch(User.CreditCardDetails.ExpYear);
+    }
+
+    public bool ValidExpMonth()
+    {
+        string pattern = @"(^0[0-9]$)|(^1[0-2]$)";
+        Regex regex = new Regex(pattern);
+
+
+        return regex.IsMatch(User.CreditCardDetails.ExpMonth);
+    }
+
+
+
+
+
+
     public async Task HandleValidFormSubmit()
     {
         ShowSpinner = true;
+        BookingDTO bookingDTO;
 
-        CustomerDTO customerDTO = GetCustomerDTOFromCustomerVM(Customer);
-        BookingDTO bookingDTO = new BookingDTO()
+
+        if (authState.User.Identity.IsAuthenticated)
         {
-            TotalAmount = BookingCost,
-            Customer = customerDTO,
-            Seats = Seats,
-            SessionId = Session.Id
-        };
+
+            if (!ValidNameOnCard())
+            {
+                ShowMessage(MessageCategory.Error, "Name On Card Required", 4);
+
+                ShowSpinner = false;
+
+                return;
+            }
+
+            if (!ValidCardNumber())
+            {
+                ShowMessage(MessageCategory.Error, "Invalid Card Number", 4);
+
+                ShowSpinner = false;
+
+                return;
+            }
+
+            if (!ValidExpMonth())
+            {
+                ShowMessage(MessageCategory.Error, "Invalid Expiry Month", 4);
+
+                ShowSpinner = false;
+
+                return;
+            }
+
+            if (!ValidExpYear())
+            {
+                ShowMessage(MessageCategory.Error, "Invalid Expiry Year", 4);
+
+                ShowSpinner = false;
+
+                return;
+            }
+
+
+            if (!ValidCVV())
+            {
+                ShowMessage(MessageCategory.Error, "Invalid CVV", 4);
+
+                ShowSpinner = false;
+
+                return;
+            }
+
+        }
+
+
+
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            bookingDTO = new BookingDTO()
+                {
+                    TotalAmount = BookingCost,
+                    User = new AppUserDTO() { 
+                        Username = GetUsernameClaim(authState.User),
+                        Address = GetAddressClaim(authState.User),
+                        Email = GetEmailClaim(authState.User),
+                        NameOnCard = User.CreditCardDetails.NameOnCard,
+                        CreditCardNumber = User.CreditCardDetails.CardNumber,
+                        ExpMonth = User.CreditCardDetails.ExpMonth,
+                        ExpYear = User.CreditCardDetails.ExpYear,
+                        CVV = User.CreditCardDetails.CVV
+                    },
+                    Seats = Seats,
+                    SessionId = Session.Id,
+
+                };
+        }
+        else
+        {
+            CustomerDTO customerDTO = GetCustomerDTOFromCustomerVM(Customer);
+            bookingDTO = new BookingDTO()
+                {
+                    TotalAmount = BookingCost,
+                    Customer = customerDTO,
+                    Seats = Seats,
+                    SessionId = Session.Id,
+
+                };
+        }
 
 
         bool success = await SessionsService.AddBooking(bookingDTO);
 
+        await userService.UpdateUser();
+
         if (success)
         {
+            
+
             SessionAndBookingDTO data = new SessionAndBookingDTO()
                 {
                     Session = Session,

@@ -15,7 +15,13 @@ namespace BlazorCinemaMS.Server.Helper.Utility
 
         EmailDTO GetEmail(SessionAndBookingDTO data);
 
-        Booking GetBookingFromBookingDTO(BookingDTO bookingDTO);
+		AppUserDTO GetAppUserDTOFromUser(AppUser user);
+
+		bool CardDetailsAreDifferent(AppUserDTO user1, AppUser user2);
+
+		void UpdateUser(AppUserDTO userDTO, AppUser user);
+
+        Booking GetBookingFromBookingDTO(BookingDTO bookingDTO,AppUser user);
 
 		Customer GetCustomerFromCustomerDTO(CustomerDTO customerDTO);
 

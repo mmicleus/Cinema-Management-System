@@ -1,5 +1,8 @@
 ﻿@page "/Admin/Sessions/{Id}"
+@attribute [Authorize(Roles = "admin")]
+
 @using BlazorCinemaMS.Client.Types;
+@using Microsoft.AspNetCore.Authorization;
 @inject ISessionsService SessionsService
 
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">

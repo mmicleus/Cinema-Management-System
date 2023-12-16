@@ -1,0 +1,31 @@
+﻿@using BlazorCinemaMS.Client.Services.UserService;
+@using Blazored.LocalStorage;
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IUserService _userService
+
+<AuthorizeView>
+	<Authorized>
+		<a class="nav-link" @onclick="Logout" style="cursor:pointer;">Logout</a>
+	</Authorized>
+	<NotAuthorized>
+		<a class="nav-link" @onclick="Login" style="cursor:pointer;">Login</a>
+	</NotAuthorized>
+
+</AuthorizeView>
+
+
+@code {
+	void Login()
+	{
+		NavigationManager.NavigateTo("login");
+	}
+
+	async void Logout()
+	{
+		await LocalStorage.RemoveItemAsync("token");
+		_userService.DeleteUser();
+		await AuthStateProvider.GetAuthenticationStateAsync();
+	}
+}

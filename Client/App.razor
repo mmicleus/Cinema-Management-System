@@ -1,6 +1,17 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿
+<CascadingAuthenticationState>
+
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
+            <NotAuthorized>
+
+                <img src="/NotPass.jpg"/>
+                    <p class="mt-3" style="color:#fff;"><b>Sorry, you're not authorized to see this</b></p>
+                </NotAuthorized>
+
+        </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
@@ -10,3 +21,5 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+</CascadingAuthenticationState>

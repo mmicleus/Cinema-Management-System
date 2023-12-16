@@ -1,6 +1,8 @@
 ﻿@* @page "/Admin/CreateSession" *@
 
 @page "/Admin/CreateSession"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "admin")]
 
 
 @inject IBranchesService branchesService

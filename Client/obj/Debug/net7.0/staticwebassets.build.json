@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "cbGFU8bf6d57tPqM+aSDuQ8/y6OE7UIPAFAwY4MdtuI=",
+  "Hash": "wZFAM3fFbv21YlaNN/te1mpdLzWjxiOtSoXWR1+/Cng=",
   "Source": "BlazorCinemaMS.Client",
   "BasePath": "/",
   "Mode": "Root",
@@ -117,6 +117,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Shared\\bin\\Debug\\net7.0\\BlazorCinemaMS.Shared.pdb"
+    },
+    {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Blazored.LocalStorage.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\blazored.localstorage\\4.4.0\\lib\\net7.0\\Blazored.LocalStorage.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\dotnet.7.0.14.dr2eo2fhh4.js",
@@ -286,7 +303,24 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.authorization\\7.0.13\\lib\\net7.0\\Microsoft.AspNetCore.Authorization.dll"
+      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.authorization\\7.0.14\\lib\\net7.0\\Microsoft.AspNetCore.Authorization.dll"
+    },
+    {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.Authorization.dll",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Components.Authorization.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.components.authorization\\7.0.14\\lib\\net7.0\\Microsoft.AspNetCore.Components.Authorization.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.dll",
@@ -303,7 +337,7 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.components\\7.0.13\\lib\\net7.0\\Microsoft.AspNetCore.Components.dll"
+      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.components\\7.0.14\\lib\\net7.0\\Microsoft.AspNetCore.Components.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.Forms.dll",
@@ -388,7 +422,7 @@
       "AssetTraitValue": "runtime",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.metadata\\7.0.13\\lib\\net7.0\\Microsoft.AspNetCore.Metadata.dll"
+      "OriginalItemSpec": "C:\\Users\\micle\\.nuget\\packages\\microsoft.aspnetcore.metadata\\7.0.14\\lib\\net7.0\\Microsoft.AspNetCore.Metadata.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.CSharp.dll",
@@ -3723,6 +3757,23 @@
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.Threading.Timer.dll"
     },
     {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\+yn68hj1.gz",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Blazored.LocalStorage.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll"
+    },
+    {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\0+z3g4kC.gz",
       "SourceId": "BlazorCinemaMS.Client",
       "SourceType": "Computed",
@@ -4437,23 +4488,6 @@
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.Xml.dll"
     },
     {
-      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\9RHhbNG+.gz",
-      "SourceId": "BlazorCinemaMS.Client",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.AspNetCore.Metadata.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Metadata.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Metadata.dll"
-    },
-    {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\a88UboDI.gz",
       "SourceId": "BlazorCinemaMS.Client",
       "SourceType": "Computed",
@@ -4690,23 +4724,6 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.Linq.Queryable.dll"
-    },
-    {
-      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\E1TGsWNV.gz",
-      "SourceId": "BlazorCinemaMS.Client",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.AspNetCore.Authorization.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Authorization.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Authorization.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\e5B++i00.gz",
@@ -5134,6 +5151,23 @@
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.IO.UnmanagedMemoryStream.dll"
     },
     {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\JxbgL0Jr.gz",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Metadata.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Metadata.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Metadata.dll"
+    },
+    {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\KfC9qJAv.gz",
       "SourceId": "BlazorCinemaMS.Client",
       "SourceType": "Computed",
@@ -5149,6 +5183,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.Extensions.FileSystemGlobbing.dll"
+    },
+    {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\khHRNqi1.gz",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Components.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\KI9fvvXK.gz",
@@ -5421,23 +5472,6 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.Net.Primitives.dll"
-    },
-    {
-      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\lx1R+swx.gz",
-      "SourceId": "BlazorCinemaMS.Client",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/Microsoft.AspNetCore.Components.dll.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.dll",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\M0LgP9YB.gz",
@@ -6069,6 +6103,23 @@
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\System.ComponentModel.Primitives.dll"
     },
     {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\rR+s4H74.gz",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Authorization.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Authorization.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Authorization.dll"
+    },
+    {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\rvOmQH+Z.gz",
       "SourceId": "BlazorCinemaMS.Client",
       "SourceType": "Computed",
@@ -6118,6 +6169,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.Extensions.Configuration.Binder.dll"
+    },
+    {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\S6ht6Ojf.gz",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Microsoft.AspNetCore.Components.Authorization.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.Authorization.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\bin\\Debug\\net7.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.Authorization.dll"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\obj\\Debug\\net7.0\\build-gz\\SA0TI346.gz",
@@ -7444,6 +7512,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\NotPass.jpg",
+      "SourceId": "BlazorCinemaMS.Client",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "NotPass.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\NotPass.jpg"
     },
     {
       "Identity": "D:\\Web development\\Portfolio Projects\\BlazorCinemaMS\\BlazorCinemaMS\\Client\\wwwroot\\svgIcons\\chair-empty.svg",

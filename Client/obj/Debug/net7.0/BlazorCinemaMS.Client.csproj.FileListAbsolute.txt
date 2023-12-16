@@ -612,12 +612,9 @@ D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\D
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\BlazorCinemaMS.Client.AssemblyInfo.cs
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\BlazorCinemaMS.Client.csproj.CoreCompileInputs.cache
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\BlazorCinemaMS.Client.MvcApplicationPartsAssemblyInfo.cache
-D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\E1TGsWNV.gz
-D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\lx1R+swx.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\d7GzPAui.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\IrBPMEcZ.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\hCcNjOav.gz
-D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\9RHhbNG+.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\lcs1OoTx.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\4IE41Rcx.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\s5M6idTS.gz
@@ -858,3 +855,14 @@ D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\D
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\krgov+Zo.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\fAw2gy1w.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\CglaTcsY.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\bin\Debug\net7.0\wwwroot\_framework\Blazored.LocalStorage.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\bin\Debug\net7.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Authorization.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\bin\Debug\net7.0\wwwroot\_framework\Blazored.LocalStorage.dll.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\bin\Debug\net7.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Authorization.dll.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\bin\Debug\net7.0\Blazored.LocalStorage.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\bin\Debug\net7.0\Microsoft.AspNetCore.Components.Authorization.dll
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\+yn68hj1.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\rR+s4H74.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\khHRNqi1.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\S6ht6Ojf.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\JxbgL0Jr.gz

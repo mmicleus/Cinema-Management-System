@@ -16,6 +16,8 @@ namespace CinemaMS.Models
        // [JsonIgnore]
         public IEnumerable<Booking> Bookings { get; set; }
 
+
+
         
 
 
@@ -24,22 +26,22 @@ namespace CinemaMS.Models
 
         //-----------------  Credit Card Details ----------------
 
-        [Required]
-        public string NameOnCard { get; set; }
+        //[Required]
+        public string? NameOnCard { get; set; }
 
-        [Required]
-        public string CardNumber { get; set; }
+        //[Required]
+        public string? CardNumber { get; set; }
 
-        [Required]
+        //[Required]
         //[CreditCard(ErrorMessage = "Invalid Card Number")]
-        public string ExpMonth { get; set; }
+        public string? ExpMonth { get; set; }
 
-        [Required]
+        //[Required]
         //[CreditCard(ErrorMessage = "Invalid Card Number")]
-        public string ExpYear { get; set; }
+        public string? ExpYear { get; set; }
 
-        [Required]
-        public string CVV { get; set; }
+        //[Required]
+        public string? CVV { get; set; }
 
 
         //-----------------  End of Credit Card Details ----------------

@@ -52,7 +52,7 @@ namespace BlazorCinemaMS.Server.Helper.Utility
         public string GetEmailBody(SessionAndBookingDTO data)
         {
 
-            string intro = $"<h2>Dear {data.Booking.Customer.FirstName},<br> The following booking has been made:</h2><br>";
+            string intro = $"<h2>Dear {(data.Booking.Customer != null ? data.Booking.Customer.FirstName : data.Booking.User.Email)},<br> The following booking has been made:</h2><br>";
 
 
             var bookingAsString = GetBookingAsString(data);
@@ -62,15 +62,66 @@ namespace BlazorCinemaMS.Server.Helper.Utility
             return intro + bookingAsString;
         }
 
+        public bool CardDetailsAreDifferent(AppUserDTO user1, AppUser user2)
+        {
+
+            return !(
+                user1.NameOnCard.Equals(user2.NameOnCard) &&
+                user1.CreditCardNumber.Equals(user2.CardNumber) &&
+                user1.ExpYear.Equals(user2.ExpYear) &&
+                user1.ExpMonth.Equals(user2.ExpMonth) &&
+                user1.CVV.Equals(user2.CVV)
+                );   
+        }
+
+
+        public void UpdateUser(AppUserDTO userDTO, AppUser user)
+        {
+            user.NameOnCard = userDTO.NameOnCard;
+            user.CardNumber = userDTO.CreditCardNumber;
+            user.ExpYear = userDTO.ExpYear;
+            user.ExpMonth = userDTO.ExpMonth;
+            user.CVV = userDTO.CVV;
+        }
+
 
 
         public EmailDTO GetEmail(SessionAndBookingDTO data)
         {
-            return new EmailDTO
+            if(data.Booking.User != null)
             {
-                To = data.Booking.Customer.Email,
-                Subject = "Order Confirmation",
-                Body = GetEmailBody(data)
+                return new EmailDTO
+                {
+                    To = data.Booking.User.Email,
+                    Subject = "Order Confirmation",
+                    Body = GetEmailBody(data)
+                };
+            }
+            else
+            {
+                return new EmailDTO
+                {
+                    To = data.Booking.Customer.Email,
+                    Subject = "Order Confirmation",
+                    Body = GetEmailBody(data)
+                };
+            }
+            
+        }
+
+        public AppUserDTO GetAppUserDTOFromUser(AppUser user)
+        {
+            return new AppUserDTO()
+            {
+                Username = user.UserName,
+                Phone = user.PhoneNumber,
+                Address = user.Address,
+                Email = user.Email,
+                NameOnCard = user.NameOnCard,
+                CreditCardNumber = user.CardNumber,
+                ExpMonth = user.ExpMonth,
+                ExpYear = user.ExpYear,
+                CVV = user.CVV
             };
         }
 
@@ -111,15 +162,29 @@ namespace BlazorCinemaMS.Server.Helper.Utility
 
 
 
-        public Booking GetBookingFromBookingDTO(BookingDTO bookingDTO)
+        public Booking GetBookingFromBookingDTO(BookingDTO bookingDTO,AppUser user)
         {
-            return new Booking()
+            if(user != null)
             {
-                TotalAmount = bookingDTO.TotalAmount,
-                Customer = GetCustomerFromCustomerDTO(bookingDTO.Customer),
-                Seats = bookingDTO.Seats.Adapt<Collection<Seat>>(),
-                SessionId = bookingDTO.SessionId
-            };
+                return new Booking()
+                {
+                    TotalAmount = bookingDTO.TotalAmount,
+                    User = user,
+                    Seats = bookingDTO.Seats.Adapt<Collection<Seat>>(),
+                    SessionId = bookingDTO.SessionId
+                };
+            }
+            else
+            {
+                return new Booking()
+                {
+                    TotalAmount = bookingDTO.TotalAmount,
+                    Customer = GetCustomerFromCustomerDTO(bookingDTO.Customer),
+                    Seats = bookingDTO.Seats.Adapt<Collection<Seat>>(),
+                    SessionId = bookingDTO.SessionId
+                };
+            }
+ 
         }
 
 

@@ -1,4 +1,7 @@
 ﻿@page "/Admin/Movies"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "admin")]
+
 @inject IMoviesService moviesService;
 
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">

@@ -1,0 +1,172 @@
+﻿@page "/login"
+@using BlazorCinemaMS.Client.Services.UserService;
+@using BlazorCinemaMS.Shared.Authentication;
+@using System.Text.RegularExpressions;
+@using Blazored.LocalStorage;
+@using System.Security.Claims;
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+@inject IUserService _userService
+
+
+@if (Message.Text != string.Empty)
+{
+    if (Message.Category == MessageCategory.Error)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Message.Text
+        </div>
+    }
+    else if (Message.Category == MessageCategory.Warning)
+    {
+        <div class="alert alert-warning" role="alert">
+            @Message.Text
+        </div>
+    }
+    else if (Message.Category == MessageCategory.Success)
+    {
+        <div class="alert alert-success" role="alert">
+            @Message.Text
+        </div>
+    }
+}
+
+
+
+<!-- Form Container -->
+<div class="container-sm form-container login-form-container py-5" style="width:100%;max-width:600px;color:#fff;">
+    <h1 class="mb-4">Log In</h1>
+    <EditForm Model="user" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+
+        <div class="mb-3" style="color:#fff">
+            <label for="email" class="form-label">Email</label>
+            <InputText id="email" @bind-Value="user.Username" class="form-control mb-2" maxlength="40" placeholder="Email"></InputText>
+            <ValidationMessage For="@(() => user.Username)" />
+        </div>
+
+		<div class="mb-3">
+			<label for="password" class="form-label">Password</label>
+			<InputText id="password" @bind-Value="user.Password" class="form-control mb-2" maxlength="30" placeholder="Password"></InputText>
+            <ValidationMessage For="@(() => user.Password)" />
+		</div>
+
+        <br>
+
+        <button type="submit" class="btn btn-primary">
+            @if (!ShowSpinner)
+            {
+                <span>Submit</span>
+            }
+            else
+            {
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+        </button>
+
+    </EditForm>
+</div>
+
+
+
+
+
+@code {
+    UserLoginDTO user = new UserLoginDTO();
+    public Message Message { get; set; } = new Message();
+
+    public bool ShowSpinner = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Console.WriteLine(NavManager.Uri.EndsWith("login"));
+
+    }
+
+    public bool PasswordLengthIsValid()
+    {
+        string exp = @".{9,30}";
+        Regex reg = new Regex(exp);
+
+        return reg.IsMatch(user.Password);
+    }
+
+    public bool IsAdmin(ClaimsPrincipal user)
+    {
+        foreach(var claim in user.Claims)
+        {
+            if (claim.Type == ClaimTypes.Role && claim.Value == "admin") return true;
+        }
+
+        return false;
+    }
+
+
+    async Task HandleLogin()
+    {
+
+        var result = await Http.PostAsJsonAsync("api/auth/login",user);
+
+        if (result.IsSuccessStatusCode)
+        {
+            // var token = await result.Content.ReadAsStringAsync();
+
+            UserAndTokenDTO userAndToken = await result.Content.ReadAsAsync<UserAndTokenDTO>();
+
+            string token = userAndToken.Token;
+            this._userService.SetUser(userAndToken.User);
+
+
+            await LocalStorage.SetItemAsync("token", token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+
+            AuthenticationState state = await AuthStateProvider.GetAuthenticationStateAsync();
+
+            if (state.User.Identity.IsAuthenticated)
+            {
+                if (IsAdmin(state.User))
+                {
+                    NavManager.NavigateTo("/");
+                }
+                else
+                {
+                    NavManager.NavigateTo("/");
+                }
+            }   
+        }
+        else
+        {
+            var message = await result.Content.ReadAsStringAsync();
+            ShowMessage(MessageCategory.Error, message, 4);
+        }
+
+    }
+
+
+    public async Task ShowMessage(MessageCategory category, string message, int seconds)
+    {
+        Message.Category = category;
+        Message.Text = message;
+        StateHasChanged();
+
+        await Task.Delay(seconds * 1000);
+
+        Message.Text = string.Empty;
+        StateHasChanged();
+    }
+
+	async Task HandleRegister()
+	{
+		// var result = await Http.PostAsJsonAsync("api/auth/register", user);
+		// var token = await result.Content.ReadAsStringAsync();
+		//await LocalStorage.SetItemAsync("token", token);
+		//await AuthStateProvider.GetAuthenticationStateAsync();
+	}
+
+
+}

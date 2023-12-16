@@ -1,4 +1,7 @@
 ﻿@page "/Admin/Movies/Create"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "admin")]
+
 @inject IMoviesService moviesService;
 
 

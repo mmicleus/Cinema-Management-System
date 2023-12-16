@@ -1,0 +1,185 @@
+﻿@page "/join"
+@using BlazorCinemaMS.Shared.Authentication;\
+@using System.Text.RegularExpressions;
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+
+
+
+
+
+@if (Message.Text != string.Empty)
+{
+    if (Message.Category == MessageCategory.Error)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Message.Text
+        </div>
+    }
+    else if (Message.Category == MessageCategory.Warning)
+    {
+        <div class="alert alert-warning" role="alert">
+            @Message.Text
+        </div>
+    }
+    else if (Message.Category == MessageCategory.Success)
+    {
+        <div class="alert alert-success" role="alert">
+            @Message.Text
+        </div>
+    }
+}
+
+
+<!-- Form Container -->
+<div class="container-sm form-container login-form-container py-5" style="width:100%;max-width:600px;color:#fff;">
+    <h1 class="mb-4">Join</h1>
+    <EditForm Model="user" OnValidSubmit="HandleJoin">
+        <DataAnnotationsValidator />
+
+        <div class="mb-3" style="color:#fff">
+            <label for="username" class="form-label">Username</label>
+            <InputText id="username" @bind-Value="user.Username" class="form-control mb-2" maxlength="40" placeholder="Username"></InputText>
+            <ValidationMessage For="@(() => user.Username)" />
+        </div>
+
+        
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <InputText id="email" @bind-Value="user.Email" class="form-control mb-2" maxlength="30" placeholder="Email"></InputText>
+            <ValidationMessage For="@(() => user.Email)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <InputText id="phone" @bind-Value="user.PhoneNumber" class="form-control mb-2" maxlength="30" placeholder="Phone"></InputText>
+            <ValidationMessage For="@(() => user.PhoneNumber)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <InputText id="address" @bind-Value="user.Address" class="form-control mb-2" maxlength="30" placeholder="Address"></InputText>
+            <ValidationMessage For="@(() => user.Address)" />
+        </div>
+
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <InputText id="password" @bind-Value="user.Password" class="form-control mb-2" maxlength="30" placeholder="Password"></InputText>
+            <ValidationMessage For="@(() => user.Password)" />
+        </div>
+
+
+        <br>
+        <button type="submit" class="btn btn-primary">
+            @if (!ShowSpinner)
+            {
+                <span>Submit</span>
+            }
+            else
+            {
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+        </button>
+
+    </EditForm>
+</div>
+
+@code {
+
+    UserJoinDTO user = new UserJoinDTO();
+
+    public Message Message { get; set; } = new Message();
+    // public Message Message { get; set; } = new Message();
+
+    public bool ShowSpinner = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    public async Task ShowMessage(MessageCategory category, string message, int seconds)
+    {
+        Message.Category = category;
+        Message.Text = message;
+        StateHasChanged();
+
+        await Task.Delay(seconds * 1000);
+
+        Message.Text = string.Empty;
+        StateHasChanged();
+    }
+
+    public bool ContainsNonAlphaCharacter(string password)
+    {
+        string exp = @"[^a-zA-Z\d\s:]";
+        Regex reg = new Regex(exp);
+
+        return reg.IsMatch(password);
+    }
+
+    public bool ContainsUppercaseLetter(string password)
+    {
+        string exp = @"[A-Z]";
+        Regex reg = new Regex(exp);
+
+        return reg.IsMatch(password);
+    }
+
+    public bool ContainsLowercaseLetter(string password)
+    {
+        string exp = @"[a-z]";
+        Regex reg = new Regex(exp);
+
+        return reg.IsMatch(password);
+    }
+
+
+
+    async Task HandleJoin()
+    {
+        if(!ContainsNonAlphaCharacter(user.Password))
+        {
+            ShowMessage(MessageCategory.Error, "Password must contain at least one non-alphanumerical character!", 4);
+
+            return;
+        }
+
+        if (!ContainsUppercaseLetter(user.Password))
+        {
+            ShowMessage(MessageCategory.Error, "Password must contain at least one uppercase letter!", 4);
+
+            return;
+        }
+
+        if (!ContainsLowercaseLetter(user.Password))
+        {
+            ShowMessage(MessageCategory.Error, "Password must contain at least one lowercase letter!", 4);
+
+            return;
+        }
+
+        
+        var result = await Http.PostAsJsonAsync("api/auth/join", user);
+
+        if (result.IsSuccessStatusCode)
+        {
+            string message = await result.Content.ReadAsStringAsync();
+            ShowMessage(MessageCategory.Success,message,4);
+            NavManager.NavigateTo("/login");
+        }
+        else
+        {
+            string message = await result.Content.ReadAsStringAsync();
+            ShowMessage(MessageCategory.Error, message, 4);
+        }
+
+        
+    }
+
+}
