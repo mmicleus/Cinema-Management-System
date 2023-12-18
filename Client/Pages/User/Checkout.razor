@@ -34,30 +34,12 @@
     }
 }
 
-<nav class="navbar navbar-expand-lg bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="quiz.html">Play Game</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+
+<!-- Start of navbar -->
+<Navbar></Navbar>
+
+<!-- end of navbar -->
+
 
 <div class="container main-container">
     <div class="row">
@@ -171,31 +153,31 @@
                         
                         <div class="mb-3">
                             <label for="nameOnCard" class="form-label">Name On Card</label>
-                            <InputText id="nameOnCard" @bind-Value="User.CreditCardDetails.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
-                            <ValidationMessage For="@(() => User.CreditCardDetails.NameOnCard)" />
+                            <InputText id="nameOnCard" @bind-Value="User.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
+                            <ValidationMessage For="@(() => User.NameOnCard)" />
                         </div>
                         <div class="mb-3">
                             <label for="creditcard" class="form-label">Credit Card Number</label>
-                            <InputText id="creditcard" @bind-Value="User.CreditCardDetails.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
-                            <ValidationMessage For="@(() => User.CreditCardDetails.CardNumber)" />
+                            <InputText id="creditcard" @bind-Value="User.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
+                            <ValidationMessage For="@(() => User.CardNumber)" />
                         </div>
 
                         <div class="mb-3">
                             <label for="expmonth" class="form-label">Exp Month</label>
-                            <InputText id="expmonth" @bind-Value="User.CreditCardDetails.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
-                            <ValidationMessage For="@(() => User.CreditCardDetails.ExpMonth)" />
+                            <InputText id="expmonth" @bind-Value="User.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
+                            <ValidationMessage For="@(() => User.ExpMonth)" />
                         </div>
 
                         <div class="mb-3">
                             <label for="expyear" class="form-label">Exp Year</label>
-                            <InputText id="expyear" @bind-Value="User.CreditCardDetails.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
-                            <ValidationMessage For="@(() => User.CreditCardDetails.ExpYear)" />
+                            <InputText id="expyear" @bind-Value="User.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
+                            <ValidationMessage For="@(() => User.ExpYear)" />
                         </div>
 
                         <div class="mb-3">
                             <label for="cvv" class="form-label">CVV</label>
-                            <InputText id="cvv" @bind-Value="User.CreditCardDetails.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
-                            <ValidationMessage For="@(() => User.CreditCardDetails.CVV)" />
+                            <InputText id="cvv" @bind-Value="User.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
+                            <ValidationMessage For="@(() => User.CVV)" />
                         </div>
                         <ValidationSummary/>
                         <br>
@@ -266,31 +248,31 @@
                         </div>
                         <div class="mb-3">
                             <label for="nameOnCard" class="form-label">Name On Card</label>
-                            <InputText id="nameOnCard" @bind-Value="Customer.CreditCardDetails.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
-                            <ValidationMessage For="@(() => Customer.CreditCardDetails.NameOnCard)" />
+                            <InputText id="nameOnCard" @bind-Value="Customer.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
+                            <ValidationMessage For="@(() => Customer.NameOnCard)" />
                         </div>
                         <div class="mb-3">
                             <label for="creditcard" class="form-label">Credit Card Number</label>
-                            <InputText id="creditcard" @bind-Value="Customer.CreditCardDetails.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
-                            <ValidationMessage For="@(() => Customer.CreditCardDetails.CardNumber)" />
+                            <InputText id="creditcard" @bind-Value="Customer.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
+                            <ValidationMessage For="@(() => Customer.CardNumber)" />
                         </div>
 
                         <div class="mb-3">
                             <label for="expmonth" class="form-label">Exp Month</label>
-                            <InputText id="expmonth" @bind-Value="Customer.CreditCardDetails.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
-                            <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpMonth)" />
+                            <InputText id="expmonth" @bind-Value="Customer.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
+                            <ValidationMessage For="@(() => Customer.ExpMonth)" />
                         </div>
 
                         <div class="mb-3">
                             <label for="expyear" class="form-label">Exp Year</label>
-                            <InputText id="expyear" @bind-Value="Customer.CreditCardDetails.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
-                            <ValidationMessage For="@(() => Customer.CreditCardDetails.ExpYear)" />
+                            <InputText id="expyear" @bind-Value="Customer.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
+                            <ValidationMessage For="@(() => Customer.ExpYear)" />
                         </div>
 
                         <div class="mb-3">
                             <label for="cvv" class="form-label">CVV</label>
-                            <InputText id="cvv" @bind-Value="Customer.CreditCardDetails.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
-                            <ValidationMessage For="@(() => Customer.CreditCardDetails.CVV)" />
+                            <InputText id="cvv" @bind-Value="Customer.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
+                            <ValidationMessage For="@(() => Customer.CVV)" />
                         </div>
                         <br>
                         <ValidationSummary />
@@ -330,9 +312,9 @@
 
     public bool ShowSpinner { get; set; } = false;
 
-    public CustomerVM Customer { get; set; } = new CustomerVM() { CreditCardDetails = new CreditCardDetailsVM() };
+    public CustomerVM Customer { get; set; } = new CustomerVM() {  };
 
-    public UserVM User { get; set; } = new UserVM() { CreditCardDetails = new CreditCardDetailsVM()};
+    public UserVM User { get; set; } = new UserVM() { };
 
     public AuthenticationState authState;
 
@@ -397,11 +379,11 @@
         User.Address = GetAddressClaim(user);
         User.Phone = GetPhoneNumberClaim(user);
 
-        User.CreditCardDetails.NameOnCard = string.IsNullOrEmpty(userService.GetUser().NameOnCard) ? null : userService.GetUser().NameOnCard;
-        User.CreditCardDetails.CardNumber = string.IsNullOrEmpty(userService.GetUser().CreditCardNumber) ? null : userService.GetUser().CreditCardNumber;
-        User.CreditCardDetails.ExpYear = string.IsNullOrEmpty(userService.GetUser().ExpYear) ? null : userService.GetUser().ExpYear;
-        User.CreditCardDetails.ExpMonth = string.IsNullOrEmpty(userService.GetUser().ExpMonth) ? null : userService.GetUser().ExpMonth;
-        User.CreditCardDetails.CVV = string.IsNullOrEmpty(userService.GetUser().CVV) ? null : userService.GetUser().CVV;
+        User.NameOnCard = string.IsNullOrEmpty(userService.GetUser().NameOnCard) ? null : userService.GetUser().NameOnCard;
+        User.CardNumber = string.IsNullOrEmpty(userService.GetUser().CreditCardNumber) ? null : userService.GetUser().CreditCardNumber;
+        User.ExpYear = string.IsNullOrEmpty(userService.GetUser().ExpYear) ? null : userService.GetUser().ExpYear;
+        User.ExpMonth = string.IsNullOrEmpty(userService.GetUser().ExpMonth) ? null : userService.GetUser().ExpMonth;
+        User.CVV = string.IsNullOrEmpty(userService.GetUser().CVV) ? null : userService.GetUser().CVV;
 
     }
 
@@ -452,16 +434,16 @@
 
     public bool ValidCardDetails()
     {
-        return User.CreditCardDetails.NameOnCard != null &&
-        User.CreditCardDetails.CardNumber != null &&
-        User.CreditCardDetails.ExpYear != null &&
-        User.CreditCardDetails.ExpMonth != null &&
-        User.CreditCardDetails.CVV != null;
+        return User.NameOnCard != null &&
+        User.CardNumber != null &&
+        User.ExpYear != null &&
+        User.ExpMonth != null &&
+        User.CVV != null;
     }
 
     public bool ValidNameOnCard()
     {
-        return User.CreditCardDetails.NameOnCard != null && !string.IsNullOrEmpty(User.CreditCardDetails.NameOnCard);
+        return User.NameOnCard != null && !string.IsNullOrEmpty(User.NameOnCard);
     }
 
     public bool ValidCardNumber()
@@ -470,7 +452,7 @@
         Regex regex = new Regex(pattern);
 
 
-        return regex.IsMatch(User.CreditCardDetails.CardNumber);
+        return regex.IsMatch(User.CardNumber);
     }
 
     public bool ValidCVV()
@@ -479,7 +461,7 @@
         Regex regex = new Regex(pattern);
 
 
-        return regex.IsMatch(User.CreditCardDetails.CVV);
+        return regex.IsMatch(User.CVV);
     }
 
     public bool ValidExpYear()
@@ -488,7 +470,7 @@
         Regex regex = new Regex(pattern);
 
 
-        return regex.IsMatch(User.CreditCardDetails.ExpYear);
+        return regex.IsMatch(User.ExpYear);
     }
 
     public bool ValidExpMonth()
@@ -497,7 +479,7 @@
         Regex regex = new Regex(pattern);
 
 
-        return regex.IsMatch(User.CreditCardDetails.ExpMonth);
+        return regex.IsMatch(User.ExpMonth);
     }
 
 
@@ -573,11 +555,12 @@
                         Username = GetUsernameClaim(authState.User),
                         Address = GetAddressClaim(authState.User),
                         Email = GetEmailClaim(authState.User),
-                        NameOnCard = User.CreditCardDetails.NameOnCard,
-                        CreditCardNumber = User.CreditCardDetails.CardNumber,
-                        ExpMonth = User.CreditCardDetails.ExpMonth,
-                        ExpYear = User.CreditCardDetails.ExpYear,
-                        CVV = User.CreditCardDetails.CVV
+                        Phone = GetPhoneNumberClaim(authState.User),
+                        NameOnCard = User.NameOnCard,
+                        CreditCardNumber = User.CardNumber,
+                        ExpMonth = User.ExpMonth,
+                        ExpYear = User.ExpYear,
+                        CVV = User.CVV
                     },
                     Seats = Seats,
                     SessionId = Session.Id,
@@ -638,11 +621,11 @@
                 Email = customerVM.Email,
                 Phone = customerVM.Phone,
                 Address = customerVM.Address,
-                NameOnCard = customerVM.CreditCardDetails.NameOnCard,
-                CardNumber = customerVM.CreditCardDetails.CardNumber,
-                ExpMonth = customerVM.CreditCardDetails.ExpMonth,
-                ExpYear = customerVM.CreditCardDetails.ExpYear,
-                CVV = customerVM.CreditCardDetails.CVV
+                NameOnCard = customerVM.NameOnCard,
+                CardNumber = customerVM.CardNumber,
+                ExpMonth = customerVM.ExpMonth,
+                ExpYear = customerVM.ExpYear,
+                CVV = customerVM.CVV
             };
     }
 

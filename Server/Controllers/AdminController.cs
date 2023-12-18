@@ -8,6 +8,7 @@ using BlazorCinemaMS.Shared.ViewModels;
 using CinemaMS.Interfaces;
 using CinemaMS.Models;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -21,6 +22,7 @@ namespace BlazorCinemaMS.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+  //  [Authorize(Roles="Member")]
     public class AdminController : ControllerBase
     {
         private readonly IMoviesService _moviesService;

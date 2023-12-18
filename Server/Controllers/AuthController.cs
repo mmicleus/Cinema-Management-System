@@ -1,8 +1,10 @@
 ﻿using BlazorCinemaMS.Server.Helper.Utility;
 using BlazorCinemaMS.Shared.Authentication;
 using BlazorCinemaMS.Shared.DTOs;
+using CinemaMS.Interfaces;
 using CinemaMS.Models;
 using Humanizer;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -23,14 +25,17 @@ namespace BlazorCinemaMS.Server.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
         private readonly IUtilityService _utility;
+        private readonly IBookingRepository _bookingRepo;
 
         public AuthController(IConfiguration configuration,
             UserManager<AppUser> userManager,
-            IUtilityService utility)
+            IUtilityService utility,
+            IBookingRepository bookingRepo)
         {
             _configuration = configuration;
             _userManager = userManager;
             _utility = utility;
+            _bookingRepo = bookingRepo;
         }
 
 
@@ -108,7 +113,38 @@ namespace BlazorCinemaMS.Server.Controllers
         }
 
 
-		[HttpPost("join")]
+        [HttpGet("userBookings")]
+        //[Authorize(Roles ="admin")]
+        public async Task<IEnumerable<BookingDTO>> GetBookingsByUser()
+        {
+            var result = _utility.GetAuthorizationToken(Request.Headers);
+
+            Console.Write(result);
+
+            JwtSecurityToken secToken = _utility.TestJwtSecurityTokenHandler(result) as JwtSecurityToken;
+            
+
+            //Claim claim = secToken.Claims.First(claim => claim.Type == "emailaddress");
+        
+
+
+            string? email = _utility.GetEmailFromClaims(secToken.Claims);
+
+            AppUser user = await _userManager.FindByEmailAsync(email);
+
+
+            IEnumerable<Booking> bookings = await _bookingRepo.GetBookingsByUser(user.Id);
+
+            return bookings.Select(b => _utility.GetBookingDTOFromBooking(b)).ToList();
+
+            
+        }
+
+
+
+
+
+        [HttpPost("join")]
 		public async Task<ActionResult<string>> Join(UserJoinDTO request)
 		{
             //AppUser user = await _userManager.FindByEmailAsync(request.Email);

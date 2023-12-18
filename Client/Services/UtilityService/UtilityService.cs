@@ -1,7 +1,28 @@
-﻿namespace BlazorCinemaMS.Client.Services.UtilityService
+﻿using BlazorCinemaMS.Shared.DTOs;
+using BlazorCinemaMS.Shared.Enums;
+
+namespace BlazorCinemaMS.Client.Services.UtilityService
 {
 	public class UtilityService:IUtilityService
 	{
+
+		public double GetSeatPriceByClass(SeatClass seatClass, PricingDTO pricing)
+		{
+			switch (seatClass)
+			{
+				case SeatClass.ECONOMY:
+					return pricing.Economy;
+					break;
+				case SeatClass.STANDARD:
+					return pricing.Standard;
+					break;
+				case SeatClass.PREMIUM:
+					return pricing.Premium;
+					break;
+				default:
+					return 0;
+			}
+		}
 
 		public bool IsSameDay(DateTime date1, DateTime date2)
 		{

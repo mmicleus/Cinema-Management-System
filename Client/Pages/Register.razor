@@ -1,11 +1,13 @@
 ﻿@page "/join"
-@using BlazorCinemaMS.Shared.Authentication;\
+@using BlazorCinemaMS.Shared.Authentication;
 @using System.Text.RegularExpressions;
 @inject HttpClient Http
 @inject NavigationManager NavManager
 
 
-
+<!-- Start of navbar -->
+<Navbar></Navbar>
+<!-- end of navbar -->
 
 
 
@@ -32,66 +34,102 @@
 }
 
 
+
+
 <!-- Form Container -->
-<div class="container-sm form-container login-form-container py-5" style="width:100%;max-width:600px;color:#fff;">
-    <h1 class="mb-4">Join</h1>
-    <EditForm Model="user" OnValidSubmit="HandleJoin">
-        <DataAnnotationsValidator />
-
-        <div class="mb-3" style="color:#fff">
-            <label for="username" class="form-label">Username</label>
-            <InputText id="username" @bind-Value="user.Username" class="form-control mb-2" maxlength="40" placeholder="Username"></InputText>
-            <ValidationMessage For="@(() => user.Username)" />
+<div class="container-sm form-container login-form-container py-5" style="width:100%;max-width:1000px;color:#fff;">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="mb-4 mb-3">Sign Up</h1>
         </div>
 
-        
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <EditForm Model="user" OnValidSubmit="HandleJoin">
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <InputText id="email" @bind-Value="user.Email" class="form-control mb-2" maxlength="30" placeholder="Email"></InputText>
-            <ValidationMessage For="@(() => user.Email)" />
-        </div>
+                <DataAnnotationsValidator />
 
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone</label>
-            <InputText id="phone" @bind-Value="user.PhoneNumber" class="form-control mb-2" maxlength="30" placeholder="Phone"></InputText>
-            <ValidationMessage For="@(() => user.PhoneNumber)" />
-        </div>
-
-        <div class="mb-3">
-            <label for="address" class="form-label">Address</label>
-            <InputText id="address" @bind-Value="user.Address" class="form-control mb-2" maxlength="30" placeholder="Address"></InputText>
-            <ValidationMessage For="@(() => user.Address)" />
-        </div>
-
-
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <InputText id="password" @bind-Value="user.Password" class="form-control mb-2" maxlength="30" placeholder="Password"></InputText>
-            <ValidationMessage For="@(() => user.Password)" />
-        </div>
-
-
-        <br>
-        <button type="submit" class="btn btn-primary">
-            @if (!ShowSpinner)
-            {
-                <span>Submit</span>
-            }
-            else
-            {
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div class="mb-3" style="color:#fff">
+                    @* <label for="username" class="form-label">Username</label> *@
+                    <InputText id="username" @bind-Value="user.Username" class="form-control mb-2" maxlength="40" placeholder="Username"></InputText>
+                    <ValidationMessage For="@(() => user.Username)" />
                 </div>
-            }
-        </button>
 
-    </EditForm>
+
+
+                <div class="mb-3">
+                    @* <label for="email" class="form-label">Email</label> *@
+                    <InputText id="email" @bind-Value="user.Email" class="form-control mb-2" maxlength="30" placeholder="Email"></InputText>
+                    <ValidationMessage For="@(() => user.Email)" />
+                </div>
+
+                <div class="mb-3">
+                    @* <label for="phone" class="form-label">Phone</label> *@
+                    <InputText id="phone" @bind-Value="user.PhoneNumber" class="form-control mb-2" maxlength="30" placeholder="Phone"></InputText>
+                    <ValidationMessage For="@(() => user.PhoneNumber)" />
+                </div>
+
+                <div class="mb-3">
+                    @* <label for="address" class="form-label">Address</label> *@
+                    <InputText id="address" @bind-Value="user.Address" class="form-control mb-2" maxlength="30" placeholder="Address"></InputText>
+                    <ValidationMessage For="@(() => user.Address)" />
+                </div>
+
+
+                <div class="mb-3">
+                    @* <label for="password" class="form-label">Password</label> *@
+                    <InputText type="password" id="password" @bind-Value="user.Password" class="form-control mb-2" maxlength="30" placeholder="Password"></InputText>
+                    <ValidationMessage For="@(() => user.Password)" />
+                </div>
+
+
+                <br>
+                <button type="submit" class="btn btn-primary">
+                    @if (!ShowSpinner)
+                    {
+                        <span>Submit</span>
+                    }
+                    else
+                    {
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    }
+                </button>
+
+            </EditForm>
+        </div>
+        <div class="col-6">
+            <ul>
+                @foreach(string rule in validationRules)
+                {
+                    <li>@rule</li>
+                }
+
+            </ul>
+        </div>
+    </div>
+
+
+
+   
 </div>
 
 @code {
 
-    UserJoinDTO user = new UserJoinDTO();
+        UserJoinDTO user = new UserJoinDTO();
+        List<string> validationRules = new List<string>()
+            {
+                "Username must contain at least one letter",
+                "Username must only contain alphanumeric characters",
+                "Password must contain between 9 and 30 characters",
+                "Password must contain at least one special character",
+                "Password must contain at least one uppercase letter",
+                "Password must contain at least one lowercase letter",
+                "Password must contain at least one digit"
+            };
+
 
     public Message Message { get; set; } = new Message();
     // public Message Message { get; set; } = new Message();
@@ -139,13 +177,59 @@
         return reg.IsMatch(password);
     }
 
+    public bool ContainsLetter(string st)
+    {
+        return ContainsLowercaseLetter(st) || ContainsUppercaseLetter(st);
+    }
+
+    public bool ContainsDigit(string st)
+    {
+        string exp = @"\d";
+        Regex reg = new Regex(exp);
+
+        return reg.IsMatch(st);
+    }
+
+    public bool ContainsBetweenXandYCharacters(string st,int x, int y)
+    {
+        return st.Length >= x && st.Length <= y;
+
+        // string exp = @"^.{" + x + "," + y + @"}$";
+
+        // Console.WriteLine(exp);
+
+        // Regex reg = new Regex(exp);
+
+        // return reg.IsMatch(st);
+    }
+
+
+
 
 
     async Task HandleJoin()
     {
+        if (!ContainsLetter(user.Username))
+        {
+            ShowMessage(MessageCategory.Error, "Username must contain at least one letter!", 4);
+
+            return;
+        }
+
+
+        if (ContainsNonAlphaCharacter(user.Username))
+        {
+            ShowMessage(MessageCategory.Error, "Username must only contain alphanumeric characters", 4);
+
+            return;
+        }
+
+
+
+
         if(!ContainsNonAlphaCharacter(user.Password))
         {
-            ShowMessage(MessageCategory.Error, "Password must contain at least one non-alphanumerical character!", 4);
+            ShowMessage(MessageCategory.Error, "Password must contain at least one non-alphanumeric character!", 4);
 
             return;
         }
@@ -163,6 +247,21 @@
 
             return;
         }
+
+        if (!ContainsDigit(user.Password))
+        {
+            ShowMessage(MessageCategory.Error, "Password must contain at least one digit!", 4);
+
+            return;
+        }
+
+        if(!ContainsBetweenXandYCharacters(user.Password, 9, 30)){
+            ShowMessage(MessageCategory.Error, "Password must contain between 9 and 30 characters!", 4);
+
+            return;
+        }
+
+        
 
         
         var result = await Http.PostAsJsonAsync("api/auth/join", user);

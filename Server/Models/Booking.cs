@@ -39,5 +39,6 @@ namespace CinemaMS.Models
                // + "Seats:" + String.Join(',', Seats.Select(s => s.ToString())) + "\n";
         }
 
+
     }
 }

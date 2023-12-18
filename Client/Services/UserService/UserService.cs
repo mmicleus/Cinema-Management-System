@@ -1,4 +1,5 @@
 ﻿using BlazorCinemaMS.Shared.DTOs;
+using BlazorCinemaMS.Shared.Enums;
 using System.Net.Http.Json;
 
 namespace BlazorCinemaMS.Client.Services.UserService
@@ -15,8 +16,10 @@ namespace BlazorCinemaMS.Client.Services.UserService
 
         public UserService() { }
 
+		
 
-        public void SetUser(AppUserDTO user)
+
+		public void SetUser(AppUserDTO user)
         {
             this.User = user;    
         }

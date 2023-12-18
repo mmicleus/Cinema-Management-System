@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
+using static System.Net.WebRequestMethods;
 
 namespace BlazorCinemaMS.Client.Services.SessionsService
 {
@@ -154,6 +155,34 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 		}
 
 
+        public async Task<SessionDTO> GetFullSessionByIdNoBookings(int sessionId)
+        {
+            string url = $"api/Admin/sessions/{sessionId}";
+            string venueUrl = "api/Admin/venues/";
+            string branchUrl = "api/Admin/branches/";
+            SessionDTO session;
+
+            //SessionDTO session = Sessions.FirstOrDefault(s => s.Id == sessionId);
+
+            try
+            {
+                session = await _httpClient.GetFromJsonAsync<SessionDTO>(url);
+            }
+            catch (Exception ex)
+            {
+                session = null;
+            }
+
+            session.Venue = await _httpClient.GetFromJsonAsync<VenueDTO>(venueUrl + session.VenueId);
+            session.Venue.Branch = await _httpClient.GetFromJsonAsync<BranchDTO>(branchUrl + session.Venue.BranchId);
+
+
+            //await _httpClient.GetFromJsonAsync<IEnumerable<SeatDTO>>(url);
+
+            return session;
+        }
+
+
         public async Task<SessionDTO> GetFullSessionByIdForUser(int sessionId)
         {
             string url = $"api/Admin/completeSessions/{sessionId}";
@@ -255,6 +284,30 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
             }
             return result;
         }
+
+
+        public async Task<IEnumerable<BookingDTO>> GetUserBookings()
+        {
+			string url = "api/Auth/userBookings";
+
+            try
+            {
+				IEnumerable<BookingDTO> bookings = await _httpClient.GetFromJsonAsync<IEnumerable<BookingDTO>>(url);
+
+				foreach (BookingDTO booking in bookings)
+				{
+					booking.Session = await GetFullSessionByIdNoBookings(booking.SessionId);
+				}
+
+				return bookings;
+			}
+            catch
+            {
+                return new List<BookingDTO>();
+            }
+
+			
+		} 
 
 
 

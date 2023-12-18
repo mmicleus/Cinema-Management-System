@@ -1,6 +1,8 @@
 ﻿using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.ViewModels;
 using CinemaMS.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace BlazorCinemaMS.Server.Helper.Utility
 {
@@ -12,6 +14,19 @@ namespace BlazorCinemaMS.Server.Helper.Utility
 
 		public string GetTicketsAsString(SessionAndBookingDTO data);
         string GetBookingAsString(SessionAndBookingDTO booking);
+
+		BookingDTO GetBookingDTOFromBooking(Booking booking);
+
+
+        string ExtractAuthorizationToken(string token);
+
+		string? GetEmailFromClaims(IEnumerable<Claim> claims);
+
+
+        string GetAuthorizationToken(IHeaderDictionary headers);
+
+
+        SecurityToken? TestJwtSecurityTokenHandler(string token);
 
         EmailDTO GetEmail(SessionAndBookingDTO data);
 

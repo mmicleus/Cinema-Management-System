@@ -6,9 +6,12 @@ using CinemaMS.Models;
 
 using Mapster;
 using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Tokens;
 using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlazorCinemaMS.Server.Helper.Utility
@@ -85,6 +88,45 @@ namespace BlazorCinemaMS.Server.Helper.Utility
         }
 
 
+        public string ExtractAuthorizationToken(string token)
+        {
+            string toRemove = "Bearer ";
+            return token.Replace(toRemove,"");
+        }
+
+        public string GetAuthorizationToken(IHeaderDictionary headers)
+        {
+            return ExtractAuthorizationToken(headers.First(h => h.Key == "Authorization").Value);
+        }
+
+
+        public string? GetEmailFromClaims(IEnumerable<Claim> claims)
+        {
+            foreach(Claim claim in claims) {
+                if (claim.Type.EndsWith("emailaddress"))
+                {
+                    return claim.Value;
+                }
+            }
+
+            return null;
+        }
+
+
+
+        public SecurityToken? TestJwtSecurityTokenHandler(string token)
+        {
+            //var stream =
+            //    "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJJU1MiLCJzY29wZSI6Imh0dHBzOi8vbGFyaW0uZG5zY2UuZG91YW5lL2NpZWxzZXJ2aWNlL3dzIiwiYXVkIjoiaHR0cHM6Ly9kb3VhbmUuZmluYW5jZXMuZ291di5mci9vYXV0aDIvdjEiLCJpYXQiOiJcL0RhdGUoMTQ2ODM2MjU5Mzc4NClcLyJ9";
+           
+            var handler = new JwtSecurityTokenHandler();
+
+            var jsonToken = handler.ReadToken(token);
+
+            return jsonToken;
+        }
+
+
 
         public EmailDTO GetEmail(SessionAndBookingDTO data)
         {
@@ -92,7 +134,7 @@ namespace BlazorCinemaMS.Server.Helper.Utility
             {
                 return new EmailDTO
                 {
-                    To = data.Booking.User.Email,
+                    To = data.Booking.User.Username,
                     Subject = "Order Confirmation",
                     Body = GetEmailBody(data)
                 };
@@ -187,11 +229,78 @@ namespace BlazorCinemaMS.Server.Helper.Utility
  
         }
 
+        public PricingDTO GetPricingDTOFromPricing(Pricing pricing)
+        {
+            return new PricingDTO()
+            {
+                Economy = pricing.Economy,
+                Standard = pricing.Standard,
+                Premium = pricing.Premium,
+            };
+        }
+
+        public GenreDTO GetGenreDTOFromGenre(Genre genre)
+        {
+            return new GenreDTO()
+            {
+                Id = genre.Id,
+                Name = genre.Name,
+            };
+        }
+
+        public MovieDTO GetMovieDTOFromMovie(Movie movie)
+        {
+            return new MovieDTO()
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Overview = movie.Overview,
+                Duration = movie.Duration,
+                MovieDbId = movie.MovieDbId,
+                BackdropPath = movie.BackdropPath,
+                PosterPath = movie.PosterPath,
+                ReleaseDate = movie.ReleaseDate,
+                VoteAverage = movie.VoteAverage,
+                Genres = movie.Genres.Select(g => GetGenreDTOFromGenre(g)),
+
+            };
+        }
+
+        public SessionDTO GetSessionDTOFromSession(Session session)
+        {
+            return new SessionDTO()
+            {
+                Id = session.Id,
+                StartTime = session.StartTime,
+                EndTime = session.EndTime,
+                Pricing = GetPricingDTOFromPricing(session.Pricing),
+                VenueId = session.VenueId,
+                MovieId = session.MovieId,
+                Movie = GetMovieDTOFromMovie(session.Movie)
+
+            };
+        }
+
+
+        public BookingDTO GetBookingDTOFromBooking(Booking booking)
+        {
+            return new BookingDTO()
+            {
+                Id = booking.Id,
+                TotalAmount = booking.TotalAmount,
+                Customer = booking.Customer != null ? booking.Customer.Adapt<CustomerDTO>() : null,
+                UserId = booking.UserId,
+                Seats = booking.Seats.Adapt<IEnumerable<SeatDTO>>(),
+                SessionId = booking.SessionId,
+                Session = GetSessionDTOFromSession(booking.Session)
+            };
+        }
 
 
 
 
-     
+
+
 
 
 

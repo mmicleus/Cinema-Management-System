@@ -10,6 +10,7 @@ namespace CinemaMS.Interfaces
 
         bool UpdateBooking(Booking booking);
 
+
         Task<Booking> GetBookingByIdAsync(int id);
 
         Task<IEnumerable<Booking>> GetBookingsBySessionAsync(int sessionId);
@@ -17,7 +18,10 @@ namespace CinemaMS.Interfaces
         Task<IEnumerable<Booking>> GetAllBookingsAsync();
 
         Task<IEnumerable<Booking>> GetBookingsByUserAsync(string userId);
-        
+
+        Task<IEnumerable<Booking>> GetBookingsByUser(string userId);
+
+
 
         bool Save();
     }

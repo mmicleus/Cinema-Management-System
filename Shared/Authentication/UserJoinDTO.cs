@@ -21,12 +21,13 @@ namespace BlazorCinemaMS.Shared.Authentication
         [EmailAddress(ErrorMessage = "Invalid Email")]
         public string Email { get; set; } = string.Empty;
 
-        
+
+        [Required(ErrorMessage = "Phone Number required")]
         [Phone(ErrorMessage="Invalid Phone Number")]
         public string PhoneNumber { get; set; } = string.Empty;
 
 
-
+        [Required(ErrorMessage = "Address required")]
         public string Address { get; set; } = string.Empty;
 
 

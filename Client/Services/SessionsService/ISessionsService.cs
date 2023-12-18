@@ -12,7 +12,12 @@ namespace BlazorCinemaMS.Client.Services.SessionsService
 
 		Task GetSessions();
 
-		SessionDTO GetLocalSessionById(int sessionId);
+		Task<IEnumerable<BookingDTO>> GetUserBookings();
+
+		Task<SessionDTO> GetFullSessionByIdNoBookings(int sessionId);
+
+
+        SessionDTO GetLocalSessionById(int sessionId);
 
 		Task<SessionDTO> GetSessionByIdWithSeats(int sessionId);
 

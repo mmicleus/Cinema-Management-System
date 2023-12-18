@@ -38,7 +38,25 @@ namespace CinemaMS.Repositories
 
         public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
         {
-            return await _context.Bookings.Include(b => b.Customer).Include(b => b.User).Include(b => b.Seats).ToListAsync();
+            return await _context.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.User)
+                .Include(b => b.Seats)
+                .ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<Booking>> GetBookingsByUser(string userId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Seats)
+                .Include(b => b.Session)
+                .ThenInclude(s => s.Pricing)
+                .Include(b => b.Session)
+                .ThenInclude(m => m.Movie)
+                .ThenInclude(m => m.Genres)
+                .Where(b => b.UserId == userId)
+                .ToListAsync();
         }
 
         public async Task<Booking> GetBookingByIdAsync(int id)

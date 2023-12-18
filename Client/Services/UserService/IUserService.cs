@@ -1,4 +1,5 @@
 ﻿using BlazorCinemaMS.Shared.DTOs;
+using BlazorCinemaMS.Shared.Enums;
 
 namespace BlazorCinemaMS.Client.Services.UserService
 {
@@ -6,7 +7,8 @@ namespace BlazorCinemaMS.Client.Services.UserService
     {
         AppUserDTO User { get; set; }
 
-        void SetUser(AppUserDTO user);
+
+		void SetUser(AppUserDTO user);
 
         AppUserDTO GetUser();
 
