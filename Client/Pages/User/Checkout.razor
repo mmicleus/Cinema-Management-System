@@ -3,6 +3,7 @@
 @using System.Security.Claims;
 @using BlazorCinemaMS.Client.Services.UserService;
 @using System.Text.RegularExpressions;
+@using Blazored.LocalStorage;
 @inject StateContainer stateContainer;
 @inject ISessionsService SessionsService;
 @inject IEmailService emailService;
@@ -10,6 +11,7 @@
 @inject NavigationManager navManager
 @inject AuthenticationStateProvider stateProvider
 @inject IUserService userService
+@inject ILocalStorageService LocalStorage
 
 
 @if (Message.Text != string.Empty)
@@ -379,11 +381,24 @@
         User.Address = GetAddressClaim(user);
         User.Phone = GetPhoneNumberClaim(user);
 
-        User.NameOnCard = string.IsNullOrEmpty(userService.GetUser().NameOnCard) ? null : userService.GetUser().NameOnCard;
-        User.CardNumber = string.IsNullOrEmpty(userService.GetUser().CreditCardNumber) ? null : userService.GetUser().CreditCardNumber;
-        User.ExpYear = string.IsNullOrEmpty(userService.GetUser().ExpYear) ? null : userService.GetUser().ExpYear;
-        User.ExpMonth = string.IsNullOrEmpty(userService.GetUser().ExpMonth) ? null : userService.GetUser().ExpMonth;
-        User.CVV = string.IsNullOrEmpty(userService.GetUser().CVV) ? null : userService.GetUser().CVV;
+        if(userService.GetUser() != null)
+        {
+            User.NameOnCard = string.IsNullOrEmpty(userService.GetUser().NameOnCard) ? null : userService.GetUser().NameOnCard;
+            User.CardNumber = string.IsNullOrEmpty(userService.GetUser().CreditCardNumber) ? null : userService.GetUser().CreditCardNumber;
+            User.ExpYear = string.IsNullOrEmpty(userService.GetUser().ExpYear) ? null : userService.GetUser().ExpYear;
+            User.ExpMonth = string.IsNullOrEmpty(userService.GetUser().ExpMonth) ? null : userService.GetUser().ExpMonth;
+            User.CVV = string.IsNullOrEmpty(userService.GetUser().CVV) ? null : userService.GetUser().CVV;
+        }
+        else
+        {
+            User.NameOnCard = null;
+            User.CardNumber = null;
+            User.ExpYear = null;
+            User.ExpMonth = null;
+            User.CVV = null;
+        }
+
+        
 
     }
 
@@ -584,6 +599,7 @@
         bool success = await SessionsService.AddBooking(bookingDTO);
 
         await userService.UpdateUser();
+        await LocalStorage.SetItemAsync("user", userService.GetUser());
 
         if (success)
         {

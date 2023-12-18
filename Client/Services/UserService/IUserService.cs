@@ -7,6 +7,7 @@ namespace BlazorCinemaMS.Client.Services.UserService
     {
         AppUserDTO User { get; set; }
 
+       
 
 		void SetUser(AppUserDTO user);
 

@@ -207,14 +207,14 @@
       "netstandard.dll": "sha256-TztlSRjADgiEABbiAMdWZpHrUVd8wnRtQRAvlwmRP\/4=",
       "System.Private.CoreLib.dll": "sha256-BAhrZ8Zg3cJKQipxdzqQo+9jtPkOkRx1ou3oIhDohtk=",
       "BlazorCinemaMS.Shared.dll": "sha256-Nac5kvSpaabCvlSkHEvgIR4d69upQRVQxxdBjwIosMs=",
-      "BlazorCinemaMS.Client.dll": "sha256-GhnphazSxrxZpJI7uhKenfVKYkM+Utjv5pPoLZhEpgM="
+      "BlazorCinemaMS.Client.dll": "sha256-TfdGJqpyPxAvCJv5as4qG4\/L6OfQky4t8KIJRNpsnJY="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
       "BlazorCinemaMS.Shared.pdb": "sha256-7HZucUfFqVyaRzNSrrPPwRZxagucr34UlwzaCgbBLe8=",
-      "BlazorCinemaMS.Client.pdb": "sha256-ZuspB4rZrcUKVKg6xaBoG2BfAO3VIigNwqyga8VBjx0="
+      "BlazorCinemaMS.Client.pdb": "sha256-w9y7zAKVCNBFEj4bRuJ2cqERlIZfl6XflOA\/05GMpqQ="
     },
     "runtime": {
       "dotnet.7.0.14.dr2eo2fhh4.js": "sha256-YWGUknGRzP\/fgO6YjvCJKPVQNZAPEd6ll+rHfQEIW+I=",

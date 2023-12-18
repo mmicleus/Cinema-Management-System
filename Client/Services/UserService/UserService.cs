@@ -1,6 +1,9 @@
 ﻿using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.Enums;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 
 namespace BlazorCinemaMS.Client.Services.UserService
 {
@@ -9,12 +12,12 @@ namespace BlazorCinemaMS.Client.Services.UserService
         private readonly HttpClient _httpClient;
         public UserService(HttpClient httpClient) {
             _httpClient = httpClient;
-        }
+		}
 
 
         public AppUserDTO User { get; set; }
 
-        public UserService() { }
+        
 
 		
 
@@ -39,6 +42,10 @@ namespace BlazorCinemaMS.Client.Services.UserService
             }
             
         }
+
+        
+
+
 
         public AppUserDTO GetUser()
         {

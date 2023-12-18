@@ -136,6 +136,7 @@
 
 
             await LocalStorage.SetItemAsync("token", token);
+            await LocalStorage.SetItemAsync("user", userAndToken.User);
             await AuthStateProvider.GetAuthenticationStateAsync();
 
             AuthenticationState state = await AuthStateProvider.GetAuthenticationStateAsync();
