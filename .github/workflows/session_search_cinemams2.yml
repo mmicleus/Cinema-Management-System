@@ -54,4 +54,4 @@ jobs:
           app-name: 'CinemaMS2'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_618B9F2D6AEF44988AF7B6F38AE0F557 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C2CCBB545DFF4AC09DAE01566C0C80A4 }}
