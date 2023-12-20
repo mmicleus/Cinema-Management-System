@@ -1,5 +1,6 @@
 ﻿using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.Enums;
+using System.Security.Claims;
 
 namespace BlazorCinemaMS.Client.Services.UtilityService
 {
@@ -10,5 +11,7 @@ namespace BlazorCinemaMS.Client.Services.UtilityService
 		bool IsSameDay(DateTime date1, DateTime date2);
 
 		string FormatMinutes(int minutes);
+
+		bool IsOfRole(string role, IEnumerable<Claim> claims);
 	}
 }

@@ -34,6 +34,11 @@ builder.Services.AddScoped<IUtilityService, UtilityService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
+builder.Services.AddScoped<CustomAuthStateProvider>();
+//builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthStateProvider>());
+
+
+
 builder.Services.AddSingleton<IUserService, UserService>();
 
 builder.Services.AddAuthorizationCore();

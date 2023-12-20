@@ -8,141 +8,154 @@
 
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">
 
-@if (Message.Text != String.Empty)
-{
-	@if (Message.Category == MessageCategory.Success)
-	{
-		<div class="alert alert-success" role="alert">
-			@((MarkupString)Message.Text)
-		</div>
-	}
-	else if(Message.Category == MessageCategory.Error)
-	{
-		<div class="alert alert-danger" role="alert">
-			@((MarkupString)Message.Text)
-		</div>
-	}
-	
-}
+	@* <Navbar></Navbar> *@
 
-<div class="container pt-5">
+	<div class="container-fluid">
+		<div class="row flex-nowrap">
+			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+				<SideMenu></SideMenu>
+			</div>
+			<div class="col py-3">
+				@if (Message.Text != String.Empty)
+				{
+					@if (Message.Category == MessageCategory.Success)
+					{
+						<div class="alert alert-success" role="alert">
+							@((MarkupString)Message.Text)
+						</div>
+					}
+					else if (Message.Category == MessageCategory.Error)
+					{
+						<div class="alert alert-danger" role="alert">
+							@((MarkupString)Message.Text)
+						</div>
+					}
+
+				}
+
+				<div class="container pt-5">
 
 
-		<h3 class="mb-5">Add movie to cinema database</h3>
+					<h3 class="mb-5">Add movie to cinema database</h3>
 
 
 
-		<div id="createMovie">
+					<div id="createMovie">
 
-			<div class="container">
-				<div class="row">
-					<!-- outer container col 1 -->
-					<div class="col-6 pe-5">
-
-						<!-- inner container -->
-						<div class="container database-movies-container">
+						<div class="container">
 							<div class="row">
-								<h1 class="mb-3">Trending this week</h1>
+								<!-- outer container col 1 -->
+								<div class="col-6 pe-5">
 
-								@if (LoadingTrending)
-								{
-									<div class="d-flex justify-content-center">
-										<h5>Loading Trending Movies</h5>
-										@* <span class="sr-only">Loading...</span> *@
-									</div>
-									<div class="d-flex justify-content-center">
-										<div class="spinner-border" role="status">
-											@* <span class="sr-only">Loading...</span> *@
-										</div>
-									</div>
-								}
-								else if (moviesService.TrendingMovies.results == null || moviesService.TrendingMovies.results.Count() == 0)
-								{
-									<div class="d-flex justify-content-center">
-										<h5>No Trending Movies to display</h5>
-									</div>
-								}
-								else
-								{
+									<!-- inner container -->
+									<div class="container database-movies-container">
+										<div class="row">
+											<h1 class="mb-3">Trending this week</h1>
 
-									@foreach (var movie in moviesService.TrendingMovies.results)
-									{
-										<div class="col-6 mb-4">
-											<div class="card movie-card w-100 h-100 " style="cursor:pointer;background-color:lightgray; box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {AddMovie(movie);})">
-												<img src=@movie.backdrop_path class="card-img-top" alt="...">
-												<div class="card-body">
-													<h4 class="card-title fw-bold">@movie.title</h4>
+											@if (LoadingTrending)
+											{
+												<div class="d-flex justify-content-center">
+													<h5>Loading Trending Movies</h5>
+													@* <span class="sr-only">Loading...</span> *@
 												</div>
-											</div>
+												<div class="d-flex justify-content-center">
+													<div class="spinner-border" role="status">
+														@* <span class="sr-only">Loading...</span> *@
+													</div>
+												</div>
+											}
+											else if (moviesService.TrendingMovies.results == null || moviesService.TrendingMovies.results.Count() == 0)
+											{
+												<div class="d-flex justify-content-center">
+													<h5>No Trending Movies to display</h5>
+												</div>
+											}
+											else
+											{
+
+												@foreach (var movie in moviesService.TrendingMovies.results)
+												{
+													<div class="col-6 mb-4">
+														<div class="card movie-card w-100 h-100 " style="cursor:pointer;background-color:lightgray; box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {AddMovie(movie);})">
+															<img src=@movie.backdrop_path class="card-img-top" alt="...">
+															<div class="card-body">
+																<h4 class="card-title fw-bold">@movie.title</h4>
+															</div>
+														</div>
+													</div>
+
+												}
+											}
+
 										</div>
+									</div>
 
-									}
-								}
 
+								</div>
+
+								<!-- outer container col 2 -->
+								<div class="col-6 ps-5">
+									<h1>Search for movies</h1>
+									@* <input @bind="SearchText" @bind:after="PerformSearch" /> *@
+									<input class="mb-4" type="text" value="@SearchText" @oninput="@PerformSearch" />
+
+
+
+									<br />
+									<!-- inner container -->
+									<div class="container database-movies-container ">
+										<div class="row">
+
+
+											@if (LoadingSuggestions)
+											{
+												<div class="d-flex justify-content-center">
+													<h5>Loading Suggesstions</h5>
+													@* <span class="sr-only">Loading...</span> *@
+												</div>
+												<div class="d-flex justify-content-center">
+													<div class="spinner-border" role="status">
+														@* <span class="sr-only">Loading...</span> *@
+													</div>
+												</div>
+											}
+											else if (moviesService.MovieSuggestions == null
+											|| moviesService.MovieSuggestions.results == null
+											|| moviesService.MovieSuggestions.results.Count() == 0)
+											{
+												<div class="d-flex justify-content-center">
+													<h5>No Movie Suggestions to display</h5>
+
+												</div>
+											}
+											else
+											{
+												@foreach (var movie in moviesService.MovieSuggestions.results)
+												{
+													<div class="col-6 mb-4">
+														<div class="card movie-card w-100 h-100" style="cursor:pointer; background-color:lightgray; box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {AddMovie(movie);})">
+															<img src=@movie.backdrop_path class="card-img-top" alt="...">
+															<div class="card-body">
+																<h4 class="card-title fw-bold">@movie.title</h4>
+															</div>
+														</div>
+													</div>
+												}
+											}
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-
-
 					</div>
 
-					<!-- outer container col 2 -->
-					<div class="col-6 ps-5">
-						<h1>Search for movies</h1>
-						@* <input @bind="SearchText" @bind:after="PerformSearch" /> *@
-						<input class="mb-4" type="text" value="@SearchText" @oninput="@PerformSearch" />
 
-
-
-						<br />
-						<!-- inner container -->
-						<div class="container database-movies-container ">
-							<div class="row">
-
-
-								@if (LoadingSuggestions)
-								{
-									<div class="d-flex justify-content-center">
-										<h5>Loading Suggesstions</h5>
-										@* <span class="sr-only">Loading...</span> *@
-									</div>
-									<div class="d-flex justify-content-center">
-										<div class="spinner-border" role="status">
-											@* <span class="sr-only">Loading...</span> *@
-										</div>
-									</div>
-								}
-								else if (moviesService.MovieSuggestions == null
-								|| moviesService.MovieSuggestions.results == null
-								|| moviesService.MovieSuggestions.results.Count() == 0)
-								{
-									<div class="d-flex justify-content-center">
-										<h5>No Movie Suggestions to display</h5>
-
-									</div>
-								}
-								else
-								{
-									@foreach (var movie in moviesService.MovieSuggestions.results)
-									{
-										<div class="col-6 mb-4">
-											<div class="card movie-card w-100 h-100" style="cursor:pointer; background-color:lightgray; box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {AddMovie(movie);})">
-												<img src=@movie.backdrop_path class="card-img-top" alt="...">
-												<div class="card-body">
-													<h4 class="card-title fw-bold">@movie.title</h4>
-												</div>
-											</div>
-										</div>
-									}
-								}
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 
 
-</div>
 
 
 

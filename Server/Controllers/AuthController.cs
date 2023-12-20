@@ -102,7 +102,9 @@ namespace BlazorCinemaMS.Server.Controllers
         }
 
 
+        
         [HttpGet("user/{email}")]
+        [Authorize]
         public async Task<AppUserDTO> GetUser(string email)
         {
             AppUser user = await _userManager.FindByEmailAsync(email);
@@ -114,7 +116,7 @@ namespace BlazorCinemaMS.Server.Controllers
 
 
         [HttpGet("userBookings")]
-        //[Authorize(Roles ="admin")]
+        [Authorize]
         public async Task<IEnumerable<BookingDTO>> GetBookingsByUser()
         {
             var result = _utility.GetAuthorizationToken(Request.Headers);

@@ -107,194 +107,202 @@
             <div class="container form-container py-5">
                 <h1 class="mb-4">Cinema Ticket Checkout</h1>
 
-                @if(authState!=null && authState.User.Identity.IsAuthenticated)
-                {
-                    @* ---------------------- Authenticated Form -------------------- *@
+               @*  @if(authState!=null && authState.User.Identity.IsAuthenticated)
+                { *@
 
-                    <EditForm Model="User" OnValidSubmit="HandleValidFormSubmit">
-                        <DataAnnotationsValidator />
+                    <AuthorizeView>
+                    <Authorized Context="context1">
+                        @* ---------------------- Authenticated Form -------------------- *@
 
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
+                        <EditForm Model="User" OnValidSubmit="HandleValidAuthenticatedFormSubmit">
+                            <DataAnnotationsValidator />
 
-
-
-                            <p>@userService.GetUser().Username</p>
-
-
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-
-                            <p>@userService.GetUser().Email</p>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
 
 
-                        </div>
 
-                        @if(userService.GetUser().Phone != null)
-                        {
+                                <p>@userService.GetUser().Username</p>
+
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+
+                                <p>@userService.GetUser().Email</p>
+
+
+                            </div>
+
+                            @if (userService.GetUser().Phone != null)
+                            {
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone</label>
+
+                                    <p>@userService.GetUser().Phone</p>
+
+                                </div>
+                            }
+
+                            @if (userService.GetUser().Address != null)
+                            {
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+
+                                    <p>@userService.GetUser().Address</p>
+
+                                </div>
+                            }
+
+
+                            <div class="mb-3">
+                                <label for="nameOnCard" class="form-label">Name On Card</label>
+                                <InputText id="nameOnCard" @bind-Value="User.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
+                                <ValidationMessage For="@(() => User.NameOnCard)" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="creditcard" class="form-label">Credit Card Number</label>
+                                <InputText id="creditcard" @bind-Value="User.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
+                                <ValidationMessage For="@(() => User.CardNumber)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="expmonth" class="form-label">Exp Month</label>
+                                <InputText id="expmonth" @bind-Value="User.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
+                                <ValidationMessage For="@(() => User.ExpMonth)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="expyear" class="form-label">Exp Year</label>
+                                <InputText id="expyear" @bind-Value="User.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
+                                <ValidationMessage For="@(() => User.ExpYear)" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <InputText id="cvv" @bind-Value="User.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
+                                <ValidationMessage For="@(() => User.CVV)" />
+                            </div>
+                            <ValidationSummary />
+                            <br>
+                            <button type="submit" class="btn btn-primary">
+                                @if (!ShowSpinner)
+                                {
+                                    <span>Submit</span>
+                                }
+                                else
+                                {
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                }
+                            </button>
+
+                        </EditForm>
+
+                        @* ---------------------- End Of Authenticated Form -------------------- *@
+
+                        </Authorized>
+
+                    <NotAuthorized Context="context2">
+                        <EditForm Model="Customer" OnValidSubmit="HandleValidFormSubmit">
+                            <DataAnnotationsValidator />
+
+                            <div class="mb-3">
+                                <label for="firstname" class="form-label">First Name</label>
+
+                                <InputText id="name" @bind-Value="Customer.FirstName" class="form-control" maxlength="40" placeholder="John"></InputText>
+                                <ValidationMessage For="@(() => Customer.FirstName)" />
+
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="lastname" class="form-label">Last Name</label>
+
+                                <InputText id="lastname" @bind-Value="Customer.LastName" class="form-control" max-length="40" placeholder="Doe"></InputText>
+                                <ValidationMessage For="@(() => Customer.LastName)" />
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+
+                                <InputText id="email" @bind-Value="Customer.Email" class="form-control" placeholder="example@gmail.com"></InputText>
+                                <ValidationMessage For="@(() => Customer.Email)" />
+
+
+                            </div>
+
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone</label>
 
-                                <p>@userService.GetUser().Phone</p>
+                                <InputText id="phone" @bind-Value="Customer.Phone" class="form-control" placeholder="+353 891234567"></InputText>
+                                <ValidationMessage For="@(() => Customer.Phone)" />
 
                             </div>
-                        }
-
-                        @if(userService.GetUser().Address != null)
-                        {
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
 
-                                <p>@userService.GetUser().Address</p>
+                                <InputText id="address" @bind-Value="Customer.Address" class="form-control" maxlength="40" placeholder="One Park Place Hatch St, 2, Dublin, Ireland"></InputText>
+                                <ValidationMessage For="@(() => Customer.Address)" />
+
 
                             </div>
-                        }
+                            <div class="mb-3">
+                                <label for="nameOnCard" class="form-label">Name On Card</label>
+                                <InputText id="nameOnCard" @bind-Value="Customer.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
+                                <ValidationMessage For="@(() => Customer.NameOnCard)" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="creditcard" class="form-label">Credit Card Number</label>
+                                <InputText id="creditcard" @bind-Value="Customer.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
+                                <ValidationMessage For="@(() => Customer.CardNumber)" />
+                            </div>
 
-                        
-                        <div class="mb-3">
-                            <label for="nameOnCard" class="form-label">Name On Card</label>
-                            <InputText id="nameOnCard" @bind-Value="User.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
-                            <ValidationMessage For="@(() => User.NameOnCard)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="creditcard" class="form-label">Credit Card Number</label>
-                            <InputText id="creditcard" @bind-Value="User.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
-                            <ValidationMessage For="@(() => User.CardNumber)" />
-                        </div>
+                            <div class="mb-3">
+                                <label for="expmonth" class="form-label">Exp Month</label>
+                                <InputText id="expmonth" @bind-Value="Customer.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
+                                <ValidationMessage For="@(() => Customer.ExpMonth)" />
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="expmonth" class="form-label">Exp Month</label>
-                            <InputText id="expmonth" @bind-Value="User.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
-                            <ValidationMessage For="@(() => User.ExpMonth)" />
-                        </div>
+                            <div class="mb-3">
+                                <label for="expyear" class="form-label">Exp Year</label>
+                                <InputText id="expyear" @bind-Value="Customer.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
+                                <ValidationMessage For="@(() => Customer.ExpYear)" />
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="expyear" class="form-label">Exp Year</label>
-                            <InputText id="expyear" @bind-Value="User.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
-                            <ValidationMessage For="@(() => User.ExpYear)" />
-                        </div>
+                            <div class="mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <InputText id="cvv" @bind-Value="Customer.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
+                                <ValidationMessage For="@(() => Customer.CVV)" />
+                            </div>
+                            <br>
+                            <ValidationSummary />
+                            <button type="submit" class="btn btn-primary">
+                                @if (!ShowSpinner)
+                                {
+                                    <span>Submit</span>
+                                }
+                                else
+                                {
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                }
+                            </button>
 
-                        <div class="mb-3">
-                            <label for="cvv" class="form-label">CVV</label>
-                            <InputText id="cvv" @bind-Value="User.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
-                            <ValidationMessage For="@(() => User.CVV)" />
-                        </div>
-                        <ValidationSummary/>
-                        <br>
-                        <button type="submit" class="btn btn-primary">
-                            @if (!ShowSpinner)
-                            {
-                                <span>Submit</span>
-                            }
-                            else
-                            {
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            }
-                        </button>
-
-                    </EditForm>
-
-                    @* ---------------------- End Of Authenticated Form -------------------- *@
-                }
-                else
-                {
-                    @* ---------------------- Non-Authenticated Form -------------------- *@
-
-                    <EditForm Model="Customer" OnValidSubmit="HandleValidFormSubmit">
-                        <DataAnnotationsValidator />
-
-                        <div class="mb-3">
-                            <label for="firstname" class="form-label">First Name</label>
-
-                            <InputText id="name" @bind-Value="Customer.FirstName" class="form-control" maxlength="40" placeholder="John"></InputText>
-                            <ValidationMessage For="@(() => Customer.FirstName)" />
+                        </EditForm>
+                    </NotAuthorized>
 
 
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="lastname" class="form-label">Last Name</label>
-
-                            <InputText id="lastname" @bind-Value="Customer.LastName" class="form-control" max-length="40" placeholder="Doe"></InputText>
-                            <ValidationMessage For="@(() => Customer.LastName)" />
-
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-
-                            <InputText id="email" @bind-Value="Customer.Email" class="form-control" placeholder="example@gmail.com"></InputText>
-                            <ValidationMessage For="@(() => Customer.Email)" />
+                    </AuthorizeView>
 
 
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
-
-                            <InputText id="phone" @bind-Value="Customer.Phone" class="form-control" placeholder="+353 891234567"></InputText>
-                            <ValidationMessage For="@(() => Customer.Phone)" />
-
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-
-                            <InputText id="address" @bind-Value="Customer.Address" class="form-control" maxlength="40" placeholder="One Park Place Hatch St, 2, Dublin, Ireland"></InputText>
-                            <ValidationMessage For="@(() => Customer.Address)" />
-
-
-                        </div>
-                        <div class="mb-3">
-                            <label for="nameOnCard" class="form-label">Name On Card</label>
-                            <InputText id="nameOnCard" @bind-Value="Customer.NameOnCard" class="form-control" maxlength="50" placeholder="John Doe"></InputText>
-                            <ValidationMessage For="@(() => Customer.NameOnCard)" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="creditcard" class="form-label">Credit Card Number</label>
-                            <InputText id="creditcard" @bind-Value="Customer.CardNumber" class="form-control" maxlength="19" placeholder="1111 1111 1111 1111"></InputText>
-                            <ValidationMessage For="@(() => Customer.CardNumber)" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="expmonth" class="form-label">Exp Month</label>
-                            <InputText id="expmonth" @bind-Value="Customer.ExpMonth" class="form-control" maxlength="2" placeholder="01"></InputText>
-                            <ValidationMessage For="@(() => Customer.ExpMonth)" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="expyear" class="form-label">Exp Year</label>
-                            <InputText id="expyear" @bind-Value="Customer.ExpYear" class="form-control" maxlength="2" placeholder="24"></InputText>
-                            <ValidationMessage For="@(() => Customer.ExpYear)" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="cvv" class="form-label">CVV</label>
-                            <InputText id="cvv" @bind-Value="Customer.CVV" class="form-control" maxlength="3" placeholder="123"></InputText>
-                            <ValidationMessage For="@(() => Customer.CVV)" />
-                        </div>
-                        <br>
-                        <ValidationSummary />
-                        <button type="submit" class="btn btn-primary">
-                            @if (!ShowSpinner)
-                            {
-                                <span>Submit</span>
-                            }
-                            else
-                            {
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            }
-                        </button>
-
-                    </EditForm>
-
-                    @* ---------------------- End Of Non-Authenticated Form -------------------- *@
-                }
+                  
+                
+               
 
             </div>
         </div>
@@ -302,6 +310,9 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     [Parameter]
     public int SetHashCode { get; set; }
     public SessionDTO Session { get; set; }
@@ -324,6 +335,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+        // authState = await AuthenticationStateTask;
         authState = await stateProvider.GetAuthenticationStateAsync();
 
         if (authState.User.Identity.IsAuthenticated)
@@ -485,6 +498,7 @@
         Regex regex = new Regex(pattern);
 
 
+
         return regex.IsMatch(User.ExpYear);
     }
 
@@ -502,14 +516,13 @@
 
 
 
-    public async Task HandleValidFormSubmit()
+    public async Task HandleValidAuthenticatedFormSubmit()
     {
         ShowSpinner = true;
         BookingDTO bookingDTO;
 
 
-        if (authState.User.Identity.IsAuthenticated)
-        {
+       
 
             if (!ValidNameOnCard())
             {
@@ -557,12 +570,7 @@
                 return;
             }
 
-        }
-
-
-
-        if (authState.User.Identity.IsAuthenticated)
-        {
+        
             bookingDTO = new BookingDTO()
                 {
                     TotalAmount = BookingCost,
@@ -581,19 +589,8 @@
                     SessionId = Session.Id,
 
                 };
-        }
-        else
-        {
-            CustomerDTO customerDTO = GetCustomerDTOFromCustomerVM(Customer);
-            bookingDTO = new BookingDTO()
-                {
-                    TotalAmount = BookingCost,
-                    Customer = customerDTO,
-                    Seats = Seats,
-                    SessionId = Session.Id,
-
-                };
-        }
+        
+ 
 
 
         bool success = await SessionsService.AddBooking(bookingDTO);
@@ -604,6 +601,55 @@
         if (success)
         {
             
+
+            SessionAndBookingDTO data = new SessionAndBookingDTO()
+                {
+                    Session = Session,
+                    Booking = bookingDTO
+                };
+
+
+            emailService.SendConfirmationEmail(data);
+
+
+            stateContainer.ObjectTunnel.Add(data.GetHashCode(), data);
+
+            ShowSpinner = false;
+
+            navManager.NavigateTo($"/confirmation/{data.GetHashCode()}");
+        }
+        else
+        {
+            ShowSpinner = false;
+        }
+    }
+
+
+    public async Task HandleValidFormSubmit()
+    {
+        ShowSpinner = true;
+        BookingDTO bookingDTO;
+
+        
+            CustomerDTO customerDTO = GetCustomerDTOFromCustomerVM(Customer);
+            bookingDTO = new BookingDTO()
+                {
+                    TotalAmount = BookingCost,
+                    Customer = customerDTO,
+                    Seats = Seats,
+                    SessionId = Session.Id,
+
+                };
+        
+
+
+        bool success = await SessionsService.AddBooking(bookingDTO);
+
+        
+
+        if (success)
+        {
+
 
             SessionAndBookingDTO data = new SessionAndBookingDTO()
                 {

@@ -1189,7 +1189,11 @@ h1 {
 
 
 
-/*------------------ login form styling -----------------------*/
+/*------------------ Admin Page styling -----------------------*/
+
+.nav-link #admin-link:hover{
+    color:lightgray;
+}
 
 
 

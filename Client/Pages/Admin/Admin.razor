@@ -1,16 +1,41 @@
 ﻿@page "/admin"
-@attribute [Authorize(Roles = "admin")]
+@* @attribute [Authorize(Roles = "admin")] *@
 
 @using BlazorCinemaMS.Client.Services;
 @using BlazorCinemaMS.Client.Services.MoviesService;
 @using Microsoft.AspNetCore.Authorization;
 @inject IMoviesService moviesService
 @inject IJSRuntime Javascript
+@inject NavigationManager _navManager
 
 <div class="page white-background-container" style="background-color:#fff;min-height:100vh;">
-     <div class="sidebar">
-    <NavMenu />
-    </div> 
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+               <SideMenu></SideMenu>
+            </div>
+            <div class="col py-3">
+                
+            </div>
+        </div>
+    </div>
+
+
+
+   
+</div>
+
+
+
+
+
+
+
+@* <Navbar></Navbar>
+    <div class="sidebar">
+        <NavMenu />
+    </div>
 
 
 
@@ -18,27 +43,18 @@
 
 
     <main>
-        @* <div class="top-row px-4"> *@
-        @* <LoginLogoutButton/> *@
-        @* <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a> *@
-        @* </div>  *@
+
 
         <article class="content px-4">
-        <p> asd as ,as ,as</p>
-        </article> 
-
-
-        
-
-
-
-    </main>
-</div>
+        <p> Random Content</p>
+        </article>
 
 
 
 
 
+
+    </main> *@
 
 
 

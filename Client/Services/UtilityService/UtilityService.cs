@@ -1,5 +1,6 @@
 ﻿using BlazorCinemaMS.Shared.DTOs;
 using BlazorCinemaMS.Shared.Enums;
+using System.Security.Claims;
 
 namespace BlazorCinemaMS.Client.Services.UtilityService
 {
@@ -37,6 +38,18 @@ namespace BlazorCinemaMS.Client.Services.UtilityService
 			int mins = minutes % 60;
 
 			return hrs > 0 ? $"{hrs} hrs, {mins} mins" : $"{mins} mins";
+		}
+
+
+
+		public bool IsOfRole(string role, IEnumerable<Claim> claims)
+		{
+			foreach(Claim claim in claims)
+			{
+				if (claim.Type.EndsWith("role") && claim.Value == role) return true;
+			}
+
+			return false;
 		}
 		
 	}

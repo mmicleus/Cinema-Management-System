@@ -1,4 +1,5 @@
 ﻿@page "/login"
+@page "/login/{HashCode:int}"
 @using BlazorCinemaMS.Client.Services.UserService;
 @using BlazorCinemaMS.Shared.Authentication;
 @using System.Text.RegularExpressions;
@@ -9,6 +10,7 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavManager
 @inject IUserService _userService
+@inject StateContainer _stateContainer
 
 
 <!-- Start of navbar -->
@@ -89,6 +91,11 @@
 
 
 @code {
+    [Parameter]
+    public int? HashCode { get; set; }
+
+    public string? srcUrl { get; set; }
+
     UserLoginDTO user = new UserLoginDTO();
     public Message Message { get; set; } = new Message();
 
@@ -96,9 +103,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-
         Console.WriteLine(NavManager.Uri.EndsWith("login"));
+    }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        if (HashCode.HasValue)
+        {
+            srcUrl = (string)_stateContainer.ObjectTunnel[HashCode.Value];
+        }
     }
 
     public bool PasswordLengthIsValid()
@@ -131,6 +144,7 @@
 
             UserAndTokenDTO userAndToken = await result.Content.ReadAsAsync<UserAndTokenDTO>();
 
+     
             string token = userAndToken.Token;
             this._userService.SetUser(userAndToken.User);
 
@@ -143,13 +157,23 @@
 
             if (state.User.Identity.IsAuthenticated)
             {
+
+
                 if (IsAdmin(state.User))
                 {
-                    NavManager.NavigateTo("/");
+                    NavManager.NavigateTo("/Admin");
                 }
                 else
                 {
-                    NavManager.NavigateTo("/");
+                    if(srcUrl != null)
+                    {
+                        NavManager.NavigateTo(srcUrl);
+                    }
+                    else
+                    {
+                        NavManager.NavigateTo("/");
+                    }
+                    
                 }
             }
             else

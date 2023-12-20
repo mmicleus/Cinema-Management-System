@@ -4,6 +4,7 @@
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IUserService _userService
+@inject StateContainer _stateContainer
 
 <AuthorizeView>
 	<Authorized>
@@ -38,7 +39,11 @@
 @code {
 	void Login()
 	{
-		NavigationManager.NavigateTo("login");
+		string url = NavigationManager.Uri;
+
+		_stateContainer.ObjectTunnel.Add(url.GetHashCode(), url);
+
+		NavigationManager.NavigateTo($"login/{url.GetHashCode()}");
 	}
 
 	async void Logout()
@@ -47,8 +52,10 @@
 		await LocalStorage.RemoveItemAsync("user");
 		_userService.DeleteUser();
 
-		
+
 
 		await AuthStateProvider.GetAuthenticationStateAsync();
+
+		//StateHasChanged();
 	}
 }

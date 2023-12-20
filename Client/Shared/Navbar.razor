@@ -1,8 +1,36 @@
-﻿<!-- Start of navbar -->
+﻿@using System.Security.Claims;
+<!-- Start of navbar -->
 
-<nav class="navbar navbar-expand-lg bg-dark mb-0">
+@inject NavigationManager _navManager
+@inject AuthenticationStateProvider stateProvider
+@inject IUtilityService _utility;
+@inject StateContainer stateContainer
+
+@if (Message.Text != string.Empty)
+{
+	if (Message.Category == MessageCategory.Error)
+	{
+		<div class="alert alert-danger mb-0" role="alert">
+			<b>@Message.Text</b>
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Warning)
+	{
+		<div class="alert alert-warning mb-0" role="alert">
+			<b>@Message.Text</b>
+		</div>
+	}
+	else if (Message.Category == MessageCategory.Success)
+	{
+		<div class="alert alert-success mb-0" role="alert">
+			<b>@Message.Text</b>
+		</div>
+	}
+}
+
+<nav class="navbar navbar-expand-lg bg-dark mb-0 mt-0">
 	<div class="container-fluid">
-		<a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
+		<a class="navbar-brand text-warning" href=@(_navManager.Uri.Contains("/Admin") ? "/Admin" : "/") id="logo">CINEMAX</a>
 		<button class="navbar-toggler"
 				type="button"
 				data-bs-toggle="collapse"
@@ -16,20 +44,27 @@
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 
+				
 
 				<li class="nav-item">
 					<LoginLogoutButton></LoginLogoutButton>
 					@* <a class="nav-link" aria-current="page" href="index.html">Home</a> *@
 				</li>
 				<AuthorizeView>
+
 					<NotAuthorized>
 						<li class="nav-item">
 							<a class="nav-link" aria-current="page" href="/join" style="cursor:pointer;">Join</a>
 						</li>
 					</NotAuthorized>
+
+
+					
 				</AuthorizeView>
 
-
+				<li class="nav-item">
+					<a @onclick="GoToAdmin" style="cursor:pointer;" class="nav-link" aria-current="page" >Admin Page</a>
+				</li>
 
 
 			</ul>
@@ -40,5 +75,44 @@
 <!-- end of navbar -->
 
 @code {
+	public AuthenticationState authState;
+
+	public Message Message { get; set; } = new Message();
+
+
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		
+
+	}
+
+	public async Task GoToAdmin()
+	{
+		authState = await stateProvider.GetAuthenticationStateAsync();
+
+		if (authState.User.Identity.IsAuthenticated 
+			&& this._utility.IsOfRole("admin", authState.User.Claims))
+		{
+			_navManager.NavigateTo("/Admin");
+		}
+		else
+		{
+			ShowMessage(MessageCategory.Error, "You must be logged in as Admin to access this page", 4);
+		}
+	}
+
+	public async Task ShowMessage(MessageCategory category, string message, int seconds)
+	{
+		Message.Category = category;
+		Message.Text = message;
+		StateHasChanged();
+
+		await Task.Delay(seconds * 1000);
+
+		Message.Text = string.Empty;
+		StateHasChanged();
+	}
 
 }

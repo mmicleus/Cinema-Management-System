@@ -10,153 +10,163 @@
 
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">
 
+	@* <Navbar></Navbar> *@
 
-@if(Message.Text != string.Empty)
-{
-	if(Message.Category == MessageCategory.Error)
-	{
-		<div class="alert alert-danger" role="alert">
-			@Message.Text
-		</div>
-	}
-	else if (Message.Category == MessageCategory.Warning)
-	{
-		<div class="alert alert-warning" role="alert">
-			@Message.Text
-		</div>
-	}
-	else if (Message.Category == MessageCategory.Success)
-	{
-		<div class="alert alert-success" role="alert">
-			@Message.Text
-		</div>
-	}
-}
-
-
-<div class="container pt-4">
-
-	<div class="container">
-		<div class="row">
-			<div class="col-6">
-				<h3 class="=mb-4">Create Branch</h3>
-				<EditForm Model="Branch" OnValidSubmit="AddBranch">
-					<DataAnnotationsValidator />
-
-					<div class="mb-3">
-						<label for="name"><b>Name</b></label>
-						<InputText id="name" @bind-Value="Branch.Name" class="form-control" />
-						<ValidationMessage For="@(()=>Branch.Name)"></ValidationMessage>
-					</div>
-					<div class="mb-3">
-						<label for="address"><b>Address</b></label>
-						<InputText id="address" @bind-Value="Branch.Address" class="form-control" />
-						<ValidationMessage For="@(()=>Branch.Address)"></ValidationMessage>
-					</div>
-					<div class="mb-3">
-						<label for="lat"><b>Latitude</b></label>
-						<InputNumber id="lat" @bind-Value="Branch.Coords.Lat" class="form-control" />
-						<ValidationMessage For="@(()=>Branch.Coords.Lat)"></ValidationMessage>
-					</div>
-					<div class="mb-3">
-						<label for="lng"><b>Longitude</b></label>
-						<InputNumber id="lng" @bind-Value="Branch.Coords.Lng" class="form-control" />
-						<ValidationMessage For="@(()=>Branch.Coords.Lng)"></ValidationMessage>
-					</div>
-					<div>
-						<label for="image"><b>Image</b></label>
-						<InputFile id="image" OnChange="OnFileChange" class="form-control" />
-					</div>
-					<br />
-					<img src="@Branch.Image" />
-					<br />
-
-					<button type="submit" class="btn btn-primary mt-5">@(EditMode ? "Update Branch" : "Add Branch")</button>
-
-
-					<ValidationSummary />
-				</EditForm>
-
-
-
-
-
-				<div class="container mt-3">
-					<h3>Venues</h3>
-
-					@if (Venues == null || Venues.Count() == 0)
+	<div class="container-fluid">
+		<div class="row flex-nowrap">
+			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+				<SideMenu></SideMenu>
+			</div>
+			<div class="col py-3">
+				@if (Message.Text != string.Empty)
+				{
+					if (Message.Category == MessageCategory.Error)
 					{
-						<p>No Venues Added</p>
+						<div class="alert alert-danger" role="alert">
+							@Message.Text
+						</div>
 					}
+					else if (Message.Category == MessageCategory.Warning)
+					{
+						<div class="alert alert-warning" role="alert">
+							@Message.Text
+						</div>
+					}
+					else if (Message.Category == MessageCategory.Success)
+					{
+						<div class="alert alert-success" role="alert">
+							@Message.Text
+						</div>
+					}
+				}
 
-					<div class="row">
+
+				<div class="container pt-4">
+
+					<div class="container">
+						<div class="row">
+							<div class="col-6">
+								<h3 class="=mb-4">Create Branch</h3>
+								<EditForm Model="Branch" OnValidSubmit="AddBranch">
+									<DataAnnotationsValidator />
+
+									<div class="mb-3">
+										<label for="name"><b>Name</b></label>
+										<InputText id="name" @bind-Value="Branch.Name" class="form-control" />
+										<ValidationMessage For="@(()=>Branch.Name)"></ValidationMessage>
+									</div>
+									<div class="mb-3">
+										<label for="address"><b>Address</b></label>
+										<InputText id="address" @bind-Value="Branch.Address" class="form-control" />
+										<ValidationMessage For="@(()=>Branch.Address)"></ValidationMessage>
+									</div>
+									<div class="mb-3">
+										<label for="lat"><b>Latitude</b></label>
+										<InputNumber id="lat" @bind-Value="Branch.Coords.Lat" class="form-control" />
+										<ValidationMessage For="@(()=>Branch.Coords.Lat)"></ValidationMessage>
+									</div>
+									<div class="mb-3">
+										<label for="lng"><b>Longitude</b></label>
+										<InputNumber id="lng" @bind-Value="Branch.Coords.Lng" class="form-control" />
+										<ValidationMessage For="@(()=>Branch.Coords.Lng)"></ValidationMessage>
+									</div>
+									<div>
+										<label for="image"><b>Image</b></label>
+										<InputFile id="image" OnChange="OnFileChange" class="form-control" />
+									</div>
+									<br />
+									<img src="@Branch.Image" />
+									<br />
+
+									<button type="submit" class="btn btn-primary mt-5">@(EditMode ? "Update Branch" : "Add Branch")</button>
+
+
+									<ValidationSummary />
+								</EditForm>
 
 
 
-						@foreach (var venue in Venues)
-						{
-							<div class="col-12 mb-3">
-								<div class="card" style="background-color:lightgray;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-									<div class="card-body">
-										<h5 class="card-title">@venue.Name</h5>
-										<h6 class="card-subtitle mb-2 text-muted">@venue.Capacity Seats</h6>
 
-										<a class="btn btn-danger" @onclick="(() => DeleteVenue(venue))">Delete</a>
+
+								<div class="container mt-3">
+									<h3>Venues</h3>
+
+									@if (Venues == null || Venues.Count() == 0)
+									{
+										<p>No Venues Added</p>
+									}
+
+									<div class="row">
+
+
+
+										@foreach (var venue in Venues)
+										{
+											<div class="col-12 mb-3">
+												<div class="card" style="background-color:lightgray;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+													<div class="card-body">
+														<h5 class="card-title">@venue.Name</h5>
+														<h6 class="card-subtitle mb-2 text-muted">@venue.Capacity Seats</h6>
+
+														<a class="btn btn-danger" @onclick="(() => DeleteVenue(venue))">Delete</a>
+													</div>
+												</div>
+											</div>
+										}
 									</div>
 								</div>
 							</div>
-						}
+							<div class="col-6">
+								<h3>Create Venue</h3>
+								<EditForm Model="Venue" OnValidSubmit="AddVenue">
+									<DataAnnotationsValidator />
+									<div>
+										<label for="name"><b>Name:</b></label>
+										<InputText id="name" @bind-Value="Venue.Name" class="form-control" />
+										<ValidationMessage For="@(()=>Venue.Name)"></ValidationMessage>
+									</div>
+									<div>
+										<label><b>Capacity: </b></label><span>@Venue.Capacity Seats</span>
+
+									</div>
+
+
+									<button type="submit" class="btn btn-primary mt-3">Add Venue</button>
+
+
+									<ValidationSummary />
+								</EditForm>
+								<br />
+
+								<EditForm Model="VenueLayout" OnValidSubmit="AddSeats">
+									<DataAnnotationsValidator />
+									<div class="mb-3">
+										<label for="rows"><b>Nr Of Rows:</b></label>
+										<InputNumber id="rows" @bind-Value="VenueLayout.Rows" class="form-control" />
+										<ValidationMessage For="@(()=>VenueLayout.Rows)"></ValidationMessage>
+									</div>
+									<div>
+										<label for="columns"><b>Nr of Columns:</b></label>
+										<InputNumber id="columns" @bind-Value="VenueLayout.Columns" class="form-control" />
+										<ValidationMessage For="@(()=>VenueLayout.Columns)"></ValidationMessage>
+									</div>
+
+
+									<button type="submit" class="btn btn-primary mt-3">Add Seats</button>
+
+								</EditForm>
+
+							</div>
+						</div>
+
+
+
 					</div>
+
 				</div>
 			</div>
-			<div class="col-6">
-				<h3>Create Venue</h3>
-				<EditForm Model="Venue" OnValidSubmit="AddVenue">
-					<DataAnnotationsValidator />
-					<div>
-						<label for="name"><b>Name:</b></label>
-						<InputText id="name" @bind-Value="Venue.Name" class="form-control" />
-						<ValidationMessage For="@(()=>Venue.Name)"></ValidationMessage>
-					</div>
-					<div>
-						<label><b>Capacity: </b></label><span>@Venue.Capacity Seats</span>
-
-					</div>
-
-
-					<button type="submit" class="btn btn-primary mt-3">Add Venue</button>
-
-
-					<ValidationSummary />
-				</EditForm>
-				<br />
-
-				<EditForm Model="VenueLayout" OnValidSubmit="AddSeats">
-					<DataAnnotationsValidator />
-					<div class="mb-3">
-						<label for="rows"><b>Nr Of Rows:</b></label>
-						<InputNumber id="rows" @bind-Value="VenueLayout.Rows" class="form-control" />
-						<ValidationMessage For="@(()=>VenueLayout.Rows)"></ValidationMessage>
-					</div>
-					<div>
-						<label for="columns"><b>Nr of Columns:</b></label>
-						<InputNumber id="columns" @bind-Value="VenueLayout.Columns" class="form-control" />
-						<ValidationMessage For="@(()=>VenueLayout.Columns)"></ValidationMessage>
-					</div>
-
-
-					<button type="submit" class="btn btn-primary mt-3">Add Seats</button>
-
-				</EditForm>
-
-			</div>
 		</div>
-
-
-
 	</div>
-
-</div>
 
 
 </div>

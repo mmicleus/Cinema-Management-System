@@ -1,0 +1,112 @@
+﻿@using BlazorCinemaMS.Client.Services.UserService;
+@using Blazored.LocalStorage;
+@inject NavigationManager _navManager
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IUserService _userService
+@inject StateContainer _stateContainer
+
+
+
+<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 ">
+    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        @* <a class="navbar-brand text-warning" href=@(_navManager.Uri.Contains("/Admin") ? "/Admin" : "/") id="logo">CINEMAX</a> *@
+        @* <span class="fs-5 d-none d-sm-inline">Menu</span> *@
+
+        <a class="navbar-brand text-warning" href="/" id="logo">CINEMAX</a>
+    </a>
+    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+        <li class="nav-item">
+            <a href="/Admin" class="nav-link align-middle px-0">
+                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Home</b></span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/Admin/Branch" class="nav-link px-0 align-middle">
+                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Add Branch</b></span>
+            </a>
+        </li>
+        <li>
+            <a href="/Admin/Movies/Create" class="nav-link px-0 align-middle">
+                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Add Movie</b></span>
+            </a>
+        </li>
+        <li>
+            <a href="/Admin/CreateSession" class="nav-link px-0 align-middle">
+                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Add Session</b></span>
+            </a>
+        </li>
+        <li>
+            <a href="/Admin/Branches" class="nav-link px-0 align-middle">
+                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Branches</b></span>
+            </a>
+        </li>
+        <li>
+            <a href="/Admin/Movies" class="nav-link px-0 align-middle">
+                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Movies</b></span>
+            </a>
+        </li>
+        <li>
+            <a href="/Admin/Sessions" class="nav-link px-0 align-middle">
+                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Sessions</b></span>
+            </a>
+        </li>
+        @* <li>
+        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+        <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Add Branch</span>
+        </a>
+        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+        <li class="w-100">
+        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1 </a>
+        </li>
+        <li>
+        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2 </a>
+        </li>
+        </ul>
+        </li> *@
+    </ul>
+    <hr>
+    <div class="dropdown pb-4">
+        <AuthorizeView>
+            <Authorized>
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="text-light">@context.User.Claims.First(c => c.Type.EndsWith("emailaddress")).Value</span>
+                    @* <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle"> *@
+                    @* <span class="d-none d-sm-inline mx-1">loser</span> *@
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    
+                    <li><a class="dropdown-item" href="#" @onclick="Logout" style="cursor:pointer;">Sign out</a></li>
+                </ul>
+            </Authorized>
+            <NotAuthorized>
+                <a class="nav-link" @onclick="Login" style="cursor:pointer;">Login</a>
+            </NotAuthorized>
+
+        </AuthorizeView>
+        
+    </div>
+</div>
+
+@code {
+    async void Logout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await LocalStorage.RemoveItemAsync("user");
+        _userService.DeleteUser();
+
+        await AuthStateProvider.GetAuthenticationStateAsync();
+
+        //StateHasChanged();
+    }
+
+    void Login()
+    {
+        string url = _navManager.Uri;
+
+        _stateContainer.ObjectTunnel.Add(url.GetHashCode(), url);
+
+        _navManager.NavigateTo($"login/{url.GetHashCode()}");
+    }
+}
