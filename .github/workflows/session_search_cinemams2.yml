@@ -19,7 +19,6 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          node-version: 16
           dotnet-version: '7.x'
           include-prerelease: true
 
@@ -55,4 +54,4 @@ jobs:
           app-name: 'CinemaMS2'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C2CCBB545DFF4AC09DAE01566C0C80A4 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0AC21E7F72B04AE297A536885E2E9630 }}
