@@ -1,3 +1,336 @@
+/* /Pages/User/BookingPage.razor.rz.scp.css */
+
+@media screen and (max-width:650px) {
+    .grid-seat[b-nga1z0sr99] {
+       width: 40px !important;
+       height: 40px !important;
+    }
+}
+
+
+@media screen and (max-width:400px) {
+    .grid-seat[b-nga1z0sr99] {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .seat-categories[b-nga1z0sr99] {
+        justify-content: center;
+    }
+}
+
+
+.grid-seat[b-nga1z0sr99] {
+    width:50px;
+    height:50px;
+}
+
+/* width */
+table[b-nga1z0sr99]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+table[b-nga1z0sr99]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+table[b-nga1z0sr99]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+
+
+
+
+
+/* /Pages/User/BranchMovies.razor.rz.scp.css */
+
+@media screen and (max-width:650px) {
+
+
+    #carouselExample img[b-cnugcgbuoc] {
+        height: 40vh;
+    }
+
+    .quickbook-container[b-cnugcgbuoc] {
+        display: none;
+    }
+
+    .movie-listing-container[b-cnugcgbuoc]{
+        flex-direction:column;
+    }
+
+    .movie-information .movie-title[b-cnugcgbuoc] {
+       margin-top:1rem;
+    }
+    
+}
+
+
+@media screen and (max-width:400px) {
+
+    .book-btn[b-cnugcgbuoc] {
+        padding: 0;
+    }
+}
+
+
+
+/*-------------------------------- BranchMovies Styling ------------------------------------------*/
+
+
+.branchMovies-container .col-separator[b-cnugcgbuoc] {
+    background-color: #ffc107;
+    color: #ffc107;
+    margin-top: 3.5rem;
+    margin-bottom: 4rem
+}
+
+
+.movie-listing-col[b-cnugcgbuoc] {
+    /*margin-bottom: 4rem;*/
+}
+
+.movie-poster[b-cnugcgbuoc] {
+    margin-right: 3.5rem;
+}
+
+    .movie-poster > img[b-cnugcgbuoc] {
+        width: 10rem;
+        height: auto;
+    }
+
+
+.movie-information .movie-title[b-cnugcgbuoc] {
+    color: #ffc107;
+    font-size: 2rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+.movie-information .movie-overview[b-cnugcgbuoc] {
+    color: #fff;
+    font-size: 1.3rem;
+    font-family: Rockwell;
+    max-height:160px;
+    overflow:auto;
+    /*letter-spacing: 3px;*/
+}
+
+.movie-information .label[b-cnugcgbuoc] {
+    color: #fff;
+    font-size: 1rem;
+    /*font-family: ;*/
+}
+
+
+.movie-information .duration[b-cnugcgbuoc] {
+    color: darkgray;
+    font-size: 1rem;
+}
+
+.movie-information .separator[b-cnugcgbuoc] {
+    /* background-color: #ffc107;
+    color: #ffc107;*/
+    margin-top: 2rem;
+    margin-bottom: 2rem
+}
+
+.sessions-date[b-cnugcgbuoc] {
+    color: lightgray;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+}
+
+.session-card[b-cnugcgbuoc] {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width:fit-content;
+    background-color: #333333;
+    border-color: lightgray;
+    cursor: pointer !important;
+    transition: all 0.4s;
+}
+
+.session-card:hover[b-cnugcgbuoc] {
+    /*box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);*/
+        transform: scale(1.06) !important;
+}
+
+    .session-card .start-time[b-cnugcgbuoc] {
+        color: #fff;
+    }
+
+
+    .session-card .end-time[b-cnugcgbuoc] {
+        color: lightgray;
+    }
+
+    .session-card .venue-name[b-cnugcgbuoc] {
+        font-size: 0.8rem;
+        color: lightgray;
+    }
+
+    .session-card .from-price[b-cnugcgbuoc] {
+        color: #fff;
+        margin-top: 2rem;
+    }
+
+    .session-card .hyphen[b-cnugcgbuoc] {
+        color: lightgray;
+    }
+
+
+    .one-week-dates[b-cnugcgbuoc]{
+        max-width:100%;
+        overflow:auto;
+        padding-bottom:0.8rem;
+    }
+
+    /* width */
+        .one-week-dates[b-cnugcgbuoc]::-webkit-scrollbar {
+            width: 5px;
+            height:4px;
+        }
+
+    /* Track */
+        .one-week-dates[b-cnugcgbuoc]::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+    /* Handle */
+        .one-week-dates[b-cnugcgbuoc]::-webkit-scrollbar-thumb {
+            background: #ffc107;
+        }
+
+/* Handle on hover */
+        /*.one-week-dates::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }*/
+
+
+
+/*-------------------------------- End Of BranchMovies Styling ------------------------------------------*/
+/* /Pages/User/Checkout.razor.rz.scp.css */
+/* /Pages/User/ConfirmationPage.razor.rz.scp.css */
+
+
+
+    /*--------------------------------------- Confirmation Page Styling -----------------------------*/
+
+
+    .confirmation-container h1[b-qdo1qmcopd] {
+        color: aliceblue;
+    }
+
+    .confirmation-container p[b-qdo1qmcopd] {
+        color: aliceblue;
+        justify-content: center;
+    }
+
+    .confirmation-container h3#message[b-qdo1qmcopd] {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .confirmation-container .fa-square-check[b-qdo1qmcopd] {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .confirmation-container .info-container[b-qdo1qmcopd] {
+        row-gap: 2rem;
+        flex-direction: column;
+        padding-left:0;
+    }
+
+    .confirmation-container .order-details-card[b-qdo1qmcopd], .cust-information-card[b-qdo1qmcopd] {
+        border: 1px solid lightgray;
+        padding: 2rem;
+        border-radius: 5px;
+        margin-top: 2rem;
+        /*width:100% !important;*/
+    }
+
+
+    .confirmation-container .order-details-container .col-6[b-qdo1qmcopd],
+    .confirmation-container .order-details-container .col-12[b-qdo1qmcopd] {
+        padding-left: 0;
+    }
+
+    .confirmation-container .total-label[b-qdo1qmcopd] {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .confirmation-container .home-btn[b-qdo1qmcopd] {
+        padding: 10px 30px;
+        background-color: #f5e1a6;
+        color: #000;
+        border: 3px solid #ffc107;
+        border-radius: 5px;
+        transition: 0.5s;
+        font-family: 'Lato', sans-serif;
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto 1rem;
+    }
+
+        .confirmation-container .home-btn:hover[b-qdo1qmcopd] {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+    .confirmation-container .seats-container[b-qdo1qmcopd] {
+        display: flex;
+        column-gap: 0.5rem;
+        row-gap: 1rem;
+    }
+
+    /*--------------------------------------- End of Confirmation Page Styling -----------------------------*/
+
+
+
+/* /Pages/User/LandingPage.razor.rz.scp.css */
+@media screen and (max-width:650px) {
+
+    #carouselExample img[b-qzou8v3ea3] {
+        height: 40vh;
+    }
+
+    .quickbook-container[b-qzou8v3ea3] {
+        display: none;
+    }
+}
+
+@media screen and (max-width:400px) {
+
+    .book-btn[b-qzou8v3ea3]{
+        padding:0;
+    }
+}
+
+
+.book-btn:hover[b-qzou8v3ea3] {
+    background-color: #bf9004;
+    border-color: #bf9004;
+}
+
+/*.book-btn {
+    padding: 5px 15px;
+    background-color: transparent;
+    color: #fff;
+    border: 3px solid #ffc107;
+    border-radius: 5px;
+    transition: 0.5s;
+    font-family: 'Lato', sans-serif;
+}*/
 /* /Shared/MainLayout.razor.rz.scp.css */
 .page[b-prcmbxxmjs] {
     position: relative;

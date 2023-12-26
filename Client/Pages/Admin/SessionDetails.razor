@@ -7,21 +7,16 @@
 
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">
 
-    @* <Navbar></Navbar> *@
+    <Navbar></Navbar>
 
 
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-                <SideMenu></SideMenu>
-            </div>
-            <div class="col py-3">
+   
                 <div class="container">
 
                     @if (Session != null)
                     {
 
-                        <div class="container p-5">
+                        <div class="container">
                             <div class="row">
                                 <div class="col-12 mb-5">
 
@@ -29,7 +24,7 @@
 
                                         <div class="container">
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-12 col-md-6 mb-4">
 
 
                                                     <h3><b>@Session.Movie.Title</b></h3>
@@ -44,7 +39,7 @@
                                                     </h6>
 
                                                 </div>
-                                                <div class="col-6">
+                                    <div class="col-12 col-md-6">
                                                     <h4><b>Bookings</b></h4>
 
                                                     @if (Session.Bookings == null || Session.Bookings.Count() == 0)
@@ -339,13 +334,6 @@
 
                 </div>
             </div>
-        </div>
-    </div>
-
-   
-
-
-</div>
 
 
 

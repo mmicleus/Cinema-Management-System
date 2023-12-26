@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "ignored": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:Default"
+    },
+    "mssql2": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/CinemaProject2/providers/Microsoft.ServiceLinker/linkers/mmicleus__SqlDb_9DC929B0BA",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/sqlserver-mmicleus-001/databases/CinemaDB",
+      "type": "mssql.azure",
+      "connectionId": "mmicleus__SqlDb"
+    }
+  }
+}

@@ -13,42 +13,39 @@
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">
 
 
-	@* <Navbar></Navbar> *@
-
-	<div class="container-fluid">
-		<div class="row flex-nowrap">
-			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-				<SideMenu></SideMenu>
+	@if (Message.Text != string.Empty)
+	{
+		if (Message.Category == MessageCategory.Error)
+		{
+			<div class="alert alert-danger" role="alert">
+				@Message.Text
 			</div>
-			<div class="col py-3">
-				@if (Message.Text != string.Empty)
-				{
-					if (Message.Category == MessageCategory.Error)
-					{
-						<div class="alert alert-danger" role="alert">
-							@Message.Text
-						</div>
-					}
-					else if (Message.Category == MessageCategory.Warning)
-					{
-						<div class="alert alert-warning" role="alert">
-							@Message.Text
-						</div>
-					}
-					else if (Message.Category == MessageCategory.Success)
-					{
-						<div class="alert alert-success" role="alert">
-							@Message.Text
-						</div>
-					}
-				}
+		}
+		else if (Message.Category == MessageCategory.Warning)
+		{
+			<div class="alert alert-warning" role="alert">
+				@Message.Text
+			</div>
+		}
+		else if (Message.Category == MessageCategory.Success)
+		{
+			<div class="alert alert-success" role="alert">
+				@Message.Text
+			</div>
+		}
+	}
+
+	 <Navbar></Navbar> 
+
+	
+				
 
 				<div class="container pt-5">
 
 					<div class="container">
 						<div class="row">
 
-							<div class="col-6">
+							<div class="col-12 col-lg-6 mb-5">
 
 
 								<EditForm Model="PartialSession" OnValidSubmit="AddSession">
@@ -173,7 +170,7 @@
 								}
 
 							</div>
-							<div class="col-6">
+							<div class="col-12 col-lg-6">
 								<div class="container database-movies-container">
 									<div class="row">
 										<h1>Select a Movie</h1>
@@ -237,10 +234,6 @@
 
 				</div>
 			</div>
-		</div>
-	</div>
-
-	</div>
 
 
 @code {

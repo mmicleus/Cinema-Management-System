@@ -28,10 +28,10 @@
 	}
 }
 
-<nav class="navbar navbar-expand-lg bg-dark mb-0 mt-0">
+<nav class="navbar navbar-expand-lg bg-dark mb-0 mt-0 ">
 	<div class="container-fluid">
 		<a class="navbar-brand text-warning" href=@(_navManager.Uri.Contains("/Admin") ? "/Admin" : "/") id="logo">CINEMAX</a>
-		<button class="navbar-toggler"
+		<button class="navbar-toggler navbar-light"
 				type="button"
 				data-bs-toggle="collapse"
 				data-bs-target="#navbarSupportedContent"
@@ -41,15 +41,75 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+			
+
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
+				@if (_navManager.Uri.Contains("/Admin"))
+				{
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle me-2 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<span>Pages</span>
+						</button>
+						<ul class="dropdown-menu ">
+							<li class="nav-item">
+								<a href="/Admin" class="nav-link align-middle px-0">
+									<i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Home</b></span>
+								</a>
+							</li>
 
+							<li class="nav-item">
+								<a href="/Admin/Branch" class="nav-link px-0 align-middle">
+									<i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Add Branch</b></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/Admin/Movies/Create" class="nav-link px-0 align-middle">
+									<i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Add Movie</b></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/Admin/CreateSession" class="nav-link px-0 align-middle">
+									<i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Add Session</b></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/Admin/Branches" class="nav-link px-0 align-middle">
+									<i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Branches</b></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/Admin/Movies" class="nav-link px-0 align-middle">
+									<i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Movies</b></span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="/Admin/Sessions" class="nav-link px-0 align-middle">
+									<i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline text-secondary"><b>Sessions</b></span>
+								</a>
+							</li>
+
+							@* 				<li><a class="dropdown-item" href="#">Another action</a></li>
+						<li><a class="dropdown-item" href="#">Something else here</a></li> *@
+						</ul>
+					</div>
+
+
+
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					</ul>
+				}
 				
 
 				<li class="nav-item">
 					<LoginLogoutButton></LoginLogoutButton>
 					@* <a class="nav-link" aria-current="page" href="index.html">Home</a> *@
 				</li>
+
+				
+
 				<AuthorizeView>
 
 					<NotAuthorized>
@@ -68,6 +128,7 @@
 
 
 			</ul>
+
 		</div>
 	</div>
 </nav>

@@ -309,12 +309,12 @@
 			{
 				<div class="@(item.index == 0 ? "carousel-item active" : "carousel-item")">
 					<img src="@item.movie.BackdropPath"
-						  class="d-block w-100" style="height:70vh;"
+						  class="d-block w-100" 
 						  alt="..." />
 					<div class="carousel-footer">
-						<h2>@item.movie.Title</h2>
-						<button class="book-btn" data-name="@item.movie.Title" @onclick="@(() => {LoadBranchMoviesPage(DateTime.Today,Branch1.Id,null,item.movie.Id);})">BOOK NOW</button>
-					</div>;
+						<h2 class="text-dark"><b>@item.movie.Title</b></h2>
+						<button class="book-btn btn btn-warning" data-name="@item.movie.Title" @onclick="@(() => {LoadBranchMoviesPage(DateTime.Today,Branch1.Id,null,item.movie.Id);})"><b>BOOK NOW</b></button>
+					</div>
 				</div>
 			}
 		}
@@ -397,7 +397,7 @@
 					{
 						@if (item.index <= 11)
 						{
-							<div class="col-2 mb-4">
+							<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
 
 								<div class="d-flex flex-column justify-content-center active-movie-container" @onclick="@(()=>{LoadBranchMoviesPage(null,Branch1.Id,null,item.movie.Id);})">
 									<img class="w-100 mb-3" style="height:auto;" src="@item.movie.PosterPath">
@@ -411,7 +411,7 @@
 				
 
 				}
-				else
+				else if(IsLoading)
 				{
 					@for (int i = 0; i < 12; i++)
 					{
@@ -423,6 +423,10 @@
 							</div>
 						</div>
 					}
+				}
+				else
+				{
+					<p>No movies to display!</p>
 				}
 
 			</div>
@@ -472,6 +476,8 @@
 
 	public List<MovieDTO> MoviesInSelectedBranch = null;
 
+	public bool IsLoading = false;
+
 	//public List<MovieDTO> MoviesInSelectedBranch = new List<MovieDTO>();
 
 
@@ -490,11 +496,16 @@
 			_userService.SetUser(user);
 		}
 
-		
+
 
 		//ShowQuickbookAfterSeconds(4);
 		DaysOfWeek = GetNext20Days();
+
+
+		IsLoading = true;
 		Branches = await branchesService.GetJustBranches();
+
+
 		if (Branches != null && Branches.Count() > 0) { 
 
 			Branch1 = await branchesService.GetFullBranchById(Branches[0].Id);
@@ -502,6 +513,8 @@
 			ActiveMovies = GetAllMoviesInBranch(Branch1);
 
 		}
+
+		IsLoading = false;
 		//ActiveMovies = await moviesService.GetAllActiveMovies();
 		ShowQuickbookNow();
 	}

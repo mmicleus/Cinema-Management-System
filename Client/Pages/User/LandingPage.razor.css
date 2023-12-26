@@ -1,0 +1,33 @@
+﻿@media screen and (max-width:650px) {
+
+    #carouselExample img {
+        height: 40vh;
+    }
+
+    .quickbook-container {
+        display: none;
+    }
+}
+
+@media screen and (max-width:400px) {
+
+    .book-btn{
+        padding:0;
+    }
+}
+
+
+.book-btn:hover {
+    background-color: #bf9004;
+    border-color: #bf9004;
+}
+
+/*.book-btn {
+    padding: 5px 15px;
+    background-color: transparent;
+    color: #fff;
+    border: 3px solid #ffc107;
+    border-radius: 5px;
+    transition: 0.5s;
+    font-family: 'Lato', sans-serif;
+}*/

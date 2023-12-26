@@ -1,0 +1,77 @@
+
+    /*--------------------------------------- Confirmation Page Styling -----------------------------*/
+
+
+    .confirmation-container h1[b-qdo1qmcopd] {
+        color: aliceblue;
+    }
+
+    .confirmation-container p[b-qdo1qmcopd] {
+        color: aliceblue;
+        justify-content: center;
+    }
+
+    .confirmation-container h3#message[b-qdo1qmcopd] {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .confirmation-container .fa-square-check[b-qdo1qmcopd] {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .confirmation-container .info-container[b-qdo1qmcopd] {
+        row-gap: 2rem;
+        flex-direction: column;
+        padding-left:0;
+    }
+
+    .confirmation-container .order-details-card[b-qdo1qmcopd], .cust-information-card[b-qdo1qmcopd] {
+        border: 1px solid lightgray;
+        padding: 2rem;
+        border-radius: 5px;
+        margin-top: 2rem;
+        /*width:100% !important;*/
+    }
+
+
+    .confirmation-container .order-details-container .col-6[b-qdo1qmcopd],
+    .confirmation-container .order-details-container .col-12[b-qdo1qmcopd] {
+        padding-left: 0;
+    }
+
+    .confirmation-container .total-label[b-qdo1qmcopd] {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .confirmation-container .home-btn[b-qdo1qmcopd] {
+        padding: 10px 30px;
+        background-color: #f5e1a6;
+        color: #000;
+        border: 3px solid #ffc107;
+        border-radius: 5px;
+        transition: 0.5s;
+        font-family: 'Lato', sans-serif;
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto 1rem;
+    }
+
+        .confirmation-container .home-btn:hover[b-qdo1qmcopd] {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+    .confirmation-container .seats-container[b-qdo1qmcopd] {
+        display: flex;
+        column-gap: 0.5rem;
+        row-gap: 1rem;
+    }
+
+    /*--------------------------------------- End of Confirmation Page Styling -----------------------------*/
+
+
+

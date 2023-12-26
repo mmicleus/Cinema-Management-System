@@ -1,0 +1,168 @@
+﻿
+@media screen and (max-width:650px) {
+
+
+    #carouselExample img {
+        height: 40vh;
+    }
+
+    .quickbook-container {
+        display: none;
+    }
+
+    .movie-listing-container{
+        flex-direction:column;
+    }
+
+    .movie-information .movie-title {
+       margin-top:1rem;
+    }
+    
+}
+
+
+@media screen and (max-width:400px) {
+
+    .book-btn {
+        padding: 0;
+    }
+}
+
+
+
+/*-------------------------------- BranchMovies Styling ------------------------------------------*/
+
+
+.branchMovies-container .col-separator {
+    background-color: #ffc107;
+    color: #ffc107;
+    margin-top: 3.5rem;
+    margin-bottom: 4rem
+}
+
+
+.movie-listing-col {
+    /*margin-bottom: 4rem;*/
+}
+
+.movie-poster {
+    margin-right: 3.5rem;
+}
+
+    .movie-poster > img {
+        width: 10rem;
+        height: auto;
+    }
+
+
+.movie-information .movie-title {
+    color: #ffc107;
+    font-size: 2rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+.movie-information .movie-overview {
+    color: #fff;
+    font-size: 1.3rem;
+    font-family: Rockwell;
+    max-height:160px;
+    overflow:auto;
+    /*letter-spacing: 3px;*/
+}
+
+.movie-information .label {
+    color: #fff;
+    font-size: 1rem;
+    /*font-family: ;*/
+}
+
+
+.movie-information .duration {
+    color: darkgray;
+    font-size: 1rem;
+}
+
+.movie-information .separator {
+    /* background-color: #ffc107;
+    color: #ffc107;*/
+    margin-top: 2rem;
+    margin-bottom: 2rem
+}
+
+.sessions-date {
+    color: lightgray;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+}
+
+.session-card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width:fit-content;
+    background-color: #333333;
+    border-color: lightgray;
+    cursor: pointer !important;
+    transition: all 0.4s;
+}
+
+.session-card:hover {
+    /*box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);*/
+        transform: scale(1.06) !important;
+}
+
+    .session-card .start-time {
+        color: #fff;
+    }
+
+
+    .session-card .end-time {
+        color: lightgray;
+    }
+
+    .session-card .venue-name {
+        font-size: 0.8rem;
+        color: lightgray;
+    }
+
+    .session-card .from-price {
+        color: #fff;
+        margin-top: 2rem;
+    }
+
+    .session-card .hyphen {
+        color: lightgray;
+    }
+
+
+    .one-week-dates{
+        max-width:100%;
+        overflow:auto;
+        padding-bottom:0.8rem;
+    }
+
+    /* width */
+        .one-week-dates::-webkit-scrollbar {
+            width: 5px;
+            height:4px;
+        }
+
+    /* Track */
+        .one-week-dates::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+    /* Handle */
+        .one-week-dates::-webkit-scrollbar-thumb {
+            background: #ffc107;
+        }
+
+/* Handle on hover */
+        /*.one-week-dates::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }*/
+
+
+
+/*-------------------------------- End Of BranchMovies Styling ------------------------------------------*/

@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "restored": true,
+      "restoreTime": "2023-12-21T14:19:02.2109904Z"
+    },
+    "mssql1": {
+      "restored": true,
+      "restoreTime": "2023-12-21T14:13:59.1846593Z"
+    }
+  },
+  "parameters": {
+    "mssql2.resourceGroupName": {
+      "Name": "mssql2.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "CinemaProject2ResourceGroup"
+    },
+    "mssql2.subscriptionId": {
+      "Name": "mssql2.subscriptionId",
+      "Type": "subscription",
+      "Value": "85c5eb4f-44e0-48c3-abd3-15fad21cb9d2"
+    }
+  }
+}

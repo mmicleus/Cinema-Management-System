@@ -257,11 +257,11 @@
 			{
 				<div class="@(item.index == 0 ? "carousel-item active" : "carousel-item")">
 					<img src="@item.movie.BackdropPath"
-						 class="d-block w-100" style="height:70vh;"
+						 class="d-block w-100"
 						 alt="..." />
 					<div class="carousel-footer">
 						<h2>@item.movie.Title</h2>
-						<button class="book-btn" data-name="@item.movie.Title" @onclick="@(() => {ReloadPageWithNewBranch(Branch,item.movie.Id,null);})">BOOK NOW</button>
+						<button class="btn btn-warning book-btn" data-name="@item.movie.Title" @onclick="@(() => {ReloadPageWithNewBranch(Branch,item.movie.Id,null);})">BOOK NOW</button>
 					</div>;
 				</div>
 			}
@@ -309,7 +309,7 @@
 
 	@* -------------------------------- start of one-week-dates ----------------------------------- *@
 
-	<div>
+	<div class="one-week-dates-container">
 		<ul class="one-week-dates">
 			@if(OneWeekDates != null && MovieListings1 != null)
 			{
@@ -448,7 +448,7 @@
 									<div class="col-12 movie-listing-col">
 
 
-										<div class="d-flex">
+										<div class="d-flex movie-listing-container">
 											<div class="movie-poster">
 												<img src=@listing.Movie.PosterPath />
 											</div>
@@ -479,7 +479,7 @@
 
 																		@foreach (SessionDTO s in sessionsWithDate.Sessions)
 																		{
-																			<div class="col-3 mb-4">
+																			<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
 
 
 																				<div class="card session-card" @onclick="@(()=>{LoadBookingPage(s);})">
@@ -610,35 +610,19 @@
 		var data = (DateAndBranchIdDTO)stateContainer.ObjectTunnel[SetHashCode];
 
 
-		//await Task.Delay(1000000);
-
 		//for the quickbook
 		Branches = await branchesService.GetJustBranches();
-
-
-
-		//stateContainer.ObjectTunnel.Remove(SetHashCode);
-
-
-
 		Branch = (branchesService.FullBranch != null && branchesService.FullBranch.Id == data.BranchId) ? branchesService.FullBranch : await branchesService.GetFullBranchById(data.BranchId);
-
-
 		StateHasChanged();
 
 
 		SelectedMovieId = data.MovieId;
 		TheMovie = GetMovieById(SelectedMovieId);
 
-
-
-
 		InitializeCarouselMovies();
-		//StateHasChanged();
 
 		SetStartingDate(data.DayOfWeek);
 		InitializeOneWeekDates();
-		//StartingDate = data.DayOfWeek;
 
 		UpdateModel();
 
@@ -647,8 +631,6 @@
 
 		ShowQuickbookNow();
 
-
-		//Branches = await branchesService.GetJustBranches();
 	}
 
 	public bool AnySessions(List<MovieListingVM> listings)

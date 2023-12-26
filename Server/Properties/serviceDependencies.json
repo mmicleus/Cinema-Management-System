@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "ignored": "true",
+      "type": "identityapp"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "mmicleus__SqlDb"
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": null
+    }
+  }
+}

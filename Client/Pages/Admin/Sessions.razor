@@ -11,35 +11,32 @@
 
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">
 
-	@* <Navbar></Navbar> *@
-
-	<div class="container-fluid">
-		<div class="row flex-nowrap">
-			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-				<SideMenu></SideMenu>
+	@if (Message.Text != string.Empty)
+	{
+		if (Message.Category == MessageCategory.Error)
+		{
+			<div class="alert alert-danger" role="alert">
+				@Message.Text
 			</div>
-			<div class="col py-3">
-				@if (Message.Text != string.Empty)
-				{
-					if (Message.Category == MessageCategory.Error)
-					{
-						<div class="alert alert-danger" role="alert">
-							@Message.Text
-						</div>
-					}
-					else if (Message.Category == MessageCategory.Warning)
-					{
-						<div class="alert alert-warning" role="alert">
-							@Message.Text
-						</div>
-					}
-					else if (Message.Category == MessageCategory.Success)
-					{
-						<div class="alert alert-success" role="alert">
-							@Message.Text
-						</div>
-					}
-				}
+		}
+		else if (Message.Category == MessageCategory.Warning)
+		{
+			<div class="alert alert-warning" role="alert">
+				@Message.Text
+			</div>
+		}
+		else if (Message.Category == MessageCategory.Success)
+		{
+			<div class="alert alert-success" role="alert">
+				@Message.Text
+			</div>
+		}
+	}
+
+	 <Navbar></Navbar> 
+
+	
+				
 
 				<div class="container pt-4">
 
@@ -225,7 +222,7 @@
 
 											<div class="container">
 												<div class="row">
-													<div class="col-6">
+										<div class="col-12 col-md-6 mb-4">
 
 
 														<h3><b>@session.Movie.Title</b></h3>
@@ -239,7 +236,7 @@
 															@session.StartTime.ToString("hh:mm tt") - @session.EndTime.ToString("hh:mm tt")
 														</h6>
 													</div>
-													<div class="col-6">
+													<div class="col-12 col-md-6">
 														<h4><b>Bookings</b></h4>
 
 														@if (session.Bookings == null || session.Bookings.Count() == 0)
@@ -315,12 +312,6 @@
 
 				</div>
 			</div>
-		</div>
-	</div>
-
-
-
-</div>
 
 
 @code {

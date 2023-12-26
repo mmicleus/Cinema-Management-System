@@ -866,3 +866,8 @@ D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\D
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\khHRNqi1.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\S6ht6Ojf.gz
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\build-gz\JxbgL0Jr.gz
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\scopedcss\Pages\User\LandingPage.razor.rz.scp.css
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\scopedcss\Pages\User\BranchMovies.razor.rz.scp.css
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\scopedcss\Pages\User\BookingPage.razor.rz.scp.css
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\scopedcss\Pages\User\Checkout.razor.rz.scp.css
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Debug\net7.0\scopedcss\Pages\User\ConfirmationPage.razor.rz.scp.css

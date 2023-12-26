@@ -51,7 +51,7 @@ builder.Services.AddScoped<ISharedRepository, SharedRepository>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:mmicleus:SqlDb"]);
   //  options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 );
@@ -177,11 +177,11 @@ app.MapFallbackToFile("index.html");
 //{
 //    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-//    var roles = new[] { "Admin", "Manager", "Member" };
+//    var roles = new[] { "admin","user", "Manager", "Member" };
 
-//    foreach(var role in roles)
+//    foreach (var role in roles)
 //    {
-//        if(!await roleManager.RoleExistsAsync(role))
+//        if (!await roleManager.RoleExistsAsync(role))
 //        {
 //            await roleManager.CreateAsync(new IdentityRole(role));
 //        }
@@ -190,28 +190,29 @@ app.MapFallbackToFile("index.html");
 
 //using (var scope = app.Services.CreateScope())
 //{
-//	var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+//    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
 //    string email = "miclemarian5@gmail.com";
 //    string password = "Test1234!";
 
-//    if(await userManager.FindByEmailAsync(email) == null)
+//    if (await userManager.FindByEmailAsync(email) == null)
 //    {
 //        var user = new AppUser();
-//        user.UserName = email;
+//        user.UserName = "Mariancic";
 //        user.Email = email;
 //        user.Address = "New York";
-        
+//        user.PhoneNumber = "+3730123456";
+
 //        user.NameOnCard = "Marik Micle";
 //        user.CardNumber = "1234 5678 9123 4567";
 //        user.ExpMonth = "01";
 //        user.ExpYear = "23";
-//		user.CVV = "123";
+//        user.CVV = "123";
 
 
-//		await userManager.CreateAsync(user,password);
+//        await userManager.CreateAsync(user, password);
 
-//        await userManager.AddToRoleAsync(user, "Admin");
+//        await userManager.AddToRoleAsync(user, "admin");
 //    }
 //}
 

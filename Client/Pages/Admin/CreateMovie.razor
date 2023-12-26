@@ -8,30 +8,27 @@
 
 <div class="white-background-container" style="background-color:#fff;min-height:100vh;">
 
-	@* <Navbar></Navbar> *@
-
-	<div class="container-fluid">
-		<div class="row flex-nowrap">
-			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-				<SideMenu></SideMenu>
+	@if (Message.Text != String.Empty)
+	{
+		@if (Message.Category == MessageCategory.Success)
+		{
+			<div class="alert alert-success" role="alert">
+				@((MarkupString)Message.Text)
 			</div>
-			<div class="col py-3">
-				@if (Message.Text != String.Empty)
-				{
-					@if (Message.Category == MessageCategory.Success)
-					{
-						<div class="alert alert-success" role="alert">
-							@((MarkupString)Message.Text)
-						</div>
-					}
-					else if (Message.Category == MessageCategory.Error)
-					{
-						<div class="alert alert-danger" role="alert">
-							@((MarkupString)Message.Text)
-						</div>
-					}
+		}
+		else if (Message.Category == MessageCategory.Error)
+		{
+			<div class="alert alert-danger" role="alert">
+				@((MarkupString)Message.Text)
+			</div>
+		}
 
-				}
+	}
+
+	 <Navbar></Navbar> 
+
+	
+				
 
 				<div class="container pt-5">
 
@@ -45,7 +42,7 @@
 						<div class="container">
 							<div class="row">
 								<!-- outer container col 1 -->
-								<div class="col-6 pe-5">
+								<div class="col-lg-6 col-12 pe-5 mb-4">
 
 									<!-- inner container -->
 									<div class="container database-movies-container">
@@ -94,7 +91,7 @@
 								</div>
 
 								<!-- outer container col 2 -->
-								<div class="col-6 ps-5">
+					<div class="col-lg-6 col-12 ps-5">
 									<h1>Search for movies</h1>
 									@* <input @bind="SearchText" @bind:after="PerformSearch" /> *@
 									<input class="mb-4" type="text" value="@SearchText" @oninput="@PerformSearch" />
@@ -148,21 +145,8 @@
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 			</div>
-		</div>
-	</div>
-
-
-
-
-
-
-
-
-</div>
 
 
 

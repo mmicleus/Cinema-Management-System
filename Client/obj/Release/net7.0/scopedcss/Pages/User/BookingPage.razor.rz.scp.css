@@ -1,0 +1,48 @@
+
+@media screen and (max-width:650px) {
+    .grid-seat[b-nga1z0sr99] {
+       width: 40px !important;
+       height: 40px !important;
+    }
+}
+
+
+@media screen and (max-width:400px) {
+    .grid-seat[b-nga1z0sr99] {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .seat-categories[b-nga1z0sr99] {
+        justify-content: center;
+    }
+}
+
+
+.grid-seat[b-nga1z0sr99] {
+    width:50px;
+    height:50px;
+}
+
+/* width */
+table[b-nga1z0sr99]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+table[b-nga1z0sr99]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+table[b-nga1z0sr99]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+
+
+
+
+

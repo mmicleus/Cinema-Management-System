@@ -1,0 +1,79 @@
+﻿
+
+
+    /*--------------------------------------- Confirmation Page Styling -----------------------------*/
+
+
+    .confirmation-container h1 {
+        color: aliceblue;
+    }
+
+    .confirmation-container p {
+        color: aliceblue;
+        justify-content: center;
+    }
+
+    .confirmation-container h3#message {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .confirmation-container .fa-square-check {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .confirmation-container .info-container {
+        row-gap: 2rem;
+        flex-direction: column;
+        padding-left:0;
+    }
+
+    .confirmation-container .order-details-card, .cust-information-card {
+        border: 1px solid lightgray;
+        padding: 2rem;
+        border-radius: 5px;
+        margin-top: 2rem;
+        /*width:100% !important;*/
+    }
+
+
+    .confirmation-container .order-details-container .col-6,
+    .confirmation-container .order-details-container .col-12 {
+        padding-left: 0;
+    }
+
+    .confirmation-container .total-label {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .confirmation-container .home-btn {
+        padding: 10px 30px;
+        background-color: #f5e1a6;
+        color: #000;
+        border: 3px solid #ffc107;
+        border-radius: 5px;
+        transition: 0.5s;
+        font-family: 'Lato', sans-serif;
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto 1rem;
+    }
+
+        .confirmation-container .home-btn:hover {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+    .confirmation-container .seats-container {
+        display: flex;
+        column-gap: 0.5rem;
+        row-gap: 1rem;
+    }
+
+    /*--------------------------------------- End of Confirmation Page Styling -----------------------------*/
+
+
+
