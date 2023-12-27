@@ -146,7 +146,7 @@
 											<div class="row">
 												@foreach (var session in Venue.Sessions)
 												{
-													<div class="col-6 mb-3">
+													<div class="col-12 col-lg-6 mb-3">
 														<div class="card w-100 h-100" style="background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 															<img class="card-img-top" src="@session.Movie.BackdropPath" alt="Card image cap">
 															<div class="card-body">
@@ -197,7 +197,7 @@
 										{
 											@foreach (var movie in moviesService.Movies)
 											{
-												<div class="col-6 mb-3">
+												<div class="col-12 col-xl-6 mb-3">
 													@if (movie.Id != MovieId)
 													{
 														<div class="card movie-card w-100 h-100" style="cursor:pointer; background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;" @onclick="(() => {SelectMovie(movie.Id);})">

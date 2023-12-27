@@ -1,0 +1,64 @@
+@media screen and (max-width:768px) {
+
+    .bookings-row[b-to5ijo5zc9] {
+        flex-direction: row !important;
+        overflow: auto;
+    }
+}
+
+
+
+
+
+
+
+.bookings-row[b-to5ijo5zc9] {
+    display: flex;
+    gap: 0.8rem;
+    flex-direction: column;
+    overflow: auto;
+    padding: 0.6rem;
+}
+
+
+.booking-card[b-to5ijo5zc9] {
+    width: fit-content;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+
+/* width */
+.bookings-row[b-to5ijo5zc9]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+.bookings-row[b-to5ijo5zc9]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.bookings-row[b-to5ijo5zc9]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+[b-to5ijo5zc9]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+[b-to5ijo5zc9]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+[b-to5ijo5zc9]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+
+

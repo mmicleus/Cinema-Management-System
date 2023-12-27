@@ -44,14 +44,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cTW92aWVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/Admin/SessionDetails.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2Vzc2lvbkRldGFpbHMucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/Admin/Sessions.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2Vzc2lvbnMucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -91,6 +83,14 @@ build_metadata.AdditionalFiles.CssScope =
 [D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/Admin/SessionDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2Vzc2lvbkRldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-xibzy7a2y1
+
+[D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/Admin/Sessions.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2Vzc2lvbnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-to5ijo5zc9
 
 [D:/Web development/Portfolio Projects/BlazorCinemaMS/BlazorCinemaMS/Client/Pages/User/BookingPage.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxCb29raW5nUGFnZS5yYXpvcg==

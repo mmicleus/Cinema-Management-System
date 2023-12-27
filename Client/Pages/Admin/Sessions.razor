@@ -239,64 +239,64 @@
 													<div class="col-12 col-md-6">
 														<h4><b>Bookings</b></h4>
 
-														@if (session.Bookings == null || session.Bookings.Count() == 0)
-														{
-															<p>No Bookings to display</p>
-														}
-														else
-														{
-															<div class="container" style="max-height:500px;overflow:auto;">
-																<div class="row">
+											@if (session.Bookings == null || session.Bookings.Count() == 0)
+											{
+												<p>No Bookings to display</p>
+											}
+											else
+											{
+												<div class="container" style="max-height:500px;overflow:auto;">
+													<div class="bookings-row">
 
-																	@foreach (BookingDTO bk in session.Bookings)
+														@foreach (BookingDTO bk in session.Bookings)
+														{
+															<div class="booking-card mb-3" style="background-color:lightgray;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+																<div class="card-body">
+																	@if (bk.User != null)
 																	{
-																		<div class="col-12 mb-3">
-																			<div class="card" style="background-color:lightgray;box-shadow:rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-																				<div class="card-body">
-																					@if (bk.User != null)
-																					{
-																						<h5><b>Email:</b> @bk.User.Email</h5>
-																						<h5><b>Address:</b> @bk.User.Address</h5>
+																		<h5><b>Email:</b> @bk.User.Email</h5>
+																		<h5><b>Address:</b> @bk.User.Address</h5>
 
 
-																					}
-																					else if (bk.Customer != null)
-																					{
-																						<h5><b>Full Name:</b> @bk.Customer.FirstName @bk.Customer.LastName</h5>
-																						<h5><b>Email:</b> @bk.Customer.Email</h5>
-																					}
+																	}
+																	else if (bk.Customer != null)
+																	{
+																		<h5><b>Full Name:</b> @bk.Customer.FirstName @bk.Customer.LastName</h5>
+																		<h5><b>Email:</b> @bk.Customer.Email</h5>
+																	}
 
 
-																					<h5 class="mb-4"><b>Amount Paid:</b> $@bk.TotalAmount</h5>
+																	<h5 class="mb-4"><b>Amount Paid:</b> $@bk.TotalAmount</h5>
 
 
-																					<h4 class="mb-3"><b>Booked Seats</b></h4>
+																	<h4 class="mb-3"><b>Booked Seats</b></h4>
 
-																					@if (bk.Seats == null || bk.Seats.Count() == 0)
-																					{
-																						<p>No Seats to display</p>
-																					}
-																					else
-																					{
-																						<div class="d-flex" style="flex-wrap:wrap;">
-																							@foreach (SeatDTO seat in bk.Seats)
-																							{
-																								<span class="p-2 me-2 mb-2" style="border:1px solid gray;">
-																									@seat.Label
-																								</span>
-																							}
-																						</div>
-																					}
-
-
-																				</div>
-
-																			</div>
+																	@if (bk.Seats == null || bk.Seats.Count() == 0)
+																	{
+																		<p>No Seats to display</p>
+																	}
+																	else
+																	{
+																		<div class="d-flex" style="flex-wrap:wrap;">
+																			@foreach (SeatDTO seat in bk.Seats)
+																			{
+																				<span class="p-2 me-2 mb-2" style="border:1px solid gray;">
+																					@seat.Label
+																				</span>
+																			}
 																		</div>
 																	}
 
+
 																</div>
+
 															</div>
+
+														}
+
+																</div>
+																</div>
+															
 														}
 													</div>
 												</div>

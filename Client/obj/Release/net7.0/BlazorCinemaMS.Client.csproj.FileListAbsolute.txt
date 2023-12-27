@@ -871,3 +871,5 @@ D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\R
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Release\net7.0\scopedcss\Pages\User\BookingPage.razor.rz.scp.css
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Release\net7.0\scopedcss\Pages\User\Checkout.razor.rz.scp.css
 D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Release\net7.0\scopedcss\Pages\User\ConfirmationPage.razor.rz.scp.css
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Release\net7.0\scopedcss\Pages\Admin\SessionDetails.razor.rz.scp.css
+D:\Web development\Portfolio Projects\BlazorCinemaMS\BlazorCinemaMS\Client\obj\Release\net7.0\scopedcss\Pages\Admin\Sessions.razor.rz.scp.css

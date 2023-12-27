@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorCinemaMS.Client.dll": "sha256-r9N4N2JMN4q+YxiAavohVZv3fL4TBWnK4ojy6AgL88Y=",
+      "BlazorCinemaMS.Client.dll": "sha256-o2qsreraCg1LRXLSedj31VZb8g4ThvdCakdTBbAVexc=",
       "BlazorCinemaMS.Shared.dll": "sha256-QhDoYh9a3InX+AmdDhc6IbTB\/eq7LHROSA7oAXD5S9o=",
       "Blazored.LocalStorage.dll": "sha256-5V8ovY1srbIIz7lzzMhLd3nNJ9LJ6bHoBOnLJahv8Go=",
       "Mapster.Core.dll": "sha256-jYHh+gsdve2iEha131dSwYUOgGMgDFQ2oNqV2qouFjs=",

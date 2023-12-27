@@ -1,3 +1,163 @@
+/* /Pages/Admin/SessionDetails.razor.rz.scp.css */
+@media screen and (max-width:768px) {
+
+    .bookings-row[b-xibzy7a2y1] {
+        flex-direction:row !important;
+        overflow: auto;
+    }
+
+}
+
+
+@media screen and (max-width:650px) {
+    .grid-seat[b-xibzy7a2y1] {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+
+@media screen and (max-width:400px) {
+    .grid-seat[b-xibzy7a2y1] {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .seats-pricing-container[b-xibzy7a2y1]{
+        flex-direction:column !important;
+    }
+
+    .seat-categories[b-xibzy7a2y1] {
+        justify-content: center;
+    }
+
+    
+}
+
+.bookings-row[b-xibzy7a2y1] {
+    display:flex;
+    gap:1.5rem;
+    flex-direction:column;
+    overflow: auto;
+    padding:0.6rem;
+}
+
+.seats-pricing-container[b-xibzy7a2y1] {
+    display:flex;
+}
+
+
+.grid-seat[b-xibzy7a2y1] {
+    width: 50px;
+    height: 50px;
+}
+
+.booking-card[b-xibzy7a2y1] {
+    width: fit-content;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+
+/* width */
+.bookings-row[b-xibzy7a2y1]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+.bookings-row[b-xibzy7a2y1]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.bookings-row[b-xibzy7a2y1]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+/* width */
+container[b-xibzy7a2y1]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+container[b-xibzy7a2y1]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+container[b-xibzy7a2y1]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+
+/* /Pages/Admin/Sessions.razor.rz.scp.css */
+@media screen and (max-width:768px) {
+
+    .bookings-row[b-to5ijo5zc9] {
+        flex-direction: row !important;
+        overflow: auto;
+    }
+}
+
+
+
+
+
+
+
+.bookings-row[b-to5ijo5zc9] {
+    display: flex;
+    gap: 0.8rem;
+    flex-direction: column;
+    overflow: auto;
+    padding: 0.6rem;
+}
+
+
+.booking-card[b-to5ijo5zc9] {
+    width: fit-content;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+
+/* width */
+.bookings-row[b-to5ijo5zc9]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+.bookings-row[b-to5ijo5zc9]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.bookings-row[b-to5ijo5zc9]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+[b-to5ijo5zc9]::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+[b-to5ijo5zc9]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+[b-to5ijo5zc9]::-webkit-scrollbar-thumb {
+    background: #ffc107;
+}
+
+
+
+
 /* /Pages/User/BookingPage.razor.rz.scp.css */
 
 @media screen and (max-width:650px) {
